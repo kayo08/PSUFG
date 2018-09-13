@@ -1,0 +1,181 @@
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:param name="idMenuPrincipal" value="Mp2"/>
+    <ui:param name="idMenu" value="M1" />
+    <ui:define name="content">
+
+        <div class="panel panel-primary" style="margin: 0px 1px 0px 0px;"> 
+            <div class="panel-heading"> <h7/></div>
+
+            <div class="panel-body">
+                <h:form id="frmAtualizaUsuario" class="form-horizontal" >
+                    <fieldset>
+                        <legend> Atualizar perfil </legend>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="nomeoficial2" class="col-sm-4 control-label">1. Nome Oficial</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+
+                                            <h:inputText styleClass="form-control" id="nomeoficial2" value="#{usuarioBean.usuarioLogado.nomeOficial}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="nomeSocial2" class="col-sm-4 control-label">2. Nome Social</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+
+                                            <h:inputText styleClass="form-control" id="nomeSocial2" value="#{usuarioBean.usuarioLogado.nomeSocial}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="emailPrincial2" class="col-sm-4 control-label">3. Email principal</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                            <h:inputText styleClass="form-control required" id="emailPrincial2" value="#{usuarioBean.usuarioLogado.emailPrincipal}" required="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="cpf" class="col-sm-4 control-label">4. CPF</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-credit-card"></i></span>
+                                            <h:inputText styleClass="form-control required" id="cpf" value="#{usuarioBean.usuarioLogado.cpf}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="senha2" class="col-sm-4 control-label">5. Senha</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="icon-key"></i></span>
+                                            <h:inputSecret styleClass="form-control required"  id="senha2" value="#{usuarioBean.usuarioLogado.novaSenha}" 
+                                                           redisplay="true" title="Insira caso queira alterar a atual.">
+                                                <f:passThroughAttribute name="placeholder" value="Insira caso queira alterar a atual."/> 
+                                            </h:inputSecret>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="freqDivulgacao2" class="col-sm-4 control-label">6. Frequência divulgação</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                            <h:selectOneMenu  class="form-control required"
+                                                              id="freqDivulgacao2"
+                                                              value="#{usuarioBean.usuarioLogado.frequenciaDivulgacao}"
+                                                              converter="jsfEnumFrequenciaDivulgacaoConverter">
+                                                <f:selectItems 
+                                                    value="#{egressoBean.frequenciasDivulgacao}" var="f" 
+                                                    itemLabel="#{f.value}"
+                                                    itemValue="#{f}"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="dataCadastro" class="col-sm-4 control-label">7. Cadastro</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-credit-card"></i></span>
+                                            <h:inputText styleClass="form-control required" id="dataCadastro" value="#{usuarioBean.usuarioLogado.timeStampCadastramento}" disabled="true" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="ultimoAcesso" class="col-sm-4 control-label">8. Último acesso</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-log-in"></i></span>
+                                            <h:inputText styleClass="form-control required" id="ultimoAcesso" value="#{usuarioBean.usuarioLogado.timeStampUltimaUtilizacao}" disabled="true">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="imgPrincipal2" class="col-sm-4 control-label">9. Foto principal</label>
+
+                                    <div class="col-sm-8">
+                                        <div class="input-group" style="text-align: center; border-radius: 2px; border: 1px solid #ccc">                                            
+                                            <span class="input-group-addon" style="border:none"><i class="glyphicon glyphicon-picture"></i></span>                                            
+                                            <h:link  rel="javascript:void(0)" onclick="atualizarFotoPerfil('frmAtualizaUsuario:atualiza_foto_input')" disabled="true">
+                                                <p:graphicImage id="fotoPerfil" class="fotoPerfil" 
+                                                                value="#{usuarioBean.fotoExibicao eq null ? usuarioBean.pegarFotoPadrao() : usuarioBean.fotoExibicao}"/>
+                                            </h:link>
+                                        </div>
+
+                                        <p:fileUpload  id="atualiza_foto"   style="display:none"
+                                                       fileUploadListener="#{usuarioBean.atualizarFotoPrincipal}"
+                                                       mode="advanced"   multiple="false" auto="true"  previewWidth="30"
+                                                       sizeLimit="1000000" allowTypes="/(\.|\/)(jpe?g|gif|png)$/"
+                                                       invalidFileMessage="Imagem deve ser de um dos tipos: { jpg | gif | png } >>>"
+                                                       invalidSizeMessage="Tamanho máximo permitido é de 1MB  >>>"
+                                                       label="Inserir imagem" update="frmAtualizaUsuario"/>   
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>                        
+                        <div class="row">
+                            <h:commandButton styleClass="btn btn-primary" style="margin: 10px;"
+                                             value="Atualizar" id="btnSalvar"
+                                             action="#{usuarioBean.atualizar()}"/>
+
+                            <h:commandButton styleClass="btn btn-danger" style="margin: 10px;"
+                                             value="Cancelar"  id="btnCancel"
+                                             action="#{usuarioBean.cancelarAtualizacao()}"
+                                             disabled="false formLista"/>
+                        </div>
+
+                    </fieldset>            
+                </h:form>
+
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
+

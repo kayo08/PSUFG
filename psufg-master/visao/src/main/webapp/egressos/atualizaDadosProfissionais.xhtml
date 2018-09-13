@@ -1,0 +1,358 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"               
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:param name="idMenu" value="#{usuarioBean.usuarioEgresso ? 'Mp2' : 'Mp4'}"/>
+    <ui:param name="idAbaDados" value="M3" />
+    <ui:define name="content">
+        <h:form id="formEdicaoEgresso">
+            <ui:include src="egressoMenu.xhtml" />        
+
+            <div class="panel panel-primary" style="margin: 0px 1px 0px 0px;"> 
+                <div class="panel-heading"> <h7/></div>
+
+                <div class="panel-body">
+                    <fieldset>
+                        <legend> 6. Atuações </legend>                      
+
+
+                        <p:dataTable id="tabela_Atuacoes" 
+                                     value="#{egressoBean.egresso.atuacoes}"
+                                     var="atua"                                  
+                                     emptyMessage="Nenhuma atuação encontrada" >
+
+                            <p:column headerText="Empresa"  priority="0">
+                                <h:outputText value="#{atua.organizacao.razaoSocial.toUpperCase()}"/>
+                            </p:column>
+                            <p:column headerText="Natureza"  priority="2">
+                                <h:outputText value="#{atua.organizacao.natureza.value}"/>
+                            </p:column>
+                            <p:column headerText="Renda" width="120" priority="1" styleClass="text-right">
+                                <h:outputText value="#{atua.rendaMensalMedia}">
+                                    <f:convertNumber  type="currency" currencySymbol="R$ "/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Satisfação" width="100" styleClass="text-center" priority="3">
+                                <h:outputText value="#{atua.satisfacaoRenda}"/>
+                            </p:column>
+
+                            <p:column headerText="Perspectiva" width="100" styleClass="text-center" priority="4">
+                                <h:outputText value="#{atua.perspectivaFuturoArea}"/>
+                            </p:column>
+
+                            <p:column headerText="Admissão" width="100" styleClass = "text-center" priority="5">
+                                <h:outputText value="#{atua.dataInicio}" converter="jsfLocalDateConverter"/>
+                            </p:column>
+                            <p:column headerText="Saída" width="100" styleClass = "text-center" priority="6">
+                                <h:outputText value="#{atua.dataFim}" converter="jsfLocalDateConverter"/>
+                            </p:column>
+
+
+                            <p:column styleClass="centralizar-texto"  headerText="Ações" width="75" exportable="false" priority="0">
+                                <p:tooltip for="btnEditar" value="Editar"/>
+                                <p:commandLink id="btnEditar" action="#{egressoBean.editarAtuacao}" ajax="false" update="frmEditaAtuacao"> 
+                                    <h:graphicImage value="/resources/img/edit2.png" />
+                                    <f:setPropertyActionListener target="#{egressoBean.atuacaoEdicao}" value="#{atua}"/>
+                                </p:commandLink>                               
+
+                                <p:tooltip for="btnExcluir" value="Excluir"/>
+                                <span style="padding-left: 15px" />
+                                <p:commandLink id="btnExcluir" 
+                                               oncomplete="exibirConfirmacao('Deseja realmente excluir atuação da empresa : #{atua.organizacao.razaoSocial} ?', 'formEdicaoEgresso:botao-excluir')">
+                                    <h:graphicImage value="/resources/img/excluir.png"/>
+                                    <f:setPropertyActionListener target="#{egressoBean.atuacaoEdicao}" value="#{atua}"/>                                  
+                                </p:commandLink>                                                           
+                            </p:column>                              
+                        </p:dataTable>
+
+                        <p:commandLink styleClass="botao-escondido" id="botao-excluir" action="#{egressoBean.removerAtuacao()}" ajax="false" update="formEdicaoEgresso:tabela_Atuacoes"/>                  
+
+                        <div class="row">
+                            <div class="col-sm-offset-7 col-sm-5 text-right">
+                                <p:commandButton id="btnAdcionarResidencia" styleClass="ui-priority-primary" style="margin: 10px;" rendered="#{!egressoBean.exibirFrmAtuacao}"
+                                                 ajax="false" icon="ui-icon-pencil" update="frmEditaAtuacao"
+                                                 action="#{egressoBean.editarAtuacao()}"
+                                                 value="Adicionar nova atuação" >                                                                         
+                                </p:commandButton>
+
+                            </div>
+                        </div>
+                    </fieldset>
+                    <br/>
+                    <h:panelGroup id="divBotoes" rendered="#{!egressoBean.exibirFrmAtuacao}">
+                        <div class="row">
+                            <h:commandButton styleClass="btn btn-primary" style="margin: 10px;"
+                                             value="Atualizar" id="btnSalvar"
+                                             action="#{egressoBean.atualizarEgresso()}"/>
+
+                            <h:commandButton styleClass="btn btn-danger" style="margin: 10px;"
+                                             value="Cancelar"  id="btnCancel"
+                                             action="#{egressoBean.cancelarAtualizacaoEgresso()}"
+                                             disabled="false formLista"/>
+                        </div>
+                    </h:panelGroup>
+
+                    <br/>
+                    <h:form id="frmEditaAtuacao" class="form-horizontal" rendered="#{egressoBean.exibirFrmAtuacao}">
+                        <fieldset style="margin-left: 10px; margin-right: 10px; border: 2px solid #aed0ea; border-bottom: 0px; border-radius: 6px 6px 0 0; padding: 5px 10px 5px 10px; background-color: #337ab7;">
+                            <b style="color:#FFFFFF;"> #{egressoBean.atuacaoEdicao.id>0? 'Edição de atuação' : 'Cadastro de atuação'} </b>
+                        </fieldset>
+
+                        <fieldset style="margin-left: 10px; margin-right: 10px; border: 2px solid #aed0ea; padding: 20px 10px 20px 10px;">
+
+                            <div class="row">
+                                <div class="col-sm-12"> 
+                                    <div class="form-group">
+                                        <label for="razaoSocial" class="col-sm-2 control-label">6.1 Empresa</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-copyright-mark"></i></span>
+                                                <h:inputText required="true" styleClass="form-control required" id="razaoSocial" value="#{egressoBean.atuacaoEdicao.organizacao.razaoSocial}" tabindex="1">
+                                                    <f:passThroughAttribute name="placeholder" value="Insira a razão social ou nome completo (se autônomo) "/>
+                                                </h:inputText>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12"> 
+                                    <div class="form-group">
+                                        <label for="endereco" class="col-sm-2 control-label">6.2 Endereço</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-road"></i></span>
+                                                <h:inputText styleClass="form-control" id="endereco" value="#{egressoBean.atuacaoEdicao.organizacao.enderecoComercial}" tabindex="2">
+                                                    <f:passThroughAttribute name="placeholder" value="Insira o endereço (opcional)"/>
+                                                </h:inputText>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="localizacao" class="col-sm-4 control-label">6.3 Localização Geográfica </label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                                <p:autoComplete styleClass="form-control required input-custom"
+                                                                required="true"
+                                                                id="localizacao" tabindex="3"
+                                                                value="#{egressoBean.atuacaoEdicao.organizacao.localizacao}"
+                                                                converter="jsfLocalizacaoGeograficaConverter"
+                                                                completeMethod="#{egressoBean.pesquisarPorMunicipio}"
+                                                                var="lgeo"
+                                                                itemLabel="#{lgeo.municipio ne null ? lgeo.municipio :''}#{lgeo.municipio ne null ? ', ' : ''}#{lgeo.municipio ne null ? lgeo.cidade :''}#{lgeo.municipio ne null ? ', ' : ''}#{lgeo.municipio ne null ? lgeo.uf :''}#{lgeo.municipio ne null ? ', ' : ''}#{lgeo.municipio ne null ? lgeo.pais :''}"
+                                                                placeholder="Insira nome cidade"
+                                                                itemValue="#{lgeo}"                                                            
+                                                                scrollHeight="100"
+                                                                queryDelay="50"
+                                                                effect="fade"/>                                            
+                                            </div>                                                        
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6"> 
+                                    <div class="form-group">
+                                        <label for="natureza" class="col-sm-4 control-label">6.4 Natureza</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                                <h:selectOneMenu class="form-control required"
+                                                                 required="true"
+                                                                 hideNoSelectionOption="true"
+                                                                 id="natureza" tabindex="4"
+                                                                 value="#{egressoBean.atuacaoEdicao.organizacao.natureza}">                                     
+                                                    <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true" />
+                                                    <f:selectItems value="#{egressoBean.naturezasDaOrganizacao}"                                                    
+                                                                   var="nat"
+                                                                   itemLabel="#{nat.value}"
+                                                                   itemValue="#{nat}"/>                                    
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                    
+                            </div>                  
+                            <div class="row">
+                                <div class="col-sm-6"> 
+                                    <div class="form-group">
+                                        <label for="area" class="col-sm-4 control-label">6.5 Área conhecimento</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-eye-open"></i></span>
+                                                <p:autoComplete styleClass="form-control required input-custom "
+                                                                required="true"
+                                                                id="area" tabindex="5"
+                                                                value="#{egressoBean.atuacaoEdicao.areaConhecimento}"
+                                                                converter="jsfAreaConhecimentoConverter"
+                                                                completeMethod="#{egressoBean.pesquisarAreaConhecimentoPorNome}"
+                                                                minQueryLength="2"
+                                                                var="ac"
+                                                                itemLabel="#{ac ne null ? ac.nomeArea : ''}"
+                                                                itemValue="#{ac}"
+                                                                placeholder="Insira a área de conhecimento"
+                                                                scrollHeight="100"
+                                                                queryDelay="50"
+                                                                effect="fade"/>   
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6"> 
+                                    <div class="form-group">
+                                        <label for="formaIngresso" class="col-sm-4 control-label">6.6 Forma ingresso</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-inbox"></i></span>
+                                                <h:selectOneMenu class="form-control required"
+                                                                 required="true"
+                                                                 hideNoSelectionOption="true"
+                                                                 id="formaIngresso" tabindex="6"
+                                                                 value="#{egressoBean.atuacaoEdicao.formaIngresso}">                                     
+                                                    <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true" />
+                                                    <f:selectItems value="#{egressoBean.formasIngressoInstituicao}"                                                    
+                                                                   var="fi"
+                                                                   itemLabel="#{fi.value}"
+                                                                   itemValue="#{fi}"/>                                    
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6"> 
+                                    <div class="form-group">
+                                        <label for="pagina" class="col-sm-4 control-label">6.7 Sítio</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                                                <h:inputText styleClass="form-control" id="pagina" tabindex="7"  
+                                                             value="#{egressoBean.atuacaoEdicao.organizacao.paginaWeb}">
+                                                    <f:passThroughAttribute name="placeholder" value="Site da empresa (opcional)"/>
+                                                </h:inputText>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                  
+
+                                <div class="col-sm-6"> 
+                                    <div class="form-group">
+                                        <label for="renda" class="col-sm-4 control-label">6.8 Renda Média</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="icon-coin-dollar"></i></span>
+                                                <p:inputNumber required="true" styleClass="form-control required input-custom" id="renda" value="#{egressoBean.atuacaoEdicao.rendaMensalMedia}" tabindex="8" symbol="R$ "/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6"> 
+                                    <div class="form-group">
+                                        <label for="satisfacao" class="col-sm-4 control-label">6.10 Satisfação</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-check"></i></span>
+                                                <p:spinner id="satisfacao" tabindex="10"
+                                                           required="true" style="padding: 6px 12px !important;"
+                                                           styleClass="form-control required input-custom" 
+                                                           min="1" max="10" value="#{egressoBean.atuacaoEdicao.satisfacaoRenda}" >                                          
+                                                </p:spinner>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6"> 
+                                    <div class="form-group">
+                                        <label for="futuro" class="col-sm-4 control-label">6.11 Perspectiva futuro</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-check"></i></span>
+                                                <p:spinner id="futuro" tabindex="11"
+                                                           required="true" style="padding: 6px 12px !important;"
+                                                           styleClass="form-control required input-custom " 
+                                                           min="1" max="10" value="#{egressoBean.atuacaoEdicao.perspectivaFuturoArea}" >                                          
+                                                </p:spinner>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6"> 
+                                    <div class="form-group">
+                                        <label for="admissao" class="col-sm-4 control-label">6.12 Admissão</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                                <p:calendar styleClass="form-control required input-custom" id="admissao" value="#{egressoBean.atuacaoEdicao.dataInicio }" 
+                                                            required="true" requiredMessage="Data início é obrigatória" pattern="dd/MM/yyyy"
+                                                            readonlyInput="true" placeholder="00/00/00000" navigator="true"
+                                                            maxlength="10" converter="jsfLocalDateConverter"/>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6"> 
+                                    <div class="form-group">
+                                        <label for="saida" class="col-sm-4 control-label">6.13 Saída</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                                <p:calendar styleClass="form-control required input-custom" id="saida" value="#{egressoBean.atuacaoEdicao.dataFim }" 
+                                                            required="true" requiredMessage="Data fim é obrigatória" pattern="dd/MM/yyyy"
+                                                            readonlyInput="true" placeholder="00/00/00000" navigator="true"
+                                                            converter="jsfLocalDateConverter"/>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>      
+                            <div class="row">
+                                <div class="col-sm-12"> 
+                                    <div class="form-group">
+                                        <label for="comentario" class="col-sm-2 control-label">6.14 Comentários</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-info-sign"></i></span>
+                                                <p:inputTextarea styleClass="text-area-custom  input-custom" id="comentario" value="#{egressoBean.atuacaoEdicao.comentario}" tabindex="14" >
+                                                    <f:passThroughAttribute name="placeholder" value="Insira algum comentário (opcional)"/>
+                                                </p:inputTextarea>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset style="margin-left: 10px; margin-right: 10px; border: 2px solid #aed0ea; border-top: 0px; border-radius: 0 0 6px 6px; padding: 0 10px 0 10px;">
+                            <div class="row">
+                                <div class="col-sm-12 text-right">
+                                    <h:commandButton id="btnAdicionarAtuacao" class="btn btn-success" style="margin: 10px;"                                          
+                                                     value="Confirmar" action="#{egressoBean.adicionarAtuacao()}"/>
+
+                                    <h:commandButton id="btnCancelarAtuacao" class="btn btn-danger" style="margin-left: 20px;"  immediate="true"
+                                                     value="Cancelar" action="#{egressoBean.cancelarEdicaoAtuação()}"/>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </h:form>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
+

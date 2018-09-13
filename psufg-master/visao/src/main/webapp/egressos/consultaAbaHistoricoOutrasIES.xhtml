@@ -1,0 +1,121 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"      
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <head>      
+        <title> Sempre UFG </title>
+        <h:outputStylesheet name="bootstrap.min.css" library="css"/>
+        <h:outputStylesheet name="custom-bootstrap.css" library="css"/>
+        <h:outputStylesheet name="style.css" library="css"/>        
+        <h:outputStylesheet name="grid.css" library="css"/>        
+    </head>
+
+
+    <h:body>                          
+        <div class="panel panel-primary" style="margin: 0px"> 
+            <div class="panel-heading"> <h7/></div>
+            <div class="panel-body">                   
+                <h:form id="frm_HistOutrasIES">
+                    <fieldset>
+                        <div class="row" style="color: #337ab7; font-weight: normal !important; border-bottom: 1px solid #e5e5e5 !important; margin: 0px 0px 20px 0 !important; font-size:16px !important; font-family: Lucida Grande, Lucida Sans, Arial, sans-serif !important;" >
+                            <span class="icon-search" style="margin-right: 5px;"/> 
+                            <h:outputLabel  style="color: #337ab7; font-weight: normal !important;" value=" Resultado da consulta" />
+                            <h:commandLink class="btn btn-primary btn-sm" 
+                                           style="margin-right: 10px; float: right; color: #ffffff !important; border: 1 solid #337ab7 !important; border-radius: 5px 5px 0 0; width: 140px;height: 27px;" 
+                                           action="#{mapaBean.mapaEgressosNascimento()}" > 
+                                Mostrar no <p:graphicImage  style = "margin-top: -5px; width: 24px;" value="/resources/img/maps.png" /> 
+                            </h:commandLink>                                
+
+                        </div>                               
+                        <p:dataTable id="tabela_histOutrasIES" var="hoies" value="#{consultaLazyBean.model}" lazy="true"
+                                     sortBy="#{hoies.egresso.nomeOficial}" rowKey="#{hoies}"
+                                     rows="10" paginator="true" rowsPerPageTemplate="10,50,100" selectionMode="single"
+                                     currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink}  {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     multiViewState="true" resizableColumns="true" resizeMode="expand"                                     
+                                     emptyMessage="Nenhum histórico encontrado" >                     
+
+                            <p:ajax event="page" oncomplete="updateToggles('myColumnToggler6')" />
+                            <p:ajax event="sort" oncomplete="updateToggles('myColumnToggler6')" />
+
+                            <f:facet name="header">                                
+                                <h:outputLabel style="padding: 5px;" value="Listagem dos dados de histórico de outras IES"/>
+                                <p:commandButton id="toggler6" type="button" value="Seleção de colunas" style="float:right; margin-top: 5px;" icon="ui-icon-calculator" />
+
+                                <p:columnToggler datasource="tabela_histOutrasIES" trigger="toggler6"  widgetVar="myColumnToggler6" transient="true"/>
+                            </f:facet>
+
+                            <p:column headerText="Id" sortBy="#{hoies.egresso.cpf}">
+                                <h:outputText value="#{hoies.egresso.cpf.substring(0,3)}#{hoies.egresso.cpf.substring(8,11)}"/> 
+                            </p:column>
+
+                            <p:column headerText="Egresso" sortBy="#{hoies.egresso.nomeOficial}">
+                                <h:outputText value="#{hoies.egresso.nomeSocial.trim().length() > 1 ? hoies.egresso.nomeSocial : hoies.egresso.nomeOficial}" />
+                            </p:column>
+                            <p:column visible="false" headerText="Email Principal"  sortBy="#{hoies.egresso.emailPrincipal}"> <h:outputText value="#{hoies.egresso.emailPrincipal}" /></p:column>
+                            <p:column visible="false" headerText="Email alternativo" sortBy="#{hoies.egresso.emailAlternativo}"> <h:outputText value="#{hoies.egresso.emailAlternativo}"/> </p:column>
+                            <p:column visible="false" headerText="Nasc:Data" sortBy="#{hoies.egresso.dataDeNascimento}"> <h:outputText value="#{hoies.egresso.dataDeNascimento}" > <f:convertDateTime pattern="dd/MM/yyyy" /> </h:outputText> </p:column>
+                            <p:column visible="false" headerText="Nasc:Cidade" sortBy="#{hoies.egresso.naturalidade.cidade}"> <h:outputText value="#{hoies.egresso.naturalidade.cidade}"/>  </p:column>
+                            <p:column visible="false" headerText="Nasc:UF" sortBy="#{hoies.egresso.naturalidade.siglaUF}"> <h:outputText value="#{hoies.egresso.naturalidade.siglaUF}"/>  </p:column>
+                            <p:column visible="false" headerText="Nasc:País" sortBy="#{hoies.egresso.naturalidade.pais}"> <h:outputText value="#{hoies.egresso.naturalidade.pais}"/>  </p:column>      
+
+                            <p:column visible="true" headerText="Início" sortBy="#{hoies.anoInicio}"> <h:outputText value="#{hoies.mesInicio.value.substring(0,3)}/#{hoies.anoInicio}"/>  </p:column>
+                            <p:column visible="true" headerText="Fim" sortBy="#{hoies.anoFim}"> <h:outputText value="#{hoies.mesFim.value.substring(0,3)}/#{hoies.anoFim}"/>  </p:column>
+                            <p:column visible="true" headerText="Curso" sortBy="#{hoies.cursoDeOutraIES.id.nomeDoCurso}"> <h:outputText value="#{hoies.cursoDeOutraIES.id.nomeDoCurso}"/>  </p:column>
+                            <p:column visible="true" headerText="Nível" sortBy="#{hoies.cursoDeOutraIES.nivel.value}"> <h:outputText value="#{hoies.cursoDeOutraIES.nivel.value}"/>  </p:column>
+                            <p:column visible="true" headerText="Unidade" sortBy="#{hoies.cursoDeOutraIES.nomeDaUnidadeAcademica}"> <h:outputText value="#{hoies.cursoDeOutraIES.nomeDaUnidadeAcademica}"/>  </p:column>
+                            <p:column visible="true" headerText="Área" sortBy="#{hoies.cursoDeOutraIES.area.nomeArea}"> <h:outputText value="#{hoies.cursoDeOutraIES.area.nomeArea}"/>  </p:column>
+                            <p:column visible="true" headerText="Tipo instituição" sortBy="#{hoies.cursoDeOutraIES.tipoInstituicao.value}"> <h:outputText value="#{hoies.cursoDeOutraIES.tipoInstituicao.value}"/>  </p:column>
+                            <p:column visible="true" headerText="URL institucional" sortBy="#{hoies.cursoDeOutraIES.urlInstitucional}"> <h:outputText value="#{hoies.cursoDeOutraIES.urlInstitucional}"/>  </p:column>                            
+                            <p:column visible="true" headerText="Cidade" sortBy="#{hoies.cursoDeOutraIES.localizacaoGeografica.cidade}"> <h:outputText value="#{hoies.cursoDeOutraIES.localizacaoGeografica.cidade}"/>  </p:column>
+                            <p:column visible="true" headerText="UF" sortBy="#{hoies.cursoDeOutraIES.localizacaoGeografica.siglaUF}"> <h:outputText value="#{hoies.cursoDeOutraIES.localizacaoGeografica.siglaUF}"/>  </p:column>
+                            <p:column visible="true" headerText="País" sortBy="#{hoies.cursoDeOutraIES.localizacaoGeografica.pais}"> <h:outputText value="#{hoies.cursoDeOutraIES.localizacaoGeografica.pais}"/>  </p:column>
+
+
+                            <p:column styleClass="centralizar-texto text-center"  headerText="Ações" width="75" exportable="false" priority="0">
+                                <p:tooltip for="btnEditar" value="Atualizar"/>
+                                <p:commandLink id="btnEditar" action="#{egressoBean.prepararAtualizacaoEgresso(hoies.egresso)}" ajax="false" update="frmEditaAtuacao"> 
+                                    <h:graphicImage value="/resources/img/edit2.png" />                           
+                                </p:commandLink>                               
+                            </p:column>
+                        </p:dataTable>
+
+                        <div class="row">
+                            <div class="col-sm-12" style="margin-top: 10px;">
+                                <div class="form-actions" style="float: right">                            
+                                    <label class="label-selecione-perfil">Exportar atual:</label>
+                                    <h:commandLink styleClass="espacar-item-10px-direita">  
+                                        <p:graphicImage value="/resources/img/excel.png" />  
+                                        <p:dataExporter type="xls" encoding="iso-8859-1" target="tabela_histOutrasIES" fileName="ListagemHistoricosOutrasIES" pageOnly="true" />  
+                                    </h:commandLink>  
+
+                                    <h:commandLink styleClass="espacar-item-10px-direita">  
+                                        <p:graphicImage value="/resources/img/csv.png" />  
+                                        <p:dataExporter type="csv" encoding="iso-8859-1" target="tabela_histOutrasIES" fileName="ListagemHistoricosOutrasIES" pageOnly="true" />  
+                                    </h:commandLink>  
+
+                                    <h:panelGroup id="pgExportarTodas" rendered="#{consultaLazyBean.model.rowCount  lt 5001}">
+                                        <label style="margin-left: 20px;" class="label-selecione-perfil">Exportar todas:</label>
+                                        <h:commandLink styleClass="espacar-item-10px-direita">  
+                                            <p:graphicImage value="/resources/img/excel.png" />  
+                                            <p:dataExporter type="xls" encoding="iso-8859-1" target="tabela_histOutrasIES" fileName="ListagemHistoricosOutrasIES"/> 
+                                        </h:commandLink>  
+
+                                        <h:commandLink styleClass="espacar-item-10px-direita">  
+                                            <p:graphicImage value="/resources/img/csv.png" />  
+                                            <p:dataExporter type="csv" encoding="iso-8859-1" target="tabela_histOutrasIES" fileName="ListagemHistoricosOutrasIES"/>
+                                        </h:commandLink>                                  
+                                    </h:panelGroup>
+
+                                </div>                                  
+                            </div>                        
+
+                        </div>
+                    </fieldset>
+                </h:form>
+            </div>
+        </div>        
+    </h:body>
+</html>

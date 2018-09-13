@@ -1,0 +1,168 @@
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"               
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:param name="idMenu" value="#{usuarioBean.usuarioEgresso ? 'Mp2' : 'Mp4'}"/>
+    <ui:param name="idAbaDados" value="M1"/>
+    <ui:define name="content">
+        <h:form id="formEdicaoEgresso" class="form-horizontal" >
+            <ui:include src="egressoMenu.xhtml"/>
+
+            <div class="panel panel-primary" style="margin: 0px 1px 0px 0px;"> 
+                <div class="panel-heading"><h7/></div>
+
+                <div class="panel-body ">               
+                    <fieldset>
+                        <legend> Residência</legend>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="dataInicio" class="col-sm-4 control-label">Data Início</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                            <p:calendar styleClass="form-control required input-custom" id="dataInicio" value="#{egressoBean.residenciaEdicao.dataDeIncio }" 
+                                                        required="true" requiredMessage="Data início é obrigatória" navigator="true" 
+                                                        readonlyInput="true" placeholder="00/00/0000" pattern="dd/MM/yyyy" tabindex="1" 
+                                                        maxlength="10" converter="jsfLocalDateConverter"/>                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="dataFim" class="col-sm-4 control-label">Data Fim</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                            <p:calendar styleClass="form-control input-custom" id="dataFim" value="#{egressoBean.residenciaEdicao.dataDeFim}"
+                                                        readonlyInput="true" placeholder="00/00/0000" pattern="dd/MM/yyyy" tabindex="2"
+                                                        maxlength="10" converter="jsfLocalDateConverter" navigator="true"/>                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="logradouro" class="col-sm-2 control-label">Logradouro </label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-road"></i></span>
+                                            <h:inputText styleClass="form-control required" id="logradouro" value="#{egressoBean.residenciaEdicao.logradouro}" 
+                                                         required="true" requiredMessage="Logradouro é obrigatório" tabindex="3">
+                                                <f:passThroughAttribute name="placeholder" value="Insira o logradouro, rua ..."/>
+                                            </h:inputText>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="numero" class="col-sm-4 control-label">Número</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-flag"></i></span>
+                                            <h:inputText styleClass=" form-control required"  required="true" requiredMessage="Número é obrigatório" 
+                                                         id="numero" value="#{egressoBean.residenciaEdicao.numero}" tabindex="4" validatorMessage="Número é invalido">
+                                                <f:validateRegex pattern="[0-9]*"/>
+                                                <f:passThroughAttribute name="placeholder" value="Insira o número, 0 se não existir "/>
+                                            </h:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="complemento" class="col-sm-4 control-label">Complemento</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
+                                            <h:inputText styleClass=" form-control" 
+                                                         id="complemento" value="#{egressoBean.residenciaEdicao.complemento}" tabindex="5">
+                                                <f:passThroughAttribute name="placeholder" value="Insira um complemeto (opcional)"/>
+                                            </h:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="bairro" class="col-sm-4 control-label">Bairro</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                                            <h:inputText styleClass=" form-control required" required="true" requiredMessage="Bairro é obrigatório" tabindex="6"
+                                                         id="bairro" value="#{egressoBean.residenciaEdicao.bairro}">
+                                                <f:passThroughAttribute name="placeholder" value="Insira o bairro"/>
+                                            </h:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="CEP" class="col-sm-4 control-label">CEP</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                            <p:inputMask styleClass=" form-control required input-custom" maxlength="10" id="CEP" required="true" requiredMessage="CEP é obrigatório" tabindex="7"
+                                                         value="#{egressoBean.residenciaEdicao.CEP}" mask="99.999-999" placeholder="00.0000-000"/> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="localizacao" class="col-sm-2 control-label">Localização Geográfica </label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                            <p:autoComplete styleClass="form-control required input-custom "
+                                                            id="localizacao" required="true" tabindex="8"
+                                                            requiredMessage="Localização Geográfica é obrigatória"
+                                                            value="#{egressoBean.residenciaEdicao.localizacaoGeografica}"
+                                                            converter="jsfLocalizacaoGeograficaConverter"
+                                                            completeMethod="#{egressoBean.pesquisarPorMunicipio}"
+                                                            placeholder="Insira nome cidade" var="lgeo"
+                                                            itemLabel="#{lgeo.municipio ne null ? lgeo.municipio :''}#{lgeo.municipio ne null ? ', ' : ''}#{lgeo.municipio ne null ? lgeo.cidade :''}#{lgeo.municipio ne null ? ', ' : ''}#{lgeo.municipio ne null ? lgeo.uf :''}#{lgeo.municipio ne null ? ', ' : ''}#{lgeo.municipio ne null ? lgeo.pais :''}"
+                                                            itemValue="#{lgeo}" scrollHeight="100" queryDelay="50" effect="fade"/>                                            
+                                        </div>                                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>        
+                        <div class="row">
+                            <div class="col-sm-offset-7 col-sm-5 text-right">
+                                <h:commandButton styleClass="btn btn-success" style="margin: 10px;"
+                                                 value="Confirmar" id="btnConfirmar"
+                                                 action="#{egressoBean.adicionarResidencia}"/> 
+                                <h:commandButton styleClass="btn btn-danger" style="margin: 10px;"
+                                                 value="Cancelar" id="btnCancelar"
+                                                 immediate="true"
+                                                 action="#{egressoBean.cancelarEdicaoResidencia}"/> 
+                            </div>
+                        </div>
+                    </fieldset>                
+                </div>        
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

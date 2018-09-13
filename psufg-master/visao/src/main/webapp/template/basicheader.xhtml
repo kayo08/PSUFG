@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <nav class="navbar navbar-default">
+        <h:form style="background-color: inherit !important; padding: 3px 20px; color:#333;">
+            <div class="container-fluid">
+                <!--Brand and toggle get grouped for better mobile display--> 
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" >
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>                        
+                    </button>
+
+                    <!--                    <a href="#" class="navbar-brand" data-toggle="dropdown" > <i class="glyphicon glyphicon-user" /> </a> -->
+                    <ul class="navbar-brand"  style="margin-bottom: -10px !important; border-right: 1px solid #e7e7e7;  border-radius: 5px 0 0 5px ">
+                        <li class="dropdown" style="color:#355e92 !important;">
+                            <a href="#" class="nav" data-toggle="dropdown"> <i class="glyphicon glyphicon-cog"/> 
+                                <text style="font-size: .8em;  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" > 
+                                    #{(usuarioBean.usuarioLogado.nomeSocial eq null or 
+                                      usuarioBean.usuarioLogado.nomeSocial.toUpperCase().trim() eq '') ?
+                                      usuarioBean.usuarioLogado.nomeOficial.toUpperCase():
+                                      usuarioBean.usuarioLogado.nomeSocial.toUpperCase()}
+                                </text> </a> 
+                            <ul class="dropdown-menu">                                    
+                                <h:panelGroup rendered="#{usuarioBean.usuarioEgresso}">
+                                    <li class="li-custom">                                                                            
+                                        <h:commandLink style="background-color: inherit !important;" action="#{egressoBean.prepararAtualizacaoEgresso(usuarioBean.egresso)}">
+                                            <i class="glyphicon glyphicon-edit"/>  Atualizar dados
+                                        </h:commandLink>                                    
+                                    </li>                                    
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{usuarioBean.administrador}">
+                                    <li class="li-custom">                                                                            
+                                        <h:commandLink style="background-color: inherit !important;" action="/admin/atualizaUsuario?faces-redirect=true">
+                                            <i class="glyphicon glyphicon-edit"/>  Atualizar  dados
+                                        </h:commandLink>
+                                    </li>
+                                </h:panelGroup>
+
+                                <hr style="margin: 7px;"/>
+                                <li class="li-custom">                                        
+
+                                    <a style="background-color: inherit !important;" href="#{dadosDaAplicacaoBean.urlAplicacao}/logout">
+                                        <i class="icon-exit"/> | Sair
+                                    </a>
+
+                                </li>                                
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--Collect the nav links, forms, and other content for toggling--> 
+                <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1" >
+                    <ul class="nav navbar-nav">                        
+                        <!--<li id='Mp1'> <h:commandLink  style="background-color: inherit !important;" action="/egressos/index?faces-redirect=true">Home</h:commandLink></li>-->                        
+
+                        <h:panelGroup rendered="#{!usuarioBean.administrador}">
+                            <li id='Mp2'> <h:commandLink style="background-color: inherit !important;" action="/egressos/listagemEgressos?faces-redirect=true">Egressos </h:commandLink></li>
+                        </h:panelGroup>
+
+                        <li id='Mp3' class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Eventos <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="li-custom">
+                                    <h:commandLink disabled="true" style="margin: 10px 10px 0 10px; background-color: inherit !important;" action="/evento/listagemEventos?faces-redirect=true"> <i class="glyphicon glyphicon-list"/> | Listagem </h:commandLink>
+                                </li>
+
+                                <h:panelGroup rendered="#{usuarioBean.administrador}">
+                                    <hr style="margin: 7px;"/>
+                                    <li class="li-custom">
+                                        <h:commandLink disabled="true" style="margin: 10px 10px 0 10px; " action="/evento/aprovacaoEvento?faces-redirect=true"><i class="icon-checkmark"/> | Aprovação de Eventos </h:commandLink>
+                                    </li>
+                                </h:panelGroup>
+                            </ul>
+                        </li>
+                        <h:panelGroup rendered="#{usuarioBean.administrador}">
+                            <li id='Mp4' class="dropdown" >
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li class="li-custom"><h:commandLink style="background-color: inherit !important;" action="/egressos/listagemEgressos?faces-redirect=true"> <i class="icon-users"/> | Egressos </h:commandLink> </li>
+                                    <hr style="margin: 7px;"/>
+                                    <li class="li-custom"><h:commandLink disabled="true" style="margin: 10px 10px 10px 10px; background-color: inherit !important;" action="/admin/listagemBanners?faces-redirect=true"> <i class="icon-flag"/> | Banners </h:commandLink></li>
+                                </ul>
+                            </li>
+                        </h:panelGroup>
+
+                    </ul>                        
+                </div>                               
+            </div>
+        </h:form>
+
+    </nav>
+</ui:composition>

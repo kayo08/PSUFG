@@ -1,0 +1,31 @@
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:param name="idMenu" value="Mp1"/>
+    <ui:define name="content">                          
+        <div class="modal-header" style="height: 50px; padding: 10px; color: #ac2925">
+            <legend> Bem vindo  
+                #{(usuarioBean.usuarioLogado.nomeSocial eq null or 
+                  usuarioBean.usuarioLogado.nomeSocial.toUpperCase().trim() eq '') ?
+                  usuarioBean.usuarioLogado.nomeOficial.toUpperCase():
+                  usuarioBean.usuarioLogado.nomeSocial.toUpperCase()} </legend>
+        </div>
+        <div class="modal-content" style="min-height: 150px; padding: 50px">
+            <h:outputLabel value="Aqui você poderá acessar as informações dos egressos da UFG, exporta-las ou visualiza-las em mapas georefenciados."/>
+            <br/><br/>
+            <h:outputLabel value="Utilize os menus acima para acessar a funcionalidade desejada."/>
+            <br/><br/>
+            <h:outputLabel value="A equipe da Fabrica de Software espera que sua navegação pelo sistema seja uma agradável experiência."/>
+            <br/><br/>
+            <h:outputLabel value="Dúvidas, sugestões ou elogios podem ser enviados pelo formulário Fale Conosco disponível na homepage do SempreUFG."/>
+            
+        </div>
+    </ui:define>
+    
+</ui:composition>
+

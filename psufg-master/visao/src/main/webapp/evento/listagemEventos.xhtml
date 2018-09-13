@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:param name="idMenu" value="Mp3" />
+    <ui:define name="content">
+        <p:growl id="growl" showDetail="false" sticky="true" />
+
+        <div class="panel panel-primary" style="margin: 0px"> 
+
+            <div class="panel-body">
+                <fieldset> 
+                    <legend style="color:#2a6ba3"> Listagem de Eventos </legend> 
+                    <h:form id="frmEventos">
+                        <p:dataTable id="tabela_eventos"
+                                     var="ev" 
+                                     value="#{eventoBean.eventos}"
+                                     rows="10" paginator="true" 
+                                     rowsPerPageTemplate="10,20,50,100,#{eventoBean.eventos.size() > 100 ? eventoBean.eventos.size() : ''}"                      
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink}  {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     sortBy="#{ev.statusAprovacaoDivulgacao.value}" rowKey="#{ev.id}"
+                                     sortOrder="descending"
+                                     rowStyleClass="#{ev.statusAprovacaoDivulgacao.value eq 'Nenhuma' ? 'row_highlight' : ev.statusAprovacaoDivulgacao.value eq 'Concluída' ? 'row_out' : null}"
+                                     emptyMessage="Nenhum evento cadastrado"
+                                     >
+
+                            <p:column headerText="Id"  width="55" sortBy="#{ev.id}" priority="0" style="text-align: center">
+                                <h:outputText value="#{ev.id}"  style="text-decoration: underline; font-weight: bold" title="#{ev.statusAprovacaoDivulgacao.value eq 'Nenhuma' ? 'Ainda sem avaliação' : ev.statusAprovacaoDivulgacao.value eq 'Concluída' ? 'Avaliação concluída' : 'Em avaliação'}"/>
+                            </p:column>
+
+                            <p:column headerText="Assunto" priority="1" 
+                                      filterBy="#{ev.assunto}"
+                                      sortBy="#{ev.assunto}"
+                                      filterMatchMode="startsWith">
+                                <h:outputText value="#{ev.assunto}" />
+                            </p:column>
+
+                            <p:column headerText="Tipo"  priority="3"  style="max-width: 120px !important"
+                                      filterBy="#{ev.tipoEvento.value}"
+                                      sortBy="#{ev.tipoEvento.value}"
+                                      filterMatchMode="startsWith">
+                                <h:outputText value="#{ev.tipoEvento.value}" />
+                            </p:column>
+
+                            <p:column headerText="Criação" priority="4" style="max-width: 160px !important"
+                                      filterBy="#{ev.timeStampDaSolicitacao}"
+                                      sortBy="#{ev.timeStampDaSolicitacao}"
+                                      filterMatchMode="contains">                                
+                                <h:outputText value="#{ev.timeStampDaSolicitacao}">
+                                    <f:convertDateTime pattern="dd/MM/yy - HH:mm" timeZone="GMT-03:00"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Solicitante" priority="2"  
+                                      filterBy="#{ev.identificacaoSolicitante}"
+                                      sortBy="#{ev.identificacaoSolicitante}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{ev.identificacaoSolicitante}"/>
+                            </p:column>
+
+                            <p:column headerText="Divulgação" priority="5"  style="max-width: 120px !important"
+                                      filterBy="#{ev.formaDivulgacao.value}"
+                                      sortBy="#{ev.formaDivulgacao.value}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{ev.formaDivulgacao.value}"/>
+                            </p:column>
+
+                            <p:column headerText="Escopo" priority="6" style="max-width: 125px !important"
+                                      filterBy="#{ev.escopoDivulgacao.value}"
+                                      sortBy="#{ev.escopoDivulgacao.value}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{ev.escopoDivulgacao.value}"/>
+                            </p:column>
+
+                            <p:column headerText="Expira" priority="4" style="max-width: 100px !important"
+                                      filterBy="#{ev.dataExpiracao}"
+                                      sortBy="#{ev.dataExpiracao}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{ev.dataExpiracao}" converter="jsfLocalDateConverter" />
+                            </p:column>
+
+                            <p:column headerText="Ações" priority="0" width="75" styleClass="text-center">
+
+                                <p:tooltip for="btnEditar" value="Editar"/>
+                                <p:commandLink id="btnEditar" action="#{eventoBean.editarEvento(ev)}" ajax="false" >
+                                    <h:graphicImage value="#{ev.statusAprovacaoDivulgacao.value eq 'Nenhuma' ?  '/resources/img/edit2.png' : '/resources/img/detalhes.png'}"/>
+                                </p:commandLink>                 
+                                <p:panelGrid rendered="#{ev.statusAprovacaoDivulgacao.value eq 'Nenhuma'}">
+                                    <p:tooltip for="btnExcluir" value="Excluir"/>
+                                    <span style="padding-left: 15px" />
+                                    <p:commandLink id="btnExcluir" 
+                                                   oncomplete="exibirConfirmacao('Deseja realmente excluir o evento : #{ev.assunto} ?', 'frmEventos:botao-excluir')">
+                                        <h:graphicImage value="/resources/img/excluir.png"/>
+                                        <f:setPropertyActionListener target="#{eventoBean.eventoEdicao}" value="#{ev}"/>                                  
+                                    </p:commandLink> 
+                                </p:panelGrid>
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandLink styleClass="botao-escondido" id="botao-excluir" action="#{eventoBean.excluirEvento()}" update="frmEventos:tabela_eventos"/>
+
+                        <br/>
+                        <div class="row text-right" style="margin-right: 20px;">
+                            <p:commandButton 
+                                icon="ui-icon-pencil"
+                                value="Incluir novo evento"  id="btnCancel"
+                                action="#{eventoBean.editarEvento(null)}"
+                                disabled="false"/>
+                        </div>
+                    </h:form>
+                </fieldset>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>    

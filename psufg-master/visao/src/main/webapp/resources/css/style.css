@@ -1,0 +1,569 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 03/05/2017, 12:54:35
+    Author     : Danillo
+*/
+
+body{
+    background-color: #f1f1f1;
+    background-image: url(../../resources/img/glyphicons-halflings-white.png);
+    border: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0px;
+    font-size: 1.1em !important;
+    margin-top: 0 !important;
+    max-width: 100% !important;
+    min-height: 100% !important;
+    min-width: 450px !important;
+}
+
+html{
+    min-height: 100% !important;
+}
+
+.cor-fundo-pagina{
+    margin: 0 !important;      
+}
+
+
+header nav{
+    margin: auto;
+    clear: both;
+    max-width: 1000px;
+    background-color: #fff;
+    display: block;
+}
+
+.header_section{
+    /*max-width: 1000px;*/
+    margin: auto;
+    position: relative;
+    display: flex;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    height: auto;
+    background-image: linear-gradient(to bottom, rgba(94, 133, 152, 0.91), rgba(0, 119, 179,0));
+}
+
+.header_link_logo{
+    padding-left: 0px;
+    padding-right: 30px;
+    text-decoration: none;
+    color: inherit;
+    width: 125px;
+
+}
+
+.header_title{
+    font-size: x-large;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.header_link_logo img{
+    vertical-align: middle;
+    height: auto;
+}
+
+.dropdown{
+    position: relative;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    text-decoration: none;
+
+    list-style: none;
+    list-style-image: none;
+    list-style-position: inherit;
+    list-style-type: none;
+
+    color: #bcbcbc;
+}
+
+.dropdown li{
+    display: inline;
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 5px;
+    color: #bcbcbc;
+}
+
+.dropdown li:hover{
+    text-decoration: none;
+    background-color: #689eca;
+    color: #fff;
+}
+
+.dropdown a{
+    text-decoration: none;
+    color: inherit;
+}
+
+#content{
+    padding-bottom: 10px;    
+}
+
+.ui-datatable .ui-column-filter{
+    width: 75% !important;
+}
+
+.ui-picklist.ui-picklist-responsive .ui-picklist-list-wrapper {
+    width: 45% !important;
+}
+
+@media only screen
+and (max-width : 640px) {    
+    .ui-picklist.ui-picklist-responsive .ui-picklist-list-wrapper {
+        width: 80% !important;
+    }
+    .ui-picklist.ui-picklist-responsive .ui-picklist-buttons{ 
+        text-align: left !important;
+        width: 90% !important;
+    }
+}
+
+/*teste*/
+
+
+@media only screen
+and (max-width : 600px) {    
+    .largura-pagina{        
+        width: 100% !important;
+    }
+    #tudo2{
+        width: 100% !important;
+    }    
+}
+#tudo2{
+    background: #FFFFFF;    
+    position: relative !important;   
+    width: 80% !important;
+    margin: 0 auto !important;
+}
+
+
+@media only screen
+and (max-width : 500px ) {
+    #conteudo2{
+        min-height: 600px;
+    }  
+}
+
+#conteudo2{
+    padding-top: 80px;  
+    padding-bottom: 80px;
+    /*min-height: 400px;*/
+    /*background: #ffffff;*/
+    padding-bottom: 80px; 
+}
+
+#rodape-inf{    
+    position: relative;        
+    bottom: 0 !important;
+    margin:  50px -15px 0 -15px !important;
+    background-color: #355e92;
+    color: white;
+    font-size: 0.9em;
+    line-height: 14px !important;
+    border-radius: 0 0 5px 5px;
+    width: auto;
+    max-width: auto;    
+
+}
+
+
+@media only screen
+and (min-width : 768px) { 
+    #logo_fs{
+        width: 28% !important;        
+    }    
+    #contato {
+        width: 44% !important;        
+    }    
+    #logo_acessoInfo{
+        width: 28% !important;        
+    }    
+}
+
+#cabecalho-inf{
+    background-image: url(../../resources/img/bg_abstract2.jpg);   
+    background-size: 100% 100%;   
+    text-align: center;
+    display: flex;
+    max-width: 100%;
+    max-height: 100px;
+    margin-bottom: 10px;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 10px 10px #888888 !important;
+}
+
+.idSCBMenu{          
+    display: block !important;    
+    overflow: hidden !important;
+    font-family: Lucida Grande, Lucida Sans, Arial, sans-serif !important;    
+    color:#555 !important; /* Cor da Fonte */
+    text-indent: 0.01px !important; /* Remove seta padrão do FireFox */    
+    border: 1px solid #ccc !important;    
+}
+
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger {
+    border: none !important;
+    background: none !important;
+    color: #555 !important;    
+}
+
+.required{
+    padding-right: 25px !important;
+    background: url(../../resources/img/campo-obrigatorio.png) no-repeat !important;
+    background-position: right top !important;    
+}
+
+#botao-escondido{
+    display: none;
+}
+
+
+.menu-custom{
+    padding-top: 10px; 
+    border-top-left-radius: 10px; 
+    border-top-right-radius: 10px; 
+    border-left: #ddd 1px  solid; 
+    border-right: #ddd 1px  solid; 
+    border-top: #ddd 1px  solid;
+    font-size: 0.9em !important;
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif !important;
+}
+
+@media only screen
+and (max-width : 1200px) and (min-width:768px) { 
+    .menu-custom2{       
+        min-width: 80px !important; 
+        min-height: 60px !important;
+
+    }
+    .menu-custom3{
+        min-height: 39px !important;
+    }
+}
+
+@media only screen
+and (min-width : 1201px){ 
+    .menu-custom2{               
+        max-height: 80px !important;
+    }        
+}
+
+
+@media only screen
+and (max-width : 766px ) {
+    .menu-custom{
+        max-width: 70% !important;
+        margin-left: 15%;
+    }  
+}
+
+
+.menu-custom:hover  {
+    color: #337ab7;
+    background: #deedf7;
+    border-color: #337ab7;    
+}
+
+.menu-custom-ativo{ 
+    padding-top: 10px; 
+    border-top-left-radius: 10px; 
+    border-top-right-radius: 10px; 
+    border-left: #ddd 1px  solid; 
+    border-right: #ddd 1px  solid; 
+    border-top: #ddd 1px  solid;
+    color: #fff;
+    background: #337ab7;
+    border-color: #337ab7;    
+}
+
+.input-custom{
+    box-shadow: none !important; -webkit-box-shadow: none !important; border-color: #ccc !important; font: inherit !important;
+}
+
+.input-custom input { 
+    box-shadow: none !important;
+    color: inherit !important;   
+    color: #2779aa;
+    position: relative !important;
+    display: table !important;
+    padding: 0px !important;
+    width: 100% !important;
+    font-weight: inherit !important;
+}
+.input-custom .ui-corner-all{ 
+    -webkit-border-radius: 0!important;
+    border-radius: 0px !important;    
+}
+
+.input-custom .ui-state-default{   
+    border: none !important;    
+    background: transparent;
+    font-weight: inherit !important;    
+    color: inherit !important;    
+}
+
+.input-custom .ui-spinner-input{
+    text-align: left !important;   
+}
+
+.ui-datatable table{
+    width: auto !important;
+    min-width: 100% !important;
+}
+
+.form-control{
+    font-size: inherit !important;
+}
+
+.ui-datatable .ui-row-toggler{
+    display: inline-block !important;
+}
+
+.row_highlight{        
+    background-color: #fbeed5 !important;
+    background-image: none !important;    
+}
+
+.row_out{        
+    color:#BCBCBC !important;
+    background-image: none !important;   
+    background-color: #F5F5F5 !important;
+}
+
+.li-custom{
+    display: inherit !important; 
+    padding:0 !important;
+    font-size: .9em !important;
+}
+
+.titulo-accordion{
+    font-size: 1.3em !important;
+    padding-left: 40px;       
+
+}
+.navbar-default .navbar-nav > li > a:hover{
+    color: #355e92 !important;
+    font-weight: bolder !important;
+    background-color: #F5F5F5 !important;
+}
+
+/*-----------------------------------------------------------*/
+/*	Event Widget
+/*-----------------------------------------------------------*/
+
+.widget-event-body {
+    border: 1px solid #d9d9d9;
+    background: #fff;    
+}
+
+.widget-event-body .event-item {
+    padding: 20px;
+    border-bottom: none;
+    background: #fff;
+    border-top: 1px solid #d9d9d9;
+    height: auto;
+    min-height: 80px;
+}
+
+.widget-event-body .event-item:first-child {
+    border-top: none;    
+}
+
+
+.widget-event-body .event-day-month {
+    width: 30%;
+    max-width: 50px;
+    text-align: center;
+    margin-right: 7.69230769%;    
+}
+
+.widget-event-body .event-day-month .event-day {
+    font-size: 1.4em;
+    border: 1px solid #3465aa;
+    border-radius: 0 0 10px 10px;    
+    color: #3465aa;    
+}
+
+.widget-event-body .event-day-month .event-month {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #fff;
+    border: 1px solid #3465aa;
+    background: #3465aa;
+    padding: 3px 0;
+}
+
+.widget-event-body .event-info {
+    line-height: 22px;
+    font-size: 15px;
+    width: 70%;
+}
+
+.widget-event-body .event-info a {
+    text-decoration: none;
+    color: #252525;
+}
+
+.widget-event-body .past-ev, .widget-event-body .calendar-ev {
+    text-transform: uppercase;
+    width: 50%;
+    text-align: center;
+
+}
+
+.widget-event-body .past-cal a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 10px 0px;
+    width: 100%
+}
+.widget-event-body .past-cal .past-ev:hover a, 
+.widget-event-body .past-cal .calendar-ev:hover a {
+    background: #3465aa;
+    color: #fff;
+    -webkit-animation-name: bounceIn;
+    -moz-animation-name: bounceIn;
+    -o-animation-name: bounceIn;
+    animation-name: bounceIn;
+    animation-delay: 0.1s; /* W3C and Opera */
+    -moz-animation-delay: 0.1s; /* Firefox */
+    -webkit-animation-delay: 0.1s; /* Safari and Chrome */
+    -webkit-animation-fill-mode:both;
+    -moz-animation-fill-mode:both;
+    -ms-animation-fill-mode:both;
+    -o-animation-fill-mode:both;
+    animation-fill-mode:both;
+    -webkit-animation-duration:0.5s;
+    -moz-animation-duration:0.5s;
+    -ms-animation-duration:0.5s;
+    -o-animation-duration:0.5s;
+    animation-duration:0.5s;
+}
+
+.widget-event-body .past-cal {
+    border-top: 1px solid #d9d9d9;
+    background: transparent url(images/divider.png) 50% 50% repeat-y;
+}
+
+
+/*-----------------------------------------------------------------------------------*/
+/*	Alignment
+/*-----------------------------------------------------------------------------------*/
+
+.alignleft {
+    display: inline;
+    float: left;
+    margin-right: 1.5em;
+}
+
+.alignright {
+    display: inline;
+    float: right;
+    margin-left: 1.5em;
+}
+
+.aligncenter {
+    clear: both;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.fright {
+    float: right;
+}
+.frighti {
+    float: right!important;
+}
+.fleft {
+    float: left;
+}
+
+.clear{
+    clear: both;
+}
+.thumbnail{
+    border-radius: 0px !important;    
+    padding: 0 !important;
+}
+.thumbnail > img{
+    padding: 0 !important;
+    width: 100% !important;
+    margin: 0px !important;
+}
+
+.ql-toolbar.ql-snow+.ql-container.ql-snow{
+    border-radius: 0 0 4px 0 !important;
+}
+
+.ql-toolbar.ql-snow{
+    border-radius: 0 4px 0 0 !important;
+    padding: 2px !important;
+
+}
+
+#idAccordionPanel\:tabFiltro{
+    padding: 5px !important;
+}
+
+.operador {    
+    font-size: 1.4em !important;
+}
+
+.operador div{
+    width: 60px;
+    text-align: center;        
+    color: #000 !important;
+}
+.operador div input{
+    background: blue !important;
+    color: red !important;
+}
+
+.teste  .ui-buttonset .ui-button{
+    min-height: 80px !important;
+    width: 150px !important;
+    display: inline-block !important;
+    border-radius: 50% !important;
+    vertical-align: middle !important;
+    padding: 15px 10px !important;
+    margin: 10px !important;
+
+}
+
+.teste  .ui-panel .ui-panel-content{
+    text-align: center !important;
+}
+
+.btn-adicionar-favoritos{
+    margin-top: 10px !important;
+    color: white !important;
+    font-weight: bolder !important;
+    float: right !important;
+}
+
+.gm-style img{
+    max-width: none !important;
+}
+
+
+/*CSS FOTO ATUALIZA*/
+.fotoPerfil{    
+    cursor: pointer;
+    max-height: 128px !important;    
+}

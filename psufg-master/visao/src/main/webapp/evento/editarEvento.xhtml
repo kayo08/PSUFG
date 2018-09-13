@@ -1,0 +1,245 @@
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:param name="idMenu" value="Mp3" />
+    <ui:define name="content" >
+
+        <p:growl id="growl" showDetail="false" sticky="true" />
+        <button id="idbotaoOculto" hidden="true" onclick="desabilitarEdicao('idFieldset', #{eventoBean.statusAprovacaoEventoEdicao() ne 'Nenhuma'})"/>
+
+
+        <h:form id="frmCadastroEvento" class="form-horizontal" >
+            <div class="panel panel-primary" style="margin: 0px">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-list-alt"></span> 1. Cadastro de Evento (RF-SolicDivulgEvent)</h3>
+                </div>
+
+                <div class="panel-body">
+                    <fieldset id="idFieldset">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="assunto" class="col-sm-2 control-label">1.1 Assunto</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                            <h:inputText styleClass="form-control required" id="assunto" value="#{eventoBean.eventoEdicao.assunto}"
+                                                         tabindex="1"  required="true" requiredMessage="Assunto é obrigatório" >
+                                                <f:passThroughAttribute name="placeholder" value="Informe o assunto"/>
+                                            </h:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="tipoEvento" class="col-sm-4 control-label">1.2 Tipo Evento</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-circle-arrow-right"></i></span>
+                                            <h:selectOneMenu  class="form-control required" tabindex="2"
+                                                              id="tipoEvento" required="true" requiredMessage="Tipo de evento é obrigatório"
+                                                              hideNoSelectionOption="true"
+                                                              value="#{eventoBean.eventoEdicao.tipoEvento}">       
+                                                <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true" />
+                                                <f:selectItems 
+                                                    value="#{eventoBean.tiposEventos}" var="e" 
+                                                    itemLabel="#{e.value}"
+                                                    itemValue="#{e}"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="dataExpiracao" class="col-sm-4 control-label">1.3 Data de expiração</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                            <p:calendar styleClass="form-control input-custom" id="dataExpiracao" value="#{eventoBean.eventoEdicao.dataExpiracao}"
+                                                        navigator="true" pattern="dd/MM/yyyy" readonlyInput="true" placeholder="00/00/0000 (opcional)" tabindex="3"
+                                                        maxlength="10" converter="jsfLocalDateConverter"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="descricao" class="col-sm-2 control-label">1.4 Descrição</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-book"></i></span>
+                                            <p:textEditor styleClass="required" style="text-align: justify; padding-right: 0px !important; #{eventoBean.statusAprovacaoEventoEdicao() ne 'Nenhuma' ? 'background-color: #eeeeee' : ''}" id="descricao" value="#{eventoBean.eventoEdicao.descricaoEvento}"
+                                                          readonly="#{eventoBean.statusAprovacaoEventoEdicao() ne 'Nenhuma'}"
+                                                          required="true" requiredMessage="Descrição é obrigatória" placeholder="Informe uma descrição"/>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="solicitante" class="col-sm-2 control-label">1.5 Solicitante</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                            <h:inputText styleClass="form-control required" id="solicitante" value="#{eventoBean.eventoEdicao.identificacaoSolicitante}"
+                                                         tabindex="5" required="true" requiredMessage="Solicitante é obrigatório">
+                                                <f:passThroughAttribute name="placeholder" value="Informe o nome do solicitante"/>
+                                            </h:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="emailSolicitante" class="col-sm-2 control-label">1.6 Email</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                            <h:inputText styleClass="form-control required" id="emailSolicitante" value="#{eventoBean.eventoEdicao.emailSolicitante}"
+                                                         tabindex="6" required="true" requiredMessage="Descrição é obrigatória">
+                                                <f:passThroughAttribute name="placeholder" value="Informe um e-mail válido"/>
+                                            </h:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="formaDivulgacao" class="col-sm-4 control-label">1.7 Forma de divulgação</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-chevron-right"></i></span>
+                                            <h:selectOneMenu  class="form-control required"                                                
+                                                              id="formaDivulgacao" tabindex="7"
+                                                              value="#{eventoBean.eventoEdicao.formaDivulgacao}"
+                                                              hideNoSelectionOption="true"
+                                                              required="true" requiredMessage="Forma de divulgação é obrigatória">                                                                         
+                                                <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true" />
+                                                <f:selectItems 
+                                                    value="#{eventoBean.formasDivulgacao}" var="fd" 
+                                                    itemLabel="#{fd.value}"
+                                                    itemValue="#{fd}"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="escopoDivulgacao" class="col-sm-4 control-label">1.8 Escopo divulgação</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-share"></i></span>
+                                            <h:selectOneMenu  class="form-control required"
+                                                              id="escopoDivulgacao" tabindex="8"
+                                                              required="true" requiredMessage="Escopo divulgação é obrigatório"
+                                                              hideNoSelectionOption="true"
+                                                              value="#{eventoBean.eventoEdicao.escopoDivulgacao}">
+                                                <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true" />
+                                                <f:selectItems 
+                                                    value="#{eventoBean.escoposDivulgacao}" var="ed" 
+                                                    itemLabel="#{ed.value}"
+                                                    itemValue="#{ed}"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="areaConhecimento" class="col-sm-2 control-label">1.9 Área de conhecimento</label>
+                                    <div class="col-sm-10">
+                                        <p:pickList id="areaConhecimento" value="#{eventoBean.areasConhecimento}"
+                                                    disabled="#{eventoBean.eventoEdicao.statusAprovacaoDivulgacao.value ne 'Nenhuma'}"
+                                                    removeLabel="Ao remover item irá para final de Disponíveis"
+                                                    required="true" requiredMessage="Ao menos uma área de conhecimento deve ser selecionada!"
+                                                    converter="jsfPickListConverter"                                                
+                                                    showSourceFilter="true" showTargetFilter="true"
+                                                    showCheckbox="true" responsive="true"
+                                                    filterMatchMode="contains"                                                
+                                                    var="area" 
+                                                    itemLabel="#{area.nomeArea}"  
+                                                    itemValue="#{area}" >
+                                            <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                            <f:facet name="targetCaption">Selecionadas</f:facet>
+                                        </p:pickList>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="instanciaAdministrativa" class="col-sm-2 control-label">1.10 Instância administrativa da UFG</label>
+                                    <div class="col-sm-10">
+                                        <p:pickList id="instanciaAdministrativa" value="#{eventoBean.instanciasAdministrativas}"
+                                                    disabled="#{eventoBean.eventoEdicao.statusAprovacaoDivulgacao.value ne 'Nenhuma'}"
+                                                    converter="jsfPickListConverter"
+                                                    removeLabel="Ao remover item irá para final de Disponíveis"
+                                                    required="true" requiredMessage="Ao menos uma instância administrativa deve ser selecionada!"
+                                                    showSourceFilter="true" showTargetFilter="true"
+                                                    showCheckbox="true" responsive="true"
+                                                    filterMatchMode="contains"
+                                                    var="instancia" 
+                                                    itemLabel="#{instancia.nome}"
+                                                    itemValue="#{instancia}" >
+                                            <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                            <f:facet name="targetCaption">Selecionadas</f:facet>
+                                        </p:pickList>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>   
+                    <hr style="margin: 20px 0 20px 0;" />
+
+                    <div class="col-sm-offset-7 col-sm-5 text-right">
+                        <h:commandButton styleClass="btn btn-primary" style="margin: 10px;"                                   
+                                         value="Salvar" id="btnSalvar" rendered="#{eventoBean.eventoEdicao.statusAprovacaoDivulgacao.value eq 'Nenhuma'}"
+                                         action="#{eventoBean.atualizarEvento()}"/> 
+
+                        <h:commandButton styleClass="btn btn-danger" style="margin: 10px;"
+                                         value="Cancelar"  id="btnCancel" immediate="true"
+                                         action="#{eventoBean.cancelarEdicaoEvento()}"/>
+                    </div>
+                </div>
+            </div>            
+        </h:form>       
+
+    </ui:define>    
+
+
+</ui:composition>
+

@@ -1,0 +1,208 @@
+@media (min-width: 768px) {
+    .rodapeDesktop {
+        display: none;
+    }
+}
+
+@media (max-width: 767px) {
+    .rodapeMobile {
+        display: none;
+    }
+}
+
+.popover-title-primary {
+    padding: 8px 14px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 18px;
+    color: #fff;
+    background-color: #428bca;
+    border-color: #428bca;
+    border-bottom: 1px solid #428bca;
+    border-radius: 5px 5px 0 0;
+}
+.popover-title-success {
+    padding: 8px 14px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 18px;
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #5cb85c;
+    border-bottom: 1px solid #5cb85c;
+    border-radius: 5px 5px 0 0;
+}
+
+:required {
+    padding-right: 25px;
+    background-image: url('../img/campo-obrigatorio.png');
+    background-position: right top;
+    background-repeat: no-repeat
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1040;
+    background-color: #000000;
+}
+
+.modal-backdrop.fade {
+    opacity: 0;
+}
+
+.modal-backdrop,
+.modal-backdrop.fade.in {
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+}
+
+.modal {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    z-index: 1050;
+    width: 560px;
+    bottom: auto;
+    height: auto;
+    margin-left: -280px;
+    background-color: #ffffff;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    *border: 1px solid #999;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    outline: none;
+    -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding-box;
+    background-clip: padding-box;
+}
+
+.modal.fade {
+    top: -25%;
+    -webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, top 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, top 0.3s ease-out;
+    transition: opacity 0.3s linear, top 0.3s ease-out;
+}
+
+.modal.fade.in {
+    padding-right: 0px !important;
+    top: 10%;
+}
+
+.modal-header {
+    padding: 9px 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header .close {
+    margin-top: 2px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    line-height: 30px;
+}
+
+.modal-body {
+    position: relative;
+    max-height: 400px;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.modal-form {
+    margin-bottom: 0;
+}
+
+.modal-footer {
+    padding: 14px 15px 15px;
+    margin-bottom: 0;
+    text-align: right;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    -webkit-border-radius: 0 0 6px 6px;
+    -moz-border-radius: 0 0 6px 6px;
+    border-radius: 0 0 6px 6px;
+    *zoom: 1;
+    -webkit-box-shadow: inset 0 1px 0 #ffffff;
+    -moz-box-shadow: inset 0 1px 0 #ffffff;
+    box-shadow: inset 0 1px 0 #ffffff;
+}
+
+.modal-footer:before,
+.modal-footer:after {
+    display: table;
+    line-height: 0;
+    content: "";
+}
+
+.modal-footer:after {
+    clear: both;
+}
+
+.modal-footer .btn + .btn {
+    margin-bottom: 0;
+    margin-left: 5px;
+}
+
+.modal-footer .btn-group .btn + .btn {
+    margin-left: -1px;
+}
+
+.modal-footer .btn-block + .btn-block {
+    margin-left: 0;
+}
+
+img{
+    max-width: 100% !important;
+}
+
+.form-control{
+    height: 30px !important;
+}
+
+.text-area-custom {
+    height: 90px !important;
+    display: block;
+    width: 100%;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    padding: 6px 12px !important;
+    border-radius: 0 4px 4px 0!important;    
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+legend{
+    font-size: 16px !important;   
+    color: #2a6ba3 !important;
+}
+
+@media only screen
+and (max-width: 1092px){
+    label{
+        font-size: .9em !important;
+    }
+}
+
+/*@media (min-width: 1300px){
+    .container {
+        width: 1267px !important;
+    }
+}*/
+
+.navbar {
+    border-radius: 0px 0px 5px 5px !important;
+}

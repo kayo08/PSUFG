@@ -1,0 +1,465 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html" 
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:param name="idMenu" value="#{usuarioBean.usuarioEgresso ? 'Mp2' : 'Mp4'}"/>
+    <ui:param name="idAbaDados" value="M2"/>
+
+    <ui:define name="content">
+        <h:form id="formEdicaoEgresso" class="form-horizontal" >
+            <ui:include src="egressoMenu.xhtml"/>
+
+            <div class="panel panel-primary" style="margin: 0px 1px 0px 0px;"> 
+                <div class="panel-heading"><h7/></div>
+
+                <div class="panel-body ">                    
+                    <fieldset>
+                        <legend>4.1 #{egressoBean.historico.cursoDaUFG.nome} </legend>
+                        <div class="row">
+                            <div class="col-sm-6 "> 
+                                <div class="form-group">
+                                    <label for="nomeCurso2" class="col-sm-4 control-label">4.1.1 Sigla</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-book"></i></span>
+                                            <h:outputText styleClass="form-control  input-custom"  id="nomeCurso2" value="#{egressoBean.historico.cursoDaUFG.sigla}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 ">
+                                <div class="form-group"> 
+                                    <label for="nivelCurso2" class="col-sm-4 control-label">4.1.2 Nível</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-signal"></i></span>
+                                            <h:outputText styleClass="form-control  input-custom"  id="nivelCurso2" value="#{egressoBean.historico.cursoDaUFG.nivel}" converter="jsfEnumNivelConverter"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 "> 
+                                <div class="form-group">
+                                    <label for="turnoCurso2" class="col-sm-4 control-label">4.1.3 Turno</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                            <h:outputText styleClass="form-control  input-custom" id="turnoCurso2" value="#{egressoBean.historico.cursoDaUFG.turno}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label for="modalidadeCurso2" class="col-sm-4 control-label">4.1.4 Modalidade</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                                            <h:outputText styleClass="form-control  input-custom" id="modalidadeCurso2" value="#{egressoBean.historico.cursoDaUFG.modalidadeCurso.value}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 "> 
+                                <div class="form-group">
+                                    <label for="inicioCurso2" class="col-sm-4 control-label">4.1.5 Início</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                            <h:outputText styleClass="form-control  input-custom" id="inicioCurso2" value="#{egressoBean.historico.mesDeInicio.value} de #{egressoBean.historico.anoDeInicio}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label for="fimCurso2" class="col-sm-4 control-label">4.1.6 Fim</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                            <h:outputText styleClass="form-control  input-custom" id="fimCurso2" value="#{egressoBean.historico.mesDeFim.value} de #{egressoBean.historico.anoDeFim}"/> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="tituloCursoUFG" class="col-sm-2 control-label">4.1.7 Título Trabalho</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-check"></i></span>
+                                            <h:outputText styleClass="form-control  input-custom" id="tituloCursoUFG" value="#{egressoBean.historico.tituloDoTrabalhoFinal}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                          
+                    </fieldset>
+                    <br/>
+
+                    <!--LISTAGEM/TABELA DE AVALIAÇÃO-->
+                    <fieldset>
+                        <legend>4.2 Avaliações </legend>
+
+                        <p:dataTable id="tabela_avaliacoes" value="#{egressoBean.historico.avaliacoes}"
+                                     var="aval"  emptyMessage="Nenhuma avaliação encontrada" > 
+
+                            <p:column headerText="Momento avaliação"  class="text-center" priority="0" >
+                                <h:outputText  id="aval_momentoAvaliacao"  value="#{aval.momentoAvaliacao}" converter="jsfLocalDateConverter"/>                                
+                            </p:column>
+
+                            <p:column headerText="Motivacao para escolha"  priority="0">
+                                <h:outputText id="aval_motivacaoParaEscolha" value="#{aval.motivacaoParaEscolha.value}"/> 
+                            </p:column>
+
+                            <p:column headerText="Conceito global"  class="text-center" priority="1">
+                                <h:outputText id="aval_conceitoGlobal" value="#{aval.conceitoGlobal}"/> 
+                            </p:column>
+
+                            <p:column headerText="Satisfação com curso"  class="text-center" priority="2">
+                                <h:outputText id="aval_satisfacaoCurso" value="#{aval.satisfacaoCurso}"/> 
+                            </p:column>
+
+                            <p:column styleClass="centralizar-texto"  headerText="Ações" width="75" exportable="false" priority="0">
+                                <p:tooltip for="btnEditarAvaliacao" value="Editar"/>
+                                <p:commandLink id="btnEditarAvaliacao" action="#{egressoBean.editarAvaliacao()}" update="formEdicaoEgresso"> 
+                                    <h:graphicImage value="/resources/img/edit2.png" />
+                                    <f:setPropertyActionListener target="#{egressoBean.avaliacaoEdicao}" value="#{aval}"/>
+                                </p:commandLink>                               
+
+                                <p:tooltip for="btnExcluirAvaliacao" value="Excluir"/>
+                                <span style="padding-left: 15px" />
+                                <p:commandLink id="btnExcluirAvaliacao" 
+                                               oncomplete="exibirConfirmacao('Deseja realmente excluir a avaliação?', 'formEdicaoEgresso:botao-excluir-avaliacao')">
+                                    <h:graphicImage value="/resources/img/excluir.png"/>
+                                    <f:setPropertyActionListener target="#{egressoBean.avaliacaoEdicao}" value="#{aval}"/>                                  
+                                </p:commandLink>                                                           
+                            </p:column>
+
+                        </p:dataTable>
+                        <p:commandLink styleClass="botao-escondido" id="botao-excluir-avaliacao" action="#{egressoBean.removerAvaliacao()}" update="formEdicaoEgresso:tabela_avaliacoes"/>                  
+
+                        <div class="row">
+                            <div class="col-sm-offset-7 col-sm-5 text-right">
+                                <p:commandButton id="btnAdcionarAvaliacao" styleClass="ui-priority-primary" style="margin: 10px;" rendered="#{!egressoBean.exibirFrmAvaliacao}"
+                                                 icon="ui-icon-pencil" update="formEdicaoEgresso"
+                                                 action="#{egressoBean.editarAvaliacao()}"
+                                                 value="Adicionar nova avaliação" >                                                     
+                                </p:commandButton>
+
+                            </div>
+                        </div>
+                    </fieldset>
+                    <br/>
+                    <!--PANEL/FORM EDIÇÃO DE AVALIAÇÃO-->
+                    <h:panelGroup id="frmEditaAvaliacao" class="form-horizontal" rendered="#{egressoBean.exibirFrmAvaliacao}">
+                        <fieldset style="margin-left: 10px; margin-right: 10px; border: 2px solid #aed0ea; border-bottom: 0px; border-radius: 6px 6px 0 0; padding: 5px 10px 5px 10px; background-color: #337ab7;">
+                            <b style="color:#FFFFFF;"> #{egressoBean.avaliacaoEdicao.id>0? 'Edição de avaliação' : 'Cadastro de avaliação'} </b>
+                        </fieldset>
+
+                        <fieldset style="margin-left: 10px; margin-right: 10px; border: 2px solid #aed0ea; padding: 20px 10px 20px 10px;">
+
+                            <div class="row"> 
+                                <div class="col-sm-6 "><div class="form-group">
+                                        <label for="aval_momento_avaliacao" class="col-sm-6  control-label">4.2.1 Momento avaliação</label>
+                                        <div class="col-sm-6 ">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                <p:calendar styleClass="form-control required input-custom" value="#{egressoBean.avaliacaoEdicao.momentoAvaliacao}"
+                                                            id="aval_momento_avaliacao" pattern="dd/MM/yyyy"
+                                                            required="true" requiredMessage="Momento avaliação é obrigatório" 
+                                                            readonlyInput="true" placeholder="00/00/00000" navigator="true"
+                                                            maxlength="10" converter="jsfLocalDateConverter"/>  
+                                            </div>
+                                        </div>
+                                    </div></div>
+
+                                <div class="col-sm-6 "> <div class="form-group">
+                                        <label for="tipo_motivacao" class="col-sm-6  control-label">4.2.2 Motivação para escolha</label>
+                                        <div class="col-sm-6 ">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-ok"></i></span>
+                                                <h:selectOneMenu class="form-control required"
+                                                                 required="true"
+                                                                 requiredMessage="Motivação para escolha é requerida!"
+                                                                 hideNoSelectionOption="true"
+                                                                 id="tipo_motivacao" 
+                                                                 value="#{egressoBean.avaliacaoEdicao.motivacaoParaEscolha}">                                     
+                                                    <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true" />
+                                                    <f:selectItems value="#{egressoBean.motivacoes}"                                                    
+                                                                   var="motiv"
+                                                                   itemLabel="#{motiv.value}"
+                                                                   itemValue="#{motiv}"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </div></div>    
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 "><div class="form-group">
+                                        <label for="aval_capacidadeEticaResponsabilidade" class="col-sm-6  control-label">4.2.3 Capacidade Ética Responsabilidade</label>
+                                        <div class="col-sm-6 ">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-ok"></i></span>
+                                                <h:inputText required="true" styleClass="form-control required"  id="aval_capacidadeEticaResponsabilidade" value="#{egressoBean.avaliacaoEdicao.capacidadeEticaResponsabilidade}"/> 
+                                            </div>
+                                        </div>
+                                    </div></div>
+                                <div class="col-sm-6 "><div class="form-group">
+                                        <label for="aval_capacidadeHabilidadesAreaConhecimento" class="col-sm-6 control-label">4.2.4 Capacidade Habilidades àrea conhecimento</label>
+                                        <div class="col-sm-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-ok"></i></span>
+                                                <h:inputText required="true" styleClass="form-control required"  id="aval_capacidadeHabilidadesAreaConhecimento" value="#{egressoBean.avaliacaoEdicao.capacidadeHabilidadesAreaConhecimento}"/> 
+                                            </div>
+                                        </div>
+                                    </div></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 "><div class="form-group">
+                                        <label for="aval_conceitoGlobal" class="col-sm-6 control-label">4.2.5 Conceito global</label>
+                                        <div class="col-sm-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-ok"></i></span>
+                                                <h:inputText required="true" styleClass="form-control required" id="aval_conceitoGlobal" value="#{egressoBean.avaliacaoEdicao.conceitoGlobal}"/> 
+                                            </div>
+                                        </div>
+                                    </div></div>                                                        
+                                <div class="col-sm-6 "><div class="form-group">
+                                        <label for="aval_melhoriaComunicacao" class="col-sm-6 control-label">4.2.6 Melhoria comunicação</label>
+                                        <div class="col-sm-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-ok"></i></span>
+                                                <h:inputText required="true" styleClass="form-control required"  id="aval_melhoriaComunicacao" value="#{egressoBean.avaliacaoEdicao.melhoriaComunicacao}"/> 
+                                            </div>
+                                        </div>
+                                    </div></div>    
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 "><div class="form-group">
+                                        <label for="aval_preparacaoMercado" class="col-sm-6 control-label">4.2.7 Preparação mercado</label>
+                                        <div class="col-sm-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-ok"></i></span>
+                                                <h:inputText required="true" styleClass="form-control required"  id="aval_preparacaoMercado" value="#{egressoBean.avaliacaoEdicao.preparacaoMercado}"/> 
+                                            </div>
+                                        </div>
+                                    </div></div>
+                                <div class="col-sm-6 "><div class="form-group">
+                                        <label for="aval_satisfacaoCurso" class="col-sm-6 control-label">4.2.8 Satisfação com curso</label>
+                                        <div class="col-sm-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-ok"></i></span>
+                                                <h:inputText required="true" styleClass="form-control required"  id="aval_satisfacaoCurso" value="#{egressoBean.avaliacaoEdicao.satisfacaoCurso}"/> 
+                                            </div>
+                                        </div>
+                                    </div></div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12"><div class="form-group">
+                                        <label for="aval_comentario" class="col-sm-3 control-label">4.2.9 Comentário</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-book"></i></span>                                                
+                                                <h:inputText required="true" styleClass="form-control" id="aval_comentario" value="#{egressoBean.avaliacaoEdicao.comentario}"> 
+                                                    <f:passThroughAttribute name="placeholder" value="Insira algum comentário (opcional)"/>
+                                                </h:inputText>
+                                            </div>
+                                        </div></div>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                        <fieldset style="margin-left: 10px; margin-right: 10px; border: 2px solid #aed0ea; border-top: 0px; border-radius: 0 0 6px 6px; padding: 0 10px 0 10px;">
+                            <div class="row">
+                                <div class="col-sm-12 text-right">
+                                    <p:commandLink id="btnAdicionarAtuacao" class="btn btn-success" style="margin: 10px;"                                          
+                                                   value="Confirmar" action="#{egressoBean.adicionarAvaliacao()}" ajax="false" update="formEdicaoEgresso" />
+
+                                    <p:commandLink id="btnCancelarAtuacao" class="btn btn-danger" style="margin-left: 20px;"  immediate="true"
+                                                   value="Cancelar" action="#{egressoBean.cancelarEdicaoCursoUFG()}" update="formEdicaoEgresso" />
+                                </div>
+                            </div>
+                        </fieldset>
+                        <br/>
+                    </h:panelGroup>
+
+                    <!--LISTAGEM/TABELA DE PROGRAMAS ACADEMICOS-->
+                    <fieldset>
+                        <legend>4.3 Programas acadêmicos </legend>
+
+                        <p:dataTable id="tabela_programas" value="#{egressoBean.historico.realizacaoProgramasAcademicos}"
+                                     var="prog"  emptyMessage="Nenhum programa adacêmico encontrado" > 
+
+                            <p:column headerText="Início"  class="text-center" priority="0" >
+                                <h:outputText  id="prog_inicio"  value="#{prog.dataDeInicio}" converter="jsfLocalDateConverter"/>
+                            </p:column>
+
+                            <p:column headerText="Fim"  class="text-center" priority="0">
+                                <h:outputText id="prog_fim" value="#{prog.dataDeFim}" converter="jsfLocalDateConverter"/>
+                            </p:column>
+
+                            <p:column headerText="Tipo"  priority="0">
+                                <h:outputText id="prog_tipo" value="#{prog.tipoProgramaAcademico.value}"/> 
+                            </p:column>
+
+                            <p:column headerText="Descrição"  priority="1">
+                                <h:outputText id="prog_descricao" value="#{prog.descricao}"/> 
+                            </p:column>
+
+                            <p:column styleClass="centralizar-texto"  headerText="Ações" width="75" exportable="false" priority="0">
+                                <p:tooltip for="btnEditarPrograma" value="Editar"/>
+                                <p:commandLink id="btnEditarPrograma" action="#{egressoBean.editarPrograma()}" update="formEdicaoEgresso"> 
+                                    <h:graphicImage value="/resources/img/edit2.png" />
+                                    <f:setPropertyActionListener target="#{egressoBean.programaEdicao}" value="#{prog}"/>
+                                </p:commandLink> 
+
+                                <p:tooltip for="btnExcluirPrograma" value="Excluir"/>
+                                <span style="padding-left: 15px" />
+                                <p:commandLink id="btnExcluirPrograma" 
+                                               oncomplete="exibirConfirmacao('Deseja realmente excluir o programa?', 'formEdicaoEgresso:botao-excluir-programa')">
+                                    <h:graphicImage value="/resources/img/excluir.png"/>
+                                    <f:setPropertyActionListener target="#{egressoBean.programaEdicao}" value="#{prog}"/>                                  
+                                </p:commandLink> 
+
+                            </p:column>
+
+                        </p:dataTable>
+                        <p:commandLink styleClass="botao-escondido" id="botao-excluir-programa" action="#{egressoBean.removerPrograma()}" update="formEdicaoEgresso:tabela_programas"/>                  
+
+                        <div class="row">
+                            <div class="col-sm-offset-7 col-sm-5 text-right">
+                                <p:commandButton id="btnAdcionarPrograma" styleClass="ui-priority-primary" style="margin: 10px;" rendered="#{!egressoBean.exibirFrmPrograma}"
+                                                 icon="ui-icon-pencil" update="formEdicaoEgresso"
+                                                 action="#{egressoBean.editarPrograma()}"
+                                                 value="Adicionar novo programa" >                                                     
+                                </p:commandButton>
+
+                            </div>
+                        </div>
+
+                    </fieldset>
+                    <br/>
+                    <!--PANEL/FORM EDIÇÃO DE PROGRAMA-->
+                    <h:panelGroup id="frmEditaPrograma" class="form-horizontal" rendered="#{egressoBean.exibirFrmPrograma}">
+                        <fieldset style="margin-left: 10px; margin-right: 10px; border: 2px solid #aed0ea; border-bottom: 0px; border-radius: 6px 6px 0 0; padding: 5px 10px 5px 10px; background-color: #337ab7;">
+                            <b style="color:#FFFFFF;"> #{egressoBean.programaEdicao.id >0? 'Edição de programa' : 'Cadastro de programa'} </b>
+                        </fieldset>
+
+                        <fieldset style="margin-left: 10px; margin-right: 10px; border: 2px solid #aed0ea; padding: 20px 10px 20px 10px;">
+
+                            <div class="row"> 
+                                <div class="col-sm-6 "><div class="form-group">
+                                        <label for="prog_dt_inicio" class="col-sm-6  control-label">4.3.1 Início</label>
+                                        <div class="col-sm-6 ">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                <p:calendar styleClass="form-control required input-custom" value="#{egressoBean.programaEdicao.dataDeInicio}"
+                                                            id="prog_dt_inicio"
+                                                            required="true" requiredMessage="Data início é obrigatória" pattern="dd/MM/yyyy"
+                                                            readonlyInput="true" placeholder="00/00/00000" navigator="true"
+                                                            maxlength="10" converter="jsfLocalDateConverter"/>  
+                                            </div>
+                                        </div>
+                                    </div></div>
+                                <div class="col-sm-6 "><div class="form-group">
+                                        <label for="prog_dt_fim" class="col-sm-6  control-label">4.3.2 Fim</label>
+                                        <div class="col-sm-6 ">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                <p:calendar styleClass="form-control required input-custom" value="#{egressoBean.programaEdicao.dataDeFim}"
+                                                            id="prog_dt_fim"
+                                                            required="true" requiredMessage="Data início é obrigatória" pattern="dd/MM/yyyy"
+                                                            readonlyInput="true" placeholder="00/00/00000" navigator="true"
+                                                            maxlength="10" converter="jsfLocalDateConverter"/>                                                  
+                                            </div>
+                                        </div>
+                                    </div></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 "> <div class="form-group">
+                                        <label for="tipo_programa" class="col-sm-6  control-label">4.3.3 Tipo</label>
+                                        <div class="col-sm-6 ">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-ok"></i></span>
+                                                <h:selectOneMenu class="form-control required"
+                                                                 required="true"
+                                                                 requiredMessage="Tipo de programa é requerido!"
+                                                                 hideNoSelectionOption="true"
+                                                                 id="tipo_programa" 
+                                                                 value="#{egressoBean.programaEdicao.tipoProgramaAcademico}">                                     
+                                                    <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true" />
+                                                    <f:selectItems value="#{egressoBean.tiposProgramaAcademicos}"                                                    
+                                                                   var="progs"
+                                                                   itemLabel="#{progs.value}"
+                                                                   itemValue="#{progs}"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </div></div>    
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12"><div class="form-group">
+                                        <label for="prog_descricao" class="col-sm-3 control-label">4.3.4 Descrição</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-book"></i></span>                                                
+                                                <h:inputText required="true" styleClass="form-control required" id="prog_descricao" value="#{egressoBean.programaEdicao.descricao}"> 
+                                                    <f:passThroughAttribute name="placeholder" value="Insira uma descrição sobre o programa (opcional)"/>
+                                                </h:inputText>
+                                            </div>
+                                        </div></div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset style="margin-left: 10px; margin-right: 10px; border: 2px solid #aed0ea; border-top: 0px; border-radius: 0 0 6px 6px; padding: 0 10px 0 10px;">
+                            <div class="row">
+                                <div class="col-sm-12 text-right">
+                                    <p:commandLink id="btnAdicionarPrograma" class="btn btn-success" style="margin: 10px;"                                          
+                                                   value="Confirmar" action="#{egressoBean.adicionarPrograma()}" ajax="false" update="formEdicaoEgresso" />
+
+                                    <p:commandLink id="btnCancelarPrograma" class="btn btn-danger" style="margin-left: 20px;"  immediate="true"
+                                                   value="Cancelar" action="#{egressoBean.cancelarEdicaoCursoUFG()}" update="formEdicaoEgresso" />
+                                </div>
+                            </div>
+                        </fieldset>
+                        <br/>
+                    </h:panelGroup>
+
+                    <h:panelGroup id="divBotoes" rendered="#{!egressoBean.exibirFrmAvaliacao and !egressoBean.exibirFrmPrograma}">
+                        <div class="row">
+                            <h:commandButton styleClass="btn btn-primary" style="margin: 10px;"
+                                             value="Atualizar" id="btnSalvar"
+                                             action="#{egressoBean.atualizarEgresso()}"/>
+
+                            <h:commandButton styleClass="btn btn-danger" style="margin: 10px;"
+                                             value="Cancelar"  id="btnCancel"
+                                             action="#{egressoBean.cancelarEdicaoHistorico()}"/>
+                        </div>
+                    </h:panelGroup>
+
+                </div>
+            </div>   
+        </h:form>
+    </ui:define>
+</ui:composition>

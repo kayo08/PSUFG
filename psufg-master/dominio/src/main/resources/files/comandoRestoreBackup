@@ -1,0 +1,3 @@
+mysql -u[usuario] -p -h[host] [banco] < "arquivo.sql"
+
+mysql -u psufg -p -h 200.137.197.236 psufg < "d:\downloads\psufg.sql"

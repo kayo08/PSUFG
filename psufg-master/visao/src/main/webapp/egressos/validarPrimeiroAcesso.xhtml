@@ -1,0 +1,176 @@
+<ui:composition template="/template/template_login.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">        
+
+        <div class="container" style="max-width: 100% !important;">
+            <div class="panel panel-primary" style="margin: 0px 1px 0px 0px;"> 
+                <div class="panel-heading" style="font-size: 1.5em;"> Cadastro para primeiro acesso</div>
+
+                <div class="panel-body">                                
+                    <h:form id="frmValidar" class="form-horizontal" >   
+
+                        <p:wizard widgetVar="wiz" flowListener="#{usuarioBean.conferirOpcao}" showNavBar="false" style="text-align: center"> 
+                            <p:tab id="p1">
+                                <p:panel class="teste" header="Confirme seu nome oficial"  style="text-align: center !important;">                                                               
+                                    <p:selectOneButton value="#{usuarioBean.opcaoEscolhida}">
+                                        <f:selectItems class="text-center"                                                           
+                                                       value="#{usuarioBean.nomesEscolha}" var="n" 
+                                                       itemLabel="#{n}" 
+                                                       itemValue="#{n}" />                                            
+                                        <p:ajax event="change" update=" btnSeguir"/>                                        
+                                    </p:selectOneButton>  
+                                    <p:messages closable="true"/>
+                                    <br/>                                    
+                                </p:panel>                                                           
+                                <div class="text-right" style="margin-top:10px;">
+                                    <p:commandButton id="btnSeguir"  
+                                                     disabled="#{usuarioBean.opcaoEscolhida eq null || usuarioBean.opcaoEscolhida eq ''}" 
+                                                     value="Seguir" icon="ui-icon-check" oncomplete="PF('wiz').loadStep('p2',false)" styleClass="text-right"/>
+                                </div>
+                            </p:tab>
+
+                            <p:tab id="p2" >
+                                <p:panel class="teste" header="Confirme a data do seu nascimento"  style="text-align: center !important;"> 
+                                    <p:selectOneButton value="#{usuarioBean.opcaoEscolhida}">                                        
+                                        <f:selectItems class="text-center"
+                                                       value="#{usuarioBean.datasNascimentoEscolha}" var="d" 
+                                                       itemLabel="#{d}" 
+                                                       itemValue="#{d}" />                                                                                                            
+                                        <p:ajax event="change" update="btnSeguir2" />
+                                    </p:selectOneButton>                                    
+                                    <p:messages closable="true"/>             
+                                </p:panel>
+                                <div class="text-right" style="margin-top:10px;">
+                                    <p:commandButton id="btnSeguir2"  
+                                                     disabled="#{usuarioBean.opcaoEscolhida eq null || usuarioBean.opcaoEscolhida eq ''}" 
+                                                     value="Seguir" icon="ui-icon-check" oncomplete="PF('wiz').loadStep('p3',false)" styleClass="text-right"/>
+                                </div>
+                            </p:tab>
+
+                            <p:tab id="p3" >
+                                <p:panel class="teste" header="Confirme o nome do curso"  style="text-align: center !important;"> 
+                                    <p:selectOneButton value="#{usuarioBean.opcaoEscolhida}">
+                                        <f:selectItems class="text-center"
+                                                       value="#{usuarioBean.cursosEscolha}" var="c" 
+                                                       itemLabel="#{c}" 
+                                                       itemValue="#{c}" />   
+                                        <p:ajax event="change" update="btnSeguir3" />
+                                    </p:selectOneButton>                                    
+                                    <p:messages closable="true"/>             
+                                </p:panel>
+                                <div class="text-right" style="margin-top:10px;">
+                                    <p:commandButton id="btnSeguir3"  
+                                                     disabled="#{usuarioBean.opcaoEscolhida eq null || usuarioBean.opcaoEscolhida eq ''}" 
+                                                     value="Seguir" icon="ui-icon-check" oncomplete="PF('wiz').loadStep('p4',false)" styleClass="text-right"/>
+                                </div>
+                            </p:tab>
+
+                            <p:tab id="p4" >
+                                <p:panel class="teste" header="Confirme o ano de ingresso no curso"  style="text-align: center !important;"> 
+                                    <p:selectOneButton value="#{usuarioBean.opcaoEscolhida}">
+                                        <f:selectItems class="text-center"
+                                                       value="#{usuarioBean.anosIgressoEscolha}" var="a" 
+                                                       itemLabel="#{a}" 
+                                                       itemValue="#{a}" />   
+                                        <p:ajax event="change" update="btnSeguir4" />
+                                    </p:selectOneButton>                                    
+                                    <p:messages closable="true"/>             
+                                </p:panel>
+                                <div class="text-right" style="margin-top:10px;">
+                                    <p:commandButton id="btnSeguir4"  
+                                                     disabled="#{usuarioBean.opcaoEscolhida eq null || usuarioBean.opcaoEscolhida eq ''}" 
+                                                     value="Seguir" icon="ui-icon-check" oncomplete="PF('wiz').loadStep('p5',false)" styleClass="text-right"/>
+                                </div>
+                            </p:tab>
+
+                            <p:tab id="p5" >
+                                <p:panel class="teste" header="Confirme o nome da sua Mãe"  style="text-align: center !important;"> 
+                                    <p:selectOneButton value="#{usuarioBean.opcaoEscolhida}">
+                                        <f:selectItems class="text-center"
+                                                       value="#{usuarioBean.maesEscolha}" var="m" 
+                                                       itemLabel="#{m}" 
+                                                       itemValue="#{m}" />   
+                                        <p:ajax event="change" update="btnSeguir5" />
+                                    </p:selectOneButton>                                    
+                                    <p:messages closable="true"/>             
+                                </p:panel>
+                                <div class="text-right" style="margin-top:10px;">
+                                    <p:commandButton id="btnSeguir5"  
+                                                     disabled="#{usuarioBean.opcaoEscolhida eq null || usuarioBean.opcaoEscolhida eq ''}" 
+                                                     value="Seguir" icon="ui-icon-check" oncomplete="PF('wiz').loadStep('p6',false)" styleClass="text-right"/>
+                                </div>
+                            </p:tab>
+
+                            <p:tab id="p6" >
+                                <p:panel class="teste" header="Confirme a cidade em que nasceu"  style="text-align: center !important;"> 
+                                    <p:selectOneButton value="#{usuarioBean.opcaoEscolhida}">
+                                        <f:selectItems class="text-center"
+                                                       value="#{usuarioBean.naturalidadesEscolha}" var="m" 
+                                                       itemLabel="#{n}" 
+                                                       itemValue="#{n}" />   
+                                        <p:ajax event="change" update="btnSeguir6" />
+                                    </p:selectOneButton>                                    
+                                    <p:messages closable="true"/>             
+                                </p:panel>
+                                <div class="text-right" style="margin-top:10px;">
+                                    <p:commandButton id="btnSeguir6"  
+                                                     disabled="#{usuarioBean.opcaoEscolhida eq null || usuarioBean.opcaoEscolhida eq ''}" 
+                                                     value="Seguir" icon="ui-icon-check" oncomplete="PF('wiz').loadStep('p7',false)" styleClass="text-right"/>
+                                </div>
+                            </p:tab>
+
+                            <p:tab id="p7">
+                                <p:panel class="teste " header="Cadastre uma senha" > 
+
+                                    <p:messages closable="true"/>             
+                                    <div class="row" style="padding: 25px 0 25px 0 ;">
+                                        <div class="col-sm-8 col-sm-offset-2"> 
+                                            <div class="form-group">
+                                                <label for="novaSenha" class="col-sm-3 control-label">Nova senha</label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="icon-key2"></i></span>
+                                                        <p:password class="form-control required" id="novaSenha" value="#{usuarioBean.novaSenha}"  feedback="true" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-8 col-sm-offset-2"> 
+                                            <div class="form-group">
+                                                <label for="confirmeNovaSenha" class="col-sm-3 control-label">Confirme nova senha</label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="icon-key2"></i></span>
+                                                        <p:password class="form-control required" id="confirmeNovaSenha" value="#{usuarioBean.novaSenhaConfirma}"  feedback="true"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" >
+                                        <h:commandButton styleClass="btn btn-success" style="margin: 10px;"
+                                                         value="Confirmar" id="btnConfirmar"
+                                                         action="#{usuarioBean.confimarPrimeiroAcesso}"/>
+                                    </div>
+                                    
+                                </p:panel>
+                            </p:tab>
+                            <p:tab id="p8">
+                                <p:panel class="teste " header="Usuário bloqueado!!" > 
+                                    <h:graphicImage value="/resources/img/bloqueado.png" style="width: 60px;"/> <br/>
+                                    <h:outputLabel value="Informações fornecidas não conferem com os dados cadastrados junto à UFG."/>
+                                    <h:outputLabel value="Seu acesso foi bloqueado, entre em contato com o Administrador do Sistema pelo canal 'Fale conosco'"/>
+                                </p:panel>
+                            </p:tab>
+                        </p:wizard>
+                    </h:form>
+                </div>                                    
+            </div>   
+        </div>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,311 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:param name="idMenu" value="Mp3" />    
+    <ui:define name="content">
+        <p:growl id="growl" showDetail="false" sticky="true" />
+
+        <div class="panel panel-primary" style="margin: 0px"> 
+
+            <div class="panel-body">
+                <fieldset> 
+                    <legend  id="titulo" style="color:#2a6ba3"> Aprovação de Eventos </legend> 
+                    <h:form id="frmEventos">
+                        <p:dataTable id="tabela_eventos"
+                                     var="ev"                                      
+                                     value="#{aprovarEventoBean.eventos}"
+                                     sortBy="#{ev.assunto}" rowKey="#{ev.id}"                                     
+                                     emptyMessage="Nenhum evento cadastrado">
+
+                            <p:column headerText="Id"  width="55" sortBy="#{ev.id}" priority="0">
+                                <h:outputText value="#{ev.id}" />
+                            </p:column>
+
+                            <p:column headerText="Assunto" priority="1" 
+                                      filterBy="#{ev.assunto}"
+                                      sortBy="#{ev.assunto}"
+                                      filterMatchMode="startsWith">
+                                <h:outputText value="#{ev.assunto}" />
+                            </p:column>
+
+                            <p:column headerText="Solicitante" priority="2"  
+                                      filterBy="#{ev.identificacaoSolicitante}"
+                                      sortBy="#{ev.identificacaoSolicitante}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{ev.identificacaoSolicitante}"/>
+                            </p:column>
+
+                            <p:column headerText="Criação" priority="3" width= "80"
+                                      filterBy="#{ev.timeStampDaSolicitacao}"
+                                      sortBy="#{ev.timeStampDaSolicitacao}"
+                                      filterMatchMode="contains">                                
+                                <h:outputText value="#{ev.timeStampDaSolicitacao}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Divulgação" priority="5"  style="max-width: 120px !important"
+                                      filterBy="#{ev.formaDivulgacao.value}"
+                                      sortBy="#{ev.formaDivulgacao.value}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{ev.formaDivulgacao.value}"/>
+                            </p:column>
+
+                            <p:column headerText="Expira" priority="4" width= "80"
+                                      filterBy="#{ev.dataExpiracao}"
+                                      sortBy="#{ev.dataExpiracao}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{ev.dataExpiracao}" converter="jsfLocalDateConverter" />
+                            </p:column>
+
+                            <p:column headerText="Ações" priority="0" width="60" styleClass="text-center">
+                                <p:rowToggler/>
+                            </p:column>
+
+                            <p:rowExpansion id="row_acoes"> 
+                                <fieldset class="form-horizontal" style="margin-right: 10px; padding: 20px 10px 20px 10px; font-size: 0.8em !important;">
+
+                                    <div class="row" style="background-color: #2a6ba3; border: 1px solid #ccc; border-radius:6px; color: #ffffff; margin:20px 0px 20px 10px;">
+                                        <div class="col-sm-7" >
+                                            <label style="margin-top:15px; font-size: 20px;"> Você aprova a publicação deste evento?" </label>
+                                        </div>
+                                        <div class="col-sm-5 text-right">                                            
+                                            <p:commandLink id="bntAprovar" oncomplete="PF('myOverlayPanel').show()" title="Sim aprovo"
+                                                           update="frmAtualizaEgresso:tabela_instancias">
+                                                <h:graphicImage style="margin: 10px; width: 40px;" value="/resources/img/aprova.png"/>
+                                                <f:setPropertyActionListener target="#{aprovarEventoBean.eventoEmAprovacao}" value="#{ev}"/>
+                                                <f:setPropertyActionListener target="#{aprovarEventoBean.rejeicao}" value="false"/>
+                                            </p:commandLink>
+
+                                            <p:commandLink id="bntRejeitar" oncomplete="PF('myOverlayPanel').show()" title="Não rejeito"                                                 
+                                                           update="frmAtualizaEgresso:tabela_instancias">
+                                                <h:graphicImage style="margin: 10px; width: 40px; " value="/resources/img/rejeita.png"/>
+                                                <f:setPropertyActionListener target="#{aprovarEventoBean.eventoEmAprovacao}" value="#{ev}"/>
+                                                <f:setPropertyActionListener target="#{aprovarEventoBean.rejeicao}" value="true"/>
+                                            </p:commandLink>             
+                                        </div>                                       
+                                    </div>                                                                        
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <h:outputLabel for="assunto" class="col-sm-1 control-label">Assunto</h:outputLabel>
+                                                <div class="col-sm-11">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" style="padding: 4px 12px !important;"><i class="glyphicon glyphicon-user"></i></span>
+                                                        <h:outputText styleClass="form-control" style="height: inherit !important;"   
+                                                                      id="assunto" value="#{ev.assunto}"/>                                                            
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="tipoEvento" class="col-sm-2 control-label">Tipo</label>
+                                                <div class="col-sm-10">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" style="padding: 4px 12px !important;" ><i class="glyphicon glyphicon-circle-arrow-right"></i></span>
+                                                        <h:outputText styleClass="form-control" style="height: inherit !important;"
+                                                                      id="tipoEvento" value="#{ev.tipoEvento}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="dataExpiracao" class="col-sm-2 control-label">Expira</label>
+                                                <div class="col-sm-10">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" style="padding: 4px 12px !important;"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                        <h:outputText styleClass="form-control" style="height: inherit !important; min-height: 29px !important;"    
+                                                                      id="dataExpiracao" value="#{ev.dataExpiracao}" converter="jsfLocalDateConverter"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="descricao" class="col-sm-1 control-label">Descrição</label>
+                                                <div class="col-sm-11">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" style="padding: 4px 12px !important;"><i class="glyphicon glyphicon-book"></i></span>                                                        
+                                                        <h:outputText styleClass="form-control" style="height: inherit !important; text-align: justify" escape="false"
+                                                                      id="descricao" value="#{ev.descricaoEvento}"/>                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="solicitante" class="col-sm-2 control-label">Solicitante</label>
+                                                <div class="col-sm-10">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" style="padding: 4px 12px !important;"><i class="glyphicon glyphicon-user"></i></span>
+                                                        <h:outputText styleClass="form-control" style="height: inherit !important;" 
+                                                                      id="solicitante" value="#{ev.identificacaoSolicitante}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="emailSolicitante" class="col-sm-2 control-label">Email</label>
+                                                <div class="col-sm-10">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" style="padding: 4px 12px !important;"><i class="glyphicon glyphicon-envelope"></i></span>
+                                                        <h:outputText styleClass="form-control" style="height: inherit !important;" 
+                                                                      id="emailSolicitante" value="#{ev.emailSolicitante}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="formaDivulgacao" class="col-sm-2 control-label">Forma divulgação</label>
+                                                <div class="col-sm-10">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" style="padding: 4px 12px !important;"><i class="glyphicon glyphicon-chevron-right"></i></span>
+                                                        <h:outputText styleClass="form-control" style="height: inherit !important;" 
+                                                                      id="formaDivulgacao" value="#{ev.formaDivulgacao.value}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="escopoDivulgacao" class="col-sm-2 control-label">Escopo divulgação</label>
+                                                <div class="col-sm-10">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" style="padding: 4px 12px !important;"><i class="glyphicon glyphicon-share"></i></span>
+                                                        <h:outputText styleClass="form-control" style="height: inherit !important;"  
+                                                                      id="escopoDivulgacao" value="#{ev.escopoDivulgacao.value}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="areaConhecimento" class="col-sm-2 control-label">Área conhecimento</label>
+                                                <div class="col-sm-10">
+                                                    <div style="background: #fff; border: 1px solid #ccc; padding: 6px 12px; border-radius: 6px;" >
+                                                        <ui:repeat value="#{ev.areasDeConhecimento}" var="area">
+                                                            <h:outputText  value="#{area.nomeArea} &lt;br/&gt; " escape="false"/>                                                                    
+                                                        </ui:repeat>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="instanciaAdministrativa" class="col-sm-2 control-label">Instância administrativa</label>
+                                                <div class="col-sm-10">
+                                                    <div style="background: #fff; border: 1px solid #ccc; padding: 6px 12px; border-radius: 6px;" >
+                                                        <ui:repeat value="#{ev.instanciasAdministrativas}" var="instancia">
+                                                            <h:outputText value="#{instancia.nome} &lt;br/&gt;" escape="false"/>
+                                                        </ui:repeat>                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                            </p:rowExpansion>
+
+                        </p:dataTable>
+
+                    </h:form>
+                    <p:overlayPanel id="overlay" widgetVar="myOverlayPanel" hideEffect="fade" onShow="repositioning();"
+                                    dynamic="true" style="width:70%">
+
+                        <div class="panel panel-primary"> 
+                            <div class="panel-heading">Confirmar aprovação/rejeição</div>
+
+                            <div class="panel-body">
+                                <h:form id="frmAtualizaEgresso" class="form-justificativa">
+                                    <fieldset>       
+                                        <div class="row">
+                                            <div class="col-sm-6"> 
+                                                <p:dataTable id="tabela_instancias"
+                                                             disabledSelection="#{aprovarEventoBean.rejeicao}"
+                                                             value="#{aprovarEventoBean.instanciasUsuarioLogado}" var="ins"
+                                                             selection="#{aprovarEventoBean.instanciasSelecionadas}" 
+                                                             rowKey="#{ins.id}">
+                                                    <f:facet name="header">
+                                                        Selecione as instâncias desejadas
+                                                    </f:facet>
+                                                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                                                    <p:column headerText="Nome" >
+                                                        <h:outputText value="#{ins.nome}"/>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </div>
+
+                                            <div class="col-sm-6"> 
+                                                <div class="form-group">                                                                            
+                                                    <div class="col-sm-12">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="glyphicon glyphicon-check"></i></span>
+                                                            <p:inputTextarea styleClass="text-area-custom  input-custom required"  
+                                                                             id="justificativa"  value="#{aprovarEventoBean.parecerSobreDivulgacao}" >
+                                                                <f:passThroughAttribute name="placeholder" value="Insira uma justificativa"/>
+                                                            </p:inputTextarea>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-offset-6 col-sm-6 text-right">
+                                                <h:commandButton styleClass="btn btn-success" style="margin: 10px;"                                         
+                                                                 value="Confirmar" id="btnConfirmar"
+                                                                 action="#{aprovarEventoBean.confirmarAprovacao()}"/> 
+                                                <h:commandButton styleClass="btn btn-danger" style="margin: 10px;"
+                                                                 value="Cancelar" id="btnCancelar"
+                                                                 immediate="true"
+                                                                 action="#{aprovarEventoBean.cancelarAprovacao()}"/> 
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                </h:form>
+                            </div>
+                        </div>
+                    </p:overlayPanel>
+
+                </fieldset>
+            </div>
+        </div>
+        <script type="text/javascript">
+            function repositioning() {
+                $("[id='overlay']").css("left", "auto");
+                $("[id='overlay']").css("top", "350px");
+            }
+        </script>
+    </ui:define>
+
+</ui:composition>    

@@ -1,0 +1,107 @@
+<ui:composition template="/template/template_login.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+     <ui:param name="idMenuPrincipal" value="menuNContato"/>         
+        <ui:define name="content">                
+            <div id="loginModal" class="show" tabindex="-1" >
+                <div class="modal-dialog" style="min-width: 80% !important;" >
+                    <p:messages closable="true" escape="false" />
+                    <div class="modal-content">                                                            
+                        <div class="col-sm-12" style="padding: 10px;">  
+                            <h4 style="color: #4478a4; margin-left: 10px;"> <i class="glyphicon glyphicon-bullhorn" style="padding-right: 2px;"/> Fale conosco</h4>                         
+                            <hr/>
+
+                            <h:form id="frmContato" class="form col-sm-11 center-block form-horizontal"  >
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="nomeContato" class="col-sm-2 control-label">Seu nome:</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                                    <h:inputText  styleClass="form-control input-custom required"  id="nomeContato" value="#{usuarioBean.usuarioContato.nome}" 
+                                                                  required="true" requiredMessage="Nome é obrigatório!"/>                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="emailContato" class="col-sm-2 control-label">Seu email:</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                                    <h:inputText styleClass="form-control  input-custom required"  id="emailContato" value="#{usuarioBean.usuarioContato.email}"
+                                                                 required="true" requiredMessage="Email é obrigatório!" validatorMessage="Email informado não é válido!">
+                                                        <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                                                    </h:inputText>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="tipoAssuntoContato" class="col-sm-2 control-label">Assunto:</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-info-sign"></i></span>
+                                                    <h:selectOneMenu  class="form-control input-custom required" 
+                                                                      id="tipoAssuntoContato" required="true" requiredMessage="Assunto é obrigatório!"
+                                                                      hideNoSelectionOption="true"
+                                                                      value="#{usuarioBean.usuarioContato.assunto}">   
+                                                        <f:selectItem itemValue="#{null}" itemLabel="--selecione--" noSelectionOption="true" />                                                    
+                                                        <f:selectItems 
+                                                            value="#{usuarioBean.assuntosEmailContato}" var="aec" 
+                                                            itemLabel="#{aec.value}"
+                                                            itemValue="#{aec.value}"/>
+                                                    </h:selectOneMenu>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12"> 
+                                        <div class="form-group">
+                                            <label for="mensagemContato" class="col-sm-2 control-label">Mensagem:</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                                    <p:inputTextarea styleClass="text-area-custom  input-custom required"  id="mensagemContato" value="#{usuarioBean.usuarioContato.mensagem}"  />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-8 col-sm-offset-2"> 
+                                        <h:outputLabel for="codigo-seguranca" value="Verificação de segurança"/>
+                                        <p:captcha id="codigo-seguranca" label="Verificação de segurança" expired="" language="pt-br" theme="white"
+                                                   requiredMessage="Faltou verificação de segurança!"/>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <h:commandButton styleClass="btn btn-primary" style="margin:40px 0 40px 0;"
+                                                         value="Enviar agora " id="btnSalvar"
+                                                         action="#{usuarioBean.enviarEmailContato()}"/>
+                                    </div>
+                                </div>
+                            </h:form>
+                        </div>
+                        <div class="modal-footer text-center">
+                            <h:outputLabel class="btn-xs" style="color:#ccc" value=" &#174; Fábrica de Software " />
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        </ui:define>    
+</ui:composition>

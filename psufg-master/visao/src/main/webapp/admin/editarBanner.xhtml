@@ -1,0 +1,124 @@
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:param name="idMenu" value="Mp4" />
+    <ui:define name="content" >
+
+
+        <h:form id="frmCadastroBanner" class="form-horizontal" >
+
+            <div class="panel panel-primary" style="margin: 0px">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-list-alt"></span> 1. Cadastro de Banner)</h3>
+                </div>                
+                <div class="panel-body">
+                    <fieldset id="idFieldset">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="carregarImagem" class="col-sm-2 control-label">1. Imagem</label>
+                                    <div class="col-sm-10">                                        
+                                        <p:fileUpload id="carregarImagem" 
+                                                      label="#{bannerBean.imageStream == null or empty bannerBean.imageStream ?'Carregar uma imagem' : 'Alterar imagem'}" 
+                                                      mode="advanced" multiple="false" auto="true" required="true" update="imageBanner obs frmCadastroBanner"
+                                                      fileUploadListener="#{bannerBean.carregarImagem}"
+                                                      requiredMessage="Imagem para o banner é requerida!"
+                                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/" invalidFileMessage="Imagem deve ser de um dos tipos: { jpg | gif | png } >>>"
+                                                      sizeLimit="2000000"  invalidSizeMessage="Tamanho máximo permitido é de 2MB  >>>"/>
+
+                                        <h:panelGroup id="obs" rendered="#{empty bannerBean.imageStream}" >
+                                            <p:outputLabel style="color: red" value="Use imagem com proporção 4x1 (Largura x Altura) e tamanho máximo 2MB. Exs: 60x15, 400x100, 1000x250." escape="false"/>
+                                        </h:panelGroup> 
+                                        <h:panelGroup id="imageBanner" rendered="#{ not empty bannerBean.imageStream}">
+                                            <p:graphicImage value="#{bannerBean.imageStream}" cache="false" 
+                                                            style="width: 100%; padding: 5px; border-radius: 10px; border: 1px solid #dddddd; border-top: none; margin-top: -32px;"/>
+                                        </h:panelGroup>
+                                    </div>
+                                </div>
+                            </div>                        
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="chamado" class="col-sm-2 control-label">2. Chamada</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                            <h:inputText id="chamado" styleClass="form-control required"                                            
+                                                         value="#{bannerBean.bannerEdicao.tituloChamada}"
+                                                         maxlength="200"                                                
+                                                         required="true" 
+                                                         requiredMessage="Chamada é obrigatório" >
+                                                <f:passThroughAttribute name="placeholder" value="Insira um rótulo/título para o chamada do Banner"/> 
+                                            </h:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="link" class="col-sm-2 control-label">3. Link</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                            <h:inputText id="link" styleClass="form-control required"                                            
+                                                         value="#{bannerBean.bannerEdicao.linkNoticia}"
+                                                         validatorMessage="Link informado é inválido!"
+                                                         required="true" 
+                                                         requiredMessage="Link é obrigatório" >
+                                                <f:passThroughAttribute name="placeholder" value="Insira a URL de acesso à notícia, deve iniciar com http(s) ou www"/>
+                                                <f:validateRegex pattern="^(((http[s]?)\://)[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*$)?"/>
+                                            </h:inputText>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="carregarImagem" class="col-sm-2 control-label">4. Destacar</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group" style="font-size: 1.2em !important; font-weight: bolder;" >
+                                            <span class="input-group-addon">
+                                                <h:selectBooleanCheckbox value="#{bannerBean.bannerEdicao.destacar}"/>                                                
+                                            </span>                                            
+                                            <h:outputText class="form-control" value="Deseja destacar esse banner na página inicial?" style="color: #2779aa !important;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>                                           
+                    
+                    <hr style="margin: 20px 0 20px 0;" />
+
+                    <div class="col-sm-offset-7 col-sm-5 text-right">
+                        <h:commandButton styleClass="btn btn-primary" style="margin: 10px;"                                   
+                                         value="#{empty bannerBean.bannerEdicao.timeStampCriacao ? 'Salvar' : 'Atualizar' }" id="btnSalvar" 
+                                         action="#{bannerBean.atualizarBanner()}"/> 
+
+                        <h:commandButton styleClass="btn btn-danger" style="margin: 10px;"
+                                         value="Cancelar"  id="btnCancel" immediate="true"
+                                         action="#{bannerBean.cancelarEdicaoBanner()}"/>
+                    </div>
+                </div>
+            </div>  
+                        
+        </h:form>       
+
+    </ui:define>    
+
+
+</ui:composition>
+

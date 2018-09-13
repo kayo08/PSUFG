@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:param name="idMenu" value="Mp4" />
+    <ui:define name="content">
+        <p:growl id="growl" showDetail="false" sticky="true" />
+
+        <div class="panel panel-primary" style="margin: 0px"> 
+
+            <div class="panel-body">
+                <fieldset> 
+                    <legend style="color:#2a6ba3"> Listagem de Banners </legend> 
+                    <h:form id="frmBanners">
+                        <p:dataTable id="tabela_banners"
+                                     var="ban" 
+                                     value="#{bannerBean.banners}"
+                                     rows="10" paginator="true" 
+                                     rowsPerPageTemplate="10,20,50,100,#{bannerBean.banners.size() > 100 ? bannerBean.banners.size() : ''}"                      
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink}  {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     sortBy="#{ban.destacar}" rowKey="#{ban.id}"
+                                     sortOrder="descending"
+                                     rowStyleClass="#{ban.destacar ? 'row_highlight' : ''}"
+                                     emptyMessage="Nenhum banner cadastrado">
+
+                            <p:column headerText="Id"  width="55" sortBy="#{ban.id}" priority="0" style="text-align: center">
+                                <h:outputText value="#{ban.id}"  style="text-decoration: underline; font-weight: bold"/>
+                            </p:column>
+
+                            <p:column headerText="Destacado"  priority="1"  style="max-width: 120px !important; text-align: center;"                                      
+                                      sortBy="#{ban.destacar}">
+                                <h:outputText value="#{ban.destacar ? 'Sim' : 'Não'}"/>
+                            </p:column>
+
+                            <p:column headerText="Link" priority="2" 
+                                      filterBy="#{ban.linkNoticia}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{ban.linkNoticia}" />
+                            </p:column>                          
+
+                            <p:column headerText="Criação" priority="3" style="max-width: 160px !important; text-align: center;"
+                                      filterBy="#{ban.timeStampCriacao}"
+                                      sortBy="#{ban.timeStampCriacao}"
+                                      filterMatchMode="contains">                                
+                                <h:outputText value="#{ban.timeStampCriacao}">
+                                    <f:convertDateTime pattern="dd/MM/yy - HH:mm" timeZone="GMT-03:00"/>
+                                </h:outputText>
+                            </p:column>
+                           
+                            <p:column headerText="Ações" priority="0" width="75" styleClass="text-center">
+
+                                <p:tooltip for="btnEditar" value="Editar"/>
+                                <p:commandLink id="btnEditar" action="#{bannerBean.editarBanner(ban)}" >
+                                    <h:graphicImage value="/resources/img/edit2.png"/>
+                                </p:commandLink>                 
+
+                                <p:tooltip for="btnExcluir" value="Excluir"/>
+                                <span style="padding-left: 15px" />
+                                <p:commandLink id="btnExcluir" 
+                                               oncomplete="exibirConfirmacao('Deseja realmente excluir o banner : #{ban.linkNoticia} ?', 'frmBanners:botao-excluir')">
+                                    <h:graphicImage value="/resources/img/excluir.png"/>
+                                    <f:setPropertyActionListener target="#{bannerBean.bannerEdicao}" value="#{ban}"/> 
+                                </p:commandLink> 
+
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandLink styleClass="botao-escondido" id="botao-excluir" action="#{bannerBean.excluirBanner()}" update="frmBanners:tabela_banners"/>
+
+                        <br/>
+                        <div class="row text-right" style="margin-right: 20px;">
+                            <p:commandButton 
+                                icon="ui-icon-pencil"
+                                value="Incluir novo banner"  id="btnCancel"
+                                action="#{bannerBean.editarBanner(null)}"
+                                disabled="false"/>
+                        </div>
+                    </h:form>
+                </fieldset>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>    

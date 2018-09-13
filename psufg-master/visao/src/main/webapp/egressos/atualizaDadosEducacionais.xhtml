@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"               
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:param name="idMenu" value="#{usuarioBean.usuarioEgresso ? 'Mp2' : 'Mp4'}"/>
+    <ui:param name="idAbaDados" value="M2" />   
+    <ui:define name="content">
+        <h:form id="formEdicaoEgresso">
+            <ui:include src="egressoMenu.xhtml" />
+
+            <div class="panel panel-primary" style="margin: 0px 1px 0px 0px;"> 
+                <div class="panel-heading"> <h7/></div>
+
+                <div class="panel-body">                    
+                        <fieldset>
+                            <legend> 3. Ensino Médio </legend>        
+
+                            <p:dataTable id="tabela_EnsinoMedio" 
+                                         value="#{egressoBean.egresso.historicosEnsinoMedio}"
+                                         var="hem"                                  
+                                         emptyMessage="Nenhum histórico encontrado" >
+                                <p:column headerText="Instituição" priority="0">
+                                    <h:outputText value="#{hem.instituicaoEnsinoMedio.nome}"/>
+                                </p:column>
+                                <p:column headerText="Tipo" priority="1">
+                                    <h:outputText value="#{hem.instituicaoEnsinoMedio.tipoInstituicao}"/>
+                                </p:column>
+                                <p:column headerText="Cidade" priority="2">
+                                    <h:outputText value="#{hem.instituicaoEnsinoMedio.localizacao.cidade} - #{hem.instituicaoEnsinoMedio.localizacao.uf}"/>
+                                </p:column>
+                                <p:column headerText="País" priority="3">
+                                    <h:outputText value="#{hem.instituicaoEnsinoMedio.localizacao.pais}"/>
+                                </p:column>
+
+                                <p:column headerText="Ingresso" width="90" style="text-align: center" priority="4">
+                                    <h:outputText value="#{hem.mesInicio.value} #{hem.anoInicio}"/>                        
+                                </p:column>
+                                <p:column headerText="Conclusão" width="90" style="text-align: center" priority="5">
+                                    <h:outputText value="#{hem.mesConclusao.value} #{hem.anoConclusao}"/>
+                                </p:column>
+
+
+                                <p:column styleClass="centralizar-texto"  headerText="Ações" width="60" exportable="false" priority="0">
+                                    <p:tooltip for="btnVisualizar" value="Visualizar detalhes"/>
+                                    <p:commandLink id="btnVisualizar" action="#" disabled="true"
+                                                   immediate="true" oncomplete="PF('myOverlayPanel').show();">                                       
+                                        <h:graphicImage style="padding-left: 12px" value="/resources/img/detalhes.png" />                       
+                                    </p:commandLink>                                                               
+                                </p:column>  
+
+                            </p:dataTable>
+
+
+                        </fieldset>  
+
+                        <p:spacer />
+
+                        <fieldset>
+                            <legend> 4. Histórico UFG </legend>        
+
+                            <p:dataTable id="tabela_historicosUFG" 
+                                         value="#{egressoBean.egresso.historicosNaUFG}"
+                                         var="hufg"             
+                                         sortBy="#{hufg.anoDeFim}"
+                                         emptyMessage="Nenhum histórico encontrado" >
+                                <p:column headerText="Curso" priority="0">
+                                    <h:outputText value="#{hufg.cursoDaUFG.nome}"/>
+                                </p:column>
+                                <p:column headerText="Turno" priority="1">
+                                    <h:outputText value="#{hufg.cursoDaUFG.turno}"/>
+                                </p:column>
+                                <p:column headerText="Título trabalho" priority="2">
+                                    <h:outputText value="#{hufg.tituloDoTrabalhoFinal}" />
+                                </p:column>
+                                <p:column headerText="Início" width="90" style="text-align: center" priority="3">
+                                    <h:outputText value="#{hufg.mesDeInicio.value} #{hufg.anoDeInicio}"/>
+                                </p:column>
+
+                                <p:column headerText="Fim" width="90" style="text-align: center" priority="4">
+                                    <h:outputText value="#{hufg.mesDeFim.value}  #{hufg.anoDeFim}"/>                        
+                                </p:column>
+
+                                <p:column styleClass="centralizar-texto"  headerText="Ações" width="60" exportable="false" priority="0">
+
+                                    <p:tooltip for="btnVisualizar2" value="Editar"/>
+                                    <p:commandLink id="btnVisualizar2" action="#{egressoBean.editarHistoricoUFG(hufg)}" ajax="false"> 
+                                        <h:graphicImage style="padding-left: 12px" value="/resources/img/detalhes.png" />                                     
+                                    </p:commandLink>                                                           
+
+                                </p:column>  
+                            </p:dataTable>
+
+
+                        </fieldset>  
+                        <p:spacer/>
+                        <fieldset>
+                            <legend> 5. Cursos externos</legend>        
+
+                            <p:dataTable id="tabela_historicosOutrasIES" 
+                                         value="#{egressoBean.egresso.historicosEmOutrasIES}"
+                                         var="hies"                                            
+                                         emptyMessage="Nenhum histórico encontrado" >
+                                <p:column headerText="Curso" priority="0">
+                                    <h:outputText value="#{hies.cursoDeOutraIES.id.nomeDoCurso}"/>
+                                </p:column>
+                                <p:column headerText="Nível" priority="1">
+                                    <h:outputText 
+                                        value="#{hies.cursoDeOutraIES.nivel}" converter="jsfEnumNivelConverter"/>
+                                </p:column>
+
+                                <p:column headerText="Instituíção" priority="2">
+                                    <h:outputText value="#{hies.cursoDeOutraIES.id.iesDoCurso}"/>
+                                </p:column>
+                                <p:column headerText="Localização" priority="3">
+                                    <h:outputText value="#{hies.cursoDeOutraIES.localizacaoGeografica.pais},
+                                                  #{hies.cursoDeOutraIES.localizacaoGeografica.uf}, 
+                                                  #{hies.cursoDeOutraIES.localizacaoGeografica.cidade}" />
+                                </p:column>
+                                <p:column headerText="Início" width="90" style="text-align: center" priority="4">
+                                    <h:outputText value="#{hies.mesInicio.value} #{hies.anoInicio}"/>                        
+                                </p:column>
+
+                                <p:column headerText="Fim" width="90" style="text-align: center" priority="5">
+                                    <h:outputText value="#{hies.mesFim.value} #{hies.anoFim}"/>
+                                </p:column>
+
+                                <p:column styleClass="centralizar-texto"  headerText="Ações" width="75" exportable="false" priority="0">
+                                    <p:tooltip for="btnEditar" value="Editar"/>
+                                    <p:commandLink id="btnEditar" action="#{egressoBean.editarHistoricoOutrosCursos(hies)}" ajax="false"> 
+                                        <h:graphicImage value="/resources/img/edit2.png" />                                      
+                                    </p:commandLink>                               
+
+                                    <p:tooltip for="btnExcluir" value="Excluir"/>
+                                    <span style="padding-left: 15px" />
+                                    <p:commandLink id="btnExcluir" 
+                                                   oncomplete="exibirConfirmacao('Deseja realmente excluir o curso : #{hies.cursoDeOutraIES.id.nomeDoCurso} ?', 'formEdicaoEgresso:botao-excluir')">
+                                        <h:graphicImage value="/resources/img/excluir.png"/>
+                                        <f:setPropertyActionListener target="#{egressoBean.historicoOutraIES}" value="#{hies}"/>                                  
+                                    </p:commandLink>                                                           
+                                </p:column>                              
+                            </p:dataTable>
+                            <p:commandLink styleClass="botao-escondido" id="botao-excluir" action="#{egressoBean.removerHistorioOutrasIES()}" update="formEdicaoEgresso:tabela_historicosOutrasIES"/>
+
+                            <div class="row">
+                                <div class="col-sm-offset-7 col-sm-5 text-right">
+                                    <p:commandButton id="btnAdcionarResidencia" styleClass="ui-priority-primary" style="margin: 10px;" 
+                                                     ajax="false" icon="ui-icon-pencil"
+                                                     action="#{egressoBean.editarHistoricoOutrosCursos(null)}"
+                                                     value="Adicionar novo curso" >                                                                         
+                                    </p:commandButton>
+
+                                </div>
+                            </div>
+
+                        </fieldset>  
+                        <p:spacer/>
+                        <div class="row">
+                            <h:commandButton styleClass="btn btn-primary" style="margin: 10px;"
+                                             value="Atualizar" id="btnSalvar"
+                                             action="#{egressoBean.atualizarEgresso()}"/>                                                
+
+                            <h:commandButton styleClass="btn btn-danger" style="margin: 10px;"
+                                             value="Cancelar"  id="btnCancel"
+                                             action="#{egressoBean.cancelarAtualizacaoEgresso()}"/>
+                        </div>
+
+                </div>
+            </div>        
+        </h:form>
+    </ui:define>
+
+</ui:composition>
+

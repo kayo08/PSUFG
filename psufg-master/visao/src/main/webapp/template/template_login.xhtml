@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Sempre UFG</title>
+        <meta name="description" content="Sempre UFG." />          
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="refresh" content="${29*60}"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/img/favicon.ico" />
+        <h:outputStylesheet name="bootstrap.min.css" library="css"/>
+        <h:outputStylesheet name="custom-bootstrap.css" library="css"/>
+        <h:outputStylesheet library="css" name="style.css" />
+        <h:outputStylesheet name="grid.css" library="css"/>        
+
+    </h:head>
+    <h:body styleClass="cor-fundo-pagina" onload="ativarMenuPrincipal(#{idMenuPrincipal});">
+
+        <script defer="defer" async="async" src="//barra.brasil.gov.br/barra.js" type="text/javascript"></script>
+        <div id="barra-brasil"> 
+            <ul id="menu-barra-temp">
+                <li id="barra-brasil-portal"><a href="http://brasil.gov.br" class="barra-brasil-font">Portal do Governo Brasileiro</a></li> 
+                <li><a class="barra-brasil-font" href="http://epwg.governoeletronico.gov.br/barra/atualize.html">Atualize sua Barra de Governo</a></li>
+            </ul>
+        </div>
+
+
+
+        <div id="tudo2" >           
+
+            <div id="cabecalho-inf">
+                <div style="width:15%; padding:10px 10px 10px 10px;">
+                    <a href="http://www.inf.ufg.br" title="Acessar o portal do INF" target="_blank">
+                        <img style=" height: auto; min-width: 20px; max-width: 100%; vertical-align: middle; border:0" src="#{request.contextPath}/resources/img/marca-inf.svg" alt="Logo do INF"/>
+                    </a>
+                </div>
+                <div style="width:70%; padding:10px 10px 10px 10px;">
+                    <a href="#{request.contextPath}/faces/index.xhtml" title="Acessar a página inicial" > 
+                        <img style=" height:auto; min-height: 20px; max-width: 100%; vertical-align: middle; border:0" alt=" Logo do site." src="#{request.contextPath}/resources/img/psufg2.png"/>
+                    </a>                    
+                </div>
+                <div style="width:15%; padding:10px 10px 10px 10px;">
+                    <a class="sem-margem-direita" rel="externo" href="http://www.ufg.br" title="Este link abre uma nova aba ou janela" target="_blank">
+                        <img style=" height: auto; min-width: 20px; max-width: 100%; vertical-align: middle; border:0" src="#{request.contextPath}/resources/img/marca-ufg.svg" alt="Logo da UFG"/>
+                    </a>
+                </div>
+
+            </div>
+            <div id="mainMenu">
+                <ui:insert name="mainMenu" >                        
+                    <ui:include src="/template/main_menu.xhtml" />
+                </ui:insert>
+            </div>
+
+            <div id="content">
+                <ui:insert name="content" />                    
+            </div>
+
+            <div id="footer" style="position: relative; bottom: 0; width: auto; float: bottom " class="container">
+                <ui:insert name="footer" >
+                    <ui:include src="/template/basicfooter.xhtml" />
+                </ui:insert>
+            </div>
+        </div>
+
+        <h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+        <h:outputScript library="js" name="bootstrap.min.js" />
+        <h:outputScript library="js" name="util.js" />
+
+    </h:body>
+</html>

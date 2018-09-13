@@ -1,0 +1,331 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"               
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:param name="idMenu" value="#{usuarioBean.usuarioEgresso ? 'Mp2' : 'Mp4'}"/>
+    <ui:param name="idAbaDados" value="M1" />      
+    <ui:define name="content">
+        <h:form id="formEdicaoEgresso" class="form-horizontal" >
+            <ui:include src="egressoMenu.xhtml" />
+
+            <div class="panel panel-primary" style="margin: 0px 1px 0px 0px;"> 
+                <div class="panel-heading"> <h7/></div>
+
+                <div class="panel-body">
+                    
+                        <fieldset>
+                            <legend> 1. Perfil </legend>
+
+                            <div class="row">
+                                <div class="col-sm-12"> 
+                                    <div class="form-group">
+                                        <label for="nomeOficial" class="col-sm-2 control-label">1.1 Nome</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                                <h:inputText styleClass="form-control required" id="nomeOficial" value="#{egressoBean.egresso.nomeOficial}" disabled="true" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="nomeSocial2" class="col-sm-2 control-label">1.2 Nome Social</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+
+                                                <h:inputText styleClass="form-control" id="nomeSocial2" value="#{egressoBean.egresso.nomeSocial}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="nomeMae2" class="col-sm-2 control-label">1.3 Mãe</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="flaticon2-032-woman"></i></span>
+                                                <h:inputText styleClass="form-control required" id="nomeMae2" value="#{egressoBean.egresso.nomeDaMae}" disabled="true"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>   
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="sexo2" class="col-sm-4 control-label">1.4 Sexo</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="flaticon-gender-15"></i></span>
+                                                <h:inputText styleClass="form-control required" id="sexo2" value="#{egressoBean.egresso.sexo}" disabled="true"                                              
+                                                             converter="jsfEnumSexoConverter" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="nascimento2" class="col-sm-4 control-label">1.5 Nascimento</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                <p:calendar styleClass="form-control required input-custom" value="#{egressoBean.egresso.dataDeNascimento}"
+                                                            id="nascimento2" pattern="dd/MM/yyyy"
+                                                            required="true" requiredMessage="Data nascimento é obrigatória" 
+                                                            readonlyInput="true" placeholder="00/00/00000" navigator="true"
+                                                            maxlength="10" />                                             
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>   
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="emailPrincial2" class="col-sm-4 control-label">1.6 Email principal</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                                <h:inputText styleClass="form-control required" id="emailPrincial2" value="#{egressoBean.egresso.emailPrincipal}" required="true"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="emailAlternativo2" class="col-sm-4 control-label">1.7 Email alternativo</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+
+                                                <h:inputText styleClass="form-control" id="emailAlternativo2" value="#{egressoBean.egresso.emailAlternativo}" required="true"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="cpf" class="col-sm-4 control-label">1.8 CPF</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-credit-card"></i></span>
+                                                <h:inputText styleClass="form-control required" id="cpf" value="#{egressoBean.egresso.cpf}" disabled="true"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="senha2" class="col-sm-4 control-label">1.9 Senha</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="icon-key"></i></span>
+                                                <h:inputSecret styleClass="form-control "  id="senha2" value="#{egressoBean.egresso.novaSenha}" redisplay="true" 
+                                                               title="Insira caso queira alterar a atual.">
+                                                    <f:passThroughAttribute name="placeholder" value="Insira caso queira alterar a atual."/> 
+                                                </h:inputSecret>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>   
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="freqDivulgacao2" class="col-sm-4 control-label">1.9 Frequência divulgação</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                <h:selectOneMenu  class="form-control required"
+                                                                  id="freqDivulgacao2"
+                                                                  value="#{egressoBean.egresso.frequenciaDivulgacao}"
+                                                                  converter="jsfEnumFrequenciaDivulgacaoConverter">
+                                                    <f:selectItems 
+                                                        value="#{egressoBean.frequenciasDivulgacao}" var="f" 
+                                                        itemLabel="#{f.value}"
+                                                        itemValue="#{f}"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="visibDados2" class="col-sm-4 control-label">1.10 Visibilidade dos dados</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-eye-open"></i></span>
+                                                <h:selectOneMenu  class="form-control required"
+                                                                  id="visibDados2"
+                                                                  value="#{egressoBean.egresso.visibiliadeDeDados}"
+                                                                  converter="jsfEnumVisibilidadeDadosConverter">
+                                                    <f:selectItems 
+                                                        value="#{egressoBean.visibilidadeDados}" var="v" 
+                                                        itemLabel="#{v.value}"
+                                                        itemValue="#{v}"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="naturalidade" class="col-sm-2 control-label">1.11 Naturalidade</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="icon-play3"></i></span>
+                                                <h:inputText styleClass="form-control required"  id="naturalidade" 
+                                                             value="#{egressoBean.egresso.naturalidade.municipio}, #{egressoBean.egresso.naturalidade.cidade}, #{egressoBean.egresso.naturalidade.uf} - #{egressoBean.egresso.naturalidade.pais}" disabled="true" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label for="imgPrincipal2" class="col-sm-2 control-label">1.12 Foto principal</label>
+
+                                <p:fileUpload  id="imgPrincipal"  
+                                               fileUploadListener="#{egressoBean.atualizarFotoPrincipal}"
+                                               mode="advanced"   multiple="false" auto="true"  previewWidth="30"
+                                               sizeLimit="1000000" allowTypes="/(\.|\/)(jpe?g|gif|png)$/"
+                                               invalidFileMessage="Imagem deve ser de um dos tipos: { jpg | gif | png } >>>"
+                                               invalidSizeMessage="Tamanho máximo permitido é de 1MB  >>>"
+                                               label="Inserir imagem" update="formEdicaoEgresso"/>   
+                                <p:graphicImage id="fotoPadrao" style="width: 200px;"
+                                                value="#{egressoBean.fotoExibida eq null ? egressoBean.pegarFotoPadrao() : egressoBean.fotoExibida}"/>
+                            </div>
+
+                            <div class="row">
+                                <label for="imgPrincipal2" class="col-sm-2 control-label">1.13 Fotos adicionais</label>
+                                <p:fileUpload  id="fotosAdicionais"  
+                                               fileUploadListener="#{egressoBean.uploadFotosAdicionais}"
+                                               mode="advanced"  multiple="true" auto="false" fileLimit="5"
+                                               previewWidth="30" sizeLimit="10000000" allowTypes="/(\.|\/)(jpe?g|gif|png)$/"
+                                               invalidFileMessage="Imagem deve ser dos tipos: { jpg | gif | png } >>>"
+                                               invalidSizeMessage="Tamanho máximo permitido é de 10MB  >>>  "                
+                                               label="Inserir imagens" update="formEdicaoEgresso"/>                              
+
+                                <h:panelGroup rendered="#{egressoBean.fotosAdicionais ne null and egressoBean.fotosAdicionais.size() > 0}">
+                                    <p:outputLabel value="Fotos" />
+                                    <p:galleria id="galeriaFotosAdicionais" 
+                                                autoPlay="false"
+                                                value="#{egressoBean.fotosAdicionais}" 
+                                                style="vertical-align: middle; text-align: center"
+                                                var="foto" 
+                                                showCaption="true">
+                                        <p:graphicImage value="#{foto}" title="#{foto.name}" stream="false"/>
+                                    </p:galleria>
+                                </h:panelGroup>
+                            </div>   
+
+
+                        </fieldset>
+                        <p:spacer />
+                        <fieldset>
+                            <legend> 2. Endereço </legend>        
+
+                            <p:dataTable id="tabela_endereco" 
+                                         var="r" 
+                                         value="#{egressoBean.egresso.residencias}"
+                                         rowKey="#{r.id}"
+                                         emptyMessage="Nenhuma residência encontrada" >
+                                <p:column headerText="Logradouro"  priority="0"
+                                          filterMatchMode="startsWith">
+                                    <h:outputText value="#{r.logradouro}" />
+                                </p:column>
+                                <p:column headerText="Bairro" priority="2"
+                                          filterMatchMode="startsWith">
+                                    <h:outputText value="#{r.bairro}" />
+                                </p:column>
+                                <p:column headerText="CEP" priority="3"
+                                          filterMatchMode="startsWith">
+                                    <h:outputText value="#{r.CEP}" />
+                                </p:column>
+                                <p:column headerText="Municipio"  priority="1"
+                                          filterMatchMode="startsWith">
+                                    <h:outputText value="#{r.localizacaoGeografica.municipio}" />
+                                </p:column>
+                                <p:column headerText="Início" priority="4"
+                                          filterMatchMode="startsWith">
+                                    <h:outputText value="#{r.dataDeIncio}" converter="jsfLocalDateConverter"/>
+                                </p:column>
+                                <p:column headerText="Fim" priority="5"
+                                          filterMatchMode="startsWith">
+                                    <h:outputText value="#{r.dataDeFim}" converter="jsfLocalDateConverter"/>
+                                </p:column>
+
+
+                                <p:column styleClass="text-center"  headerText="Ações" width="75" exportable="false" priority="0">
+                                    <p:tooltip for="btnEditar" value="Editar"/>
+                                    <p:commandLink id="btnEditar" action="#{egressoBean.editarResidencia(r)}" ajax="false"> 
+                                        <h:graphicImage value="/resources/img/edit2.png" />                                      
+                                    </p:commandLink>                               
+
+                                    <p:tooltip for="btnExcluir" value="Excluir"/>
+                                    <span style="padding-left: 15px" />
+                                    <p:commandLink id="btnExcluir" 
+                                                   oncomplete="exibirConfirmacao('Deseja realmente excluir a residência CEP: #{r.CEP} ?', 'formEdicaoEgresso:botao-excluir')">
+                                        <h:graphicImage value="/resources/img/excluir.png"/>
+                                        <f:setPropertyActionListener target="#{egressoBean.residenciaEdicao}" value="#{r}"/>                                  
+                                    </p:commandLink>                                                           
+                                </p:column>                              
+                            </p:dataTable>
+                            <p:commandLink styleClass="botao-escondido" id="botao-excluir" action="#{egressoBean.removerResidencia(egressoBean.residenciaEdicao)}" update="formEdicaoEgresso:tabela_endereco"/>
+
+                            <div class="row">
+                                <div class="col-sm-offset-7 col-sm-5 text-right">
+                                    <p:commandButton id="btnAdcionarResidencia" styleClass="ui-priority-primary" style="margin: 10px;" 
+                                                     ajax="false" icon="ui-icon-pencil"
+                                                     action="#{egressoBean.editarResidencia(null)}"
+                                                     value="Adicionar novo endereço" >                                                                         
+                                    </p:commandButton>
+
+                                </div>
+                            </div> 
+
+
+                            <div class="row">
+                                <h:commandButton styleClass="btn btn-primary" style="margin: 10px;"
+                                                 value="Atualizar" id="btnSalvar" 
+                                                 action="#{egressoBean.atualizarEgresso()}"/>
+
+                                <h:commandButton id="btnSalvaOculto" action="#{egressoBean.limparCampos()}" style="display: none !important" />
+
+                                <h:commandButton styleClass="btn btn-danger" style="margin: 10px;"
+                                                 value="Cancelar"  id="btnCancel"
+                                                 action="#{egressoBean.cancelarAtualizacaoEgresso()}"/>
+                            </div>
+
+                        </fieldset>            
+
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

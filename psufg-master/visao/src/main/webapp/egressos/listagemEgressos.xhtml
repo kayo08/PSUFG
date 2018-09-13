@@ -1,0 +1,392 @@
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:param name="idMenu" value="#{usuarioBean.usuarioEgresso ? 'Mp2' : 'Mp4'}"/>
+
+    <ui:define name="content">                        
+        <div>
+            <p:accordionPanel activeIndex="#{egressoBean.accordionAtivo}" id="idAccordionPanel"> 
+                <p:ajax event="tabChange" listener="#{egressoBean.onTabChange}"  />
+                <p:ajax event="tabClose" listener="#{egressoBean.onTabClose}" />                
+                <p:tab id="tabFiltro" titleStyleClass="titulo-accordion">
+                    <f:facet name="title">
+                        <h:panelGroup rendered="#{!consultaLazyBean.exibirFrmSalvarConsulta and !consultaLazyBean.exibirConsultasFavoritas}">
+                            <span class="icon-search"/> <h:outputText value=" Consultar"/>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{consultaLazyBean.exibirFrmSalvarConsulta or consultaLazyBean.exibirConsultasFavoritas}">
+                            <span class="icon-star-empty"/> <h:outputText value="#{consultaLazyBean.exibirFrmSalvarConsulta ? ' Adicionar consulta aos favoritos' : ' Consultas favoritas'}"/>
+                        </h:panelGroup>
+
+                    </f:facet>
+                    <div class="panel panel-primary" style="margin:-5px; border-radius: 0 0 5px 5px"> 
+
+                        <div class="panel-body" id="idDivPanelConsultas">
+
+                            <h:form id="filtrarEgresso" class="form-horizontal" >
+                                <p:growl id="messages" showDetail="false"/>
+
+                                <h:panelGroup rendered="#{!consultaLazyBean.exibirFrmSalvarConsulta and !consultaLazyBean.exibirConsultasFavoritas}">
+                                    <fieldset>
+                                        <legend> <span class="icon-filter"/> Adicionar filtro </legend>
+                                        <p:commandLink class="btn btn-primary btn-sm"  id="faz"
+                                                       style="color: #FFFFFF !important; position: absolute;  right: 25px;top: 12px;border-radius: 5px 5px 0 0;width: 40px;height: 25px;"
+                                                       action="#{consultaLazyBean.abrirFavoritos(usuarioBean.usuarioLogado.id)}" immediate="true" update="idAccordionPanel ">                                                
+                                            <span class="icon-star-full"/> 
+                                        </p:commandLink>
+
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <h:panelGroup id="pgOperadores" rendered="#{egressoBean.filtrosConsulta.size() > 0}">                                                
+                                                        <label for="operador" class="col-sm-3 control-label">Operador:</label>
+                                                        <div class="col-sm-9">
+                                                            <p:selectOneButton id="idOperador" value="#{egressoBean.operadorConsulta}" class="operador" 
+                                                                               required="true" requiredMessage="Selecione o operador!">
+                                                                <f:selectItem itemLabel="E" itemValue="AND"/>
+                                                                <f:selectItem itemLabel="OU" itemValue="OR"/>
+                                                            </p:selectOneButton>
+                                                        </div>                                                    
+                                                    </h:panelGroup>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="campo" class="col-sm-3 control-label">Campo:</label>
+                                                    <div class="col-sm-9">          
+                                                        <h:selectOneMenu
+                                                            class="form-control required"
+                                                            id="campo"  
+                                                            required="#{consultaLazyBean.model eq null ? 'true' : 'false'}"
+                                                            requiredMessage="Selecione um campo"
+                                                            value="#{egressoBean.campoConsulta}" immediate="true" >                                                        
+                                                            <f:selectItem id="itemDefault" itemLabel="Selecione" itemDisabled="true" />
+                                                            <f:selectItems
+                                                                value="#{egressoBean.camposDeConsulta}" var="c"                                                                 
+                                                                itemLabel="#{c.value.toString()}"
+                                                                itemValue="#{c.value.toString()}"/>
+                                                            <f:ajax render="pGRegraGeral pGAdcionarFiltro" immediate="true"/> 
+                                                        </h:selectOneMenu>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h:panelGroup id="pGRegraGeral">                                                
+                                                <h:panelGroup id="pgEnum" rendered="#{egressoBean.campoEnum}">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="valorEnum" class="col-sm-4 control-label">Valor(es):</label>
+                                                            <div class="col-sm-7">                                                    
+                                                                <p:selectCheckboxMenu  class="form-control required idSCBMenu"                                                                               
+                                                                                       id="valorEnum" label="#{egressoBean.campoEnum != null ? 'Selecione' : 'Erro'}"
+                                                                                       disabled="#{egressoBean.campoConsulta eq null || egressoBean.campoConsulta eq ''}"
+                                                                                       required="true" requiredMessage="Selecione um ou mais valores"
+                                                                                       value="#{egressoBean.valoresDoEnumSelecionados}">
+                                                                    <f:selectItems     value="#{egressoBean.regrasDeFiltro}"/>
+                                                                </p:selectCheckboxMenu>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+
+                                                <h:panelGroup id="pgNaoEnum" rendered="#{!egressoBean.campoEnum}">                                                    
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label for="regra" class="col-sm-4 control-label">Regra:</label>
+                                                            <div class="col-sm-7">                                                    
+                                                                <h:selectOneMenu  class="form-control required"
+                                                                                  id="regra" requiredMessage="Defina uma regra"
+                                                                                  disabled="#{egressoBean.campoConsulta eq null || egressoBean.campoConsulta eq ''}"
+                                                                                  value="#{egressoBean.regraDeFiltro}">                                                                      
+                                                                    <f:selectItem itemLabel="#{egressoBean.campoEnum != null ? 'Selecione' : 'Erro'}" itemDisabled="true" />
+                                                                    <f:selectItems 
+                                                                        value="#{egressoBean.regrasDeFiltro}" var="r" 
+                                                                        itemLabel="#{r}"
+                                                                        itemValue="#{r}"/>   
+                                                                    <f:ajax render="pGValor pGValor2" immediate="true"/> 
+                                                                </h:selectOneMenu>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <h:panelGroup id="pGValor" rendered="#{egressoBean.tipoDoCampoSelecionado.equalsIgnoreCase('data')}">
+                                                        <div class="col-sm-3" id="divValor">
+                                                            <div class="form-group">
+                                                                <label for="val" class="col-sm-4 control-label">Valor:</label>                                                                
+                                                                <div class="col-sm-7">
+                                                                    <p:inputMask id="date" styleClass="form-control required" value="#{egressoBean.valorParametroConsulta}" mask="99/99/9999" 
+                                                                                 disabled="#{egressoBean.regraDeFiltro eq 'está vazio' || egressoBean.regraDeFiltro eq null }"
+                                                                                 placeholder="00/00/0000" maxlength="10" required="true"  requiredMessage="Insira um valor!" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </h:panelGroup>
+
+                                                    <h:panelGroup id="pGValor2" rendered="#{!egressoBean.tipoDoCampoSelecionado.equalsIgnoreCase('data')}">
+                                                        <div class="col-sm-3" id="divValor2">                                                        
+                                                            <div class="form-group">
+                                                                <label for="val2" class="col-sm-4 control-label">Valor:</label>                                                                
+                                                                <div class="col-sm-7">
+                                                                    <h:inputText id="val2" styleClass="form-control required" value="#{egressoBean.valorParametroConsulta}" 
+                                                                                 disabled="#{egressoBean.regraDeFiltro eq 'está vazio' || egressoBean.regraDeFiltro eq null }"
+                                                                                 required="true" requiredMessage="Insira um valor!"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+                                            </h:panelGroup>
+
+                                            <h:panelGroup id="pGAdcionarFiltro">
+                                                <div class="col-sm-2 text-right" style="margin-bottom: 10px;">
+                                                    <p:commandLink class="btn btn-success btn-sm" style="color: #FFFFFF !important;" 
+                                                                   action="#{egressoBean.adicionarFiltro()}"   ajax="false"                                                                
+                                                                   disabled="#{egressoBean.campoConsulta == null}"
+                                                                   update="idAccordionPanel:filtrarEgresso idPGListagens @this">
+                                                        <span class="icon-plus"/> Adicionar  
+                                                    </p:commandLink>
+                                                </div>
+                                            </h:panelGroup>
+                                        </div>                                                                  
+                                    </fieldset>  
+
+                                    <h:panelGroup id="pgFiltrosAdicionados" rendered="#{egressoBean.filtrosConsulta ne null and  egressoBean.filtrosConsulta.size() > 0}">
+                                        <p:dataTable id="dtFiltrosAdicionados"
+                                                     var="filter" 
+                                                     value="#{egressoBean.filtrosConsulta}"                                                     
+                                                     rowKey="#{filter.campo}"
+                                                     emptyMessage="Nenhum filtro adicionado" >
+                                            <f:facet name="header">                                
+                                                <span class="icon-filter" style="color:#2a6ba3 !important"/> <h:outputLabel value="Filtros Adicionados" style="margin-left: 3px; color:#2a6ba3 !important "/>
+                                            </f:facet>
+
+                                            <p:column headerText="Op" width="30" class="text-center" >
+                                                <h:outputText value="#{filter.operadorLabel}" style="font-weight: bolder; color: #000;"/>
+                                            </p:column>
+                                            <p:column headerText="Campo">
+                                                <h:outputText value="#{filter.campo}" />
+                                            </p:column>
+                                            <p:column headerText="Regra" width="90" styleClass="text-center">
+                                                <h:outputText value="#{filter.regra}" />
+                                            </p:column>                                        
+                                            <p:column headerText="Valor">
+                                                <h:outputText value="#{filter.valorLabel}" escape="false" />
+                                            </p:column>
+
+                                            <p:column styleClass="text-center"  headerText="Ações" width="50" exportable="false" priority="0">
+                                                <p:tooltip for="btnExcluir" value="Excluir"/>
+                                                <span class="text-center" />
+                                                <p:commandLink id="btnExcluir" action="#{egressoBean.removerFiltro(filter)}" update="idAccordionPanel idPGListagens" immediate="true" ajax="false"  >
+                                                    <h:graphicImage value="/resources/img/excluir.png"/>                                                
+                                                </p:commandLink>                                                           
+                                            </p:column>                                                 
+                                        </p:dataTable>   
+                                        <p:spacer/>
+
+                                        <div class="row">
+                                            <div class="col-sm-offset-7 col-sm-5 text-right">
+                                                <p:commandButton id="btnDesejaSalvarConsulta"  styleClass="ui-priority-primary " style="padding:2px; margin: 10px; font-size: 12px;" 
+                                                                 value="Adicionar aos favoritos" icon="ui-icon-star"  immediate="true"
+                                                                 action="#{consultaLazyBean.adicionarConsultaAosFavoritos()}"
+                                                                 update="idAccordionPanel"/>
+                                            </div>
+                                        </div>
+
+                                    </h:panelGroup> 
+                                </h:panelGroup>                                
+                            </h:form>
+
+                            <!--Formulário SALVAR consulta-->
+                            <h:form id="frmSalvarConsulta" class="form-horizontal" rendered="#{consultaLazyBean.exibirFrmSalvarConsulta and egressoBean.filtrosConsulta.size() > 0}">
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-sm-12"> 
+                                            <div class="form-group">
+                                                <label for="descricao" class="col-sm-2 control-label">Descrição:</label>
+                                                <div class="col-sm-10">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="glyphicon glyphicon-info-sign"></i></span>
+                                                        <h:inputText styleClass="form-control input-custom" tabindex="0"
+                                                                     id="descricao" required="true" requiredMessage="Descrição é obrigatória!"
+                                                                     value="#{consultaLazyBean.consultaEdicao.descricaoDaConsulta}">
+                                                            <f:passThroughAttribute name="placeholder" value="Insira uma descrição que explique essa consulta"/>
+                                                        </h:inputText>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="col-sm-2 control-label">
+                                                    <p:selectBooleanButton id="value1" onIcon="ui-icon-check" offIcon="ui-icon-close" 
+                                                                           value="#{consultaLazyBean.tornarConsultaPublica}" onLabel="Sim" offLabel="Não" style="width:60px" />
+                                                </div>
+                                                <div class="col-sm-10" style="margin-top:10px;">
+                                                    <label for="visibilidade" tabindex="1" style="font-size: 12px !important; color: #09395d !important; font-weight: bolder">Tornar essa consulta pública.</label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12 text-right">
+                                            <h:commandButton styleClass="btn btn-primary" style="margin: 5px;" id="btnSalvarConsulta" 
+                                                             value="Salvar" action="#{consultaLazyBean.salvarConsultaFavorita(usuarioBean.usuarioLogado.id)}"/>
+
+                                            <h:commandButton styleClass="btn btn-danger" style="margin-left: 10px;" id="btnCancelarSalvaConsulta" 
+                                                             value="Cancelar" action="#{consultaLazyBean.cancelarConsulta()}" immediate="true"/>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </h:form>
+
+                            <!--Formulário ABRIR CONSULTAS FAVORITAS-->
+                            <h:form id="consultasFavoritas" rendered="#{consultaLazyBean.exibirConsultasFavoritas}">
+                                <h:panelGroup id="pgConsultasFavoritas">
+                                    <p:dataTable id="dtConsultasFavoritas"  widgetVar="favoritasTabela"                                                     
+                                                 var="consFav" value="#{consultaLazyBean.consultasSalvas}"                                                 
+                                                 rows="5" paginator="true" rowsPerPageTemplate="5,10,20"  
+                                                 currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink}  {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 multiViewState="true" resizableColumns="true" resizeMode="expand"                                     
+                                                 emptyMessage="Nenhum consulta encontrada!" >
+                                        <f:facet name="header">                                                      
+                                            <span class="icon-star-empty" style="color:#2a6ba3 !important"/> 
+                                            <h:outputLabel value="Listagem consultas favoritas" style="margin-left: 3px; color:#2a6ba3 !important "/>
+                                        </f:facet>
+
+                                        <p:column headerText="Data" width="30" class="text-center" 
+                                                  sortBy="#{consFav.timeStampCriacao}">
+                                            <h:outputText value="#{consFav.timeStampCriacao}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" /> </h:outputText>  
+                                        </p:column>
+
+                                        <p:column headerText="Usuário"
+                                                  filterBy="#{consFav.nomeUsuario}"
+                                                  sortBy="#{consFav.nomeUsuario}">
+                                            <h:outputText value="#{consFav.nomeUsuario}" escape="false" />
+                                        </p:column>
+
+                                        <p:column headerText="Descrição"
+                                                  filterBy="#{consFav.descricaoDaConsulta}"
+                                                  sortBy="#{consFav.descricaoDaConsulta}">
+                                            <h:outputText value="#{consFav.descricaoDaConsulta}" />
+                                        </p:column>
+
+                                        <p:column headerText="Visibilidade" 
+                                                  filterBy="#{consFav.visibilidadeDaConsulta.value}" filterMatchMode="startsWith"
+                                                  sortBy="#{consFav.visibilidadeDaConsulta.value}">
+                                            <h:outputText value="#{consFav.visibilidadeDaConsulta.value}" />
+                                        </p:column>
+
+
+                                        <p:column styleClass="text-center"  headerText="Ações" width="70" exportable="false" priority="0">
+                                            <p:tooltip for="btnCarregarConsulta" value="Abrir"/>
+                                            <span class="text-center" />
+                                            <p:commandLink id="btnCarregarConsulta" action="#{consultaLazyBean.carregarConsulta(consFav)}" ajax="false">
+                                                <h:graphicImage value="/resources/img/detalhes.png" style="margin-right: 5px;"/>                                                
+                                            </p:commandLink>                                                           
+
+                                            <p:tooltip for="btnExcluir" value="Excluir"/>
+                                            <span class="text-center" />
+                                            <p:commandLink id="btnExcluir" action="#{consultaLazyBean.excluirConsulta(consFav)}" update="idAccordionPanel:consultasFavoritas">
+                                                <h:graphicImage value="/resources/img/excluir.png"/>                                                
+                                            </p:commandLink>                                                           
+                                        </p:column>                                                 
+                                    </p:dataTable>   
+                                </h:panelGroup>
+                                <p:spacer/>
+                                <div class="row text-right" >
+                                    <div class="col-sm-12 text-right">
+                                        <p:commandLink styleClass="btn btn-danger" style="margin-left: 10px;" id="btnCancelar2" 
+                                                       value="Cancelar" action="#{consultaLazyBean.cancelarConsulta()}" immediate="true" update="idAccordionPanel"/>
+                                    </div>
+                                </div>
+                            </h:form>
+
+                        </div>
+                    </div>
+                </p:tab>   
+            </p:accordionPanel>       
+        </div>
+
+        <p:spacer/>
+
+        <div class="row">
+            <h:form>
+                <p:commandLink action="#{egressoBean.setAbaSelecionada('abaDadosPessoais')}" update="idPGListagens" onclick="ativarAbaSelecionada('abaDadosPessoais'); ocultaMapa()"> 
+                    <div id="abaDadosPessoais" class="menu-custom menu-custom-ativo menu-custom2 col-sm-1 col-sm-offset-1"> <span class="glyphicon glyphicon-user"></span> Dados Pessoais</div> 
+                </p:commandLink>
+                <p:commandLink action="#{egressoBean.setAbaSelecionada('abaDadosResidencia')}" update="idPGListagens" onclick="ativarAbaSelecionada('abaDadosResidencia'); ocultaMapa()"> 
+                    <div id="abaDadosResidencia" class="menu-custom menu-custom2 col-sm-1 "> <span class="glyphicon glyphicon-road"></span>  Dados Residência </div>
+                </p:commandLink>
+                <p:commandLink action="#{egressoBean.setAbaSelecionada('abaEnsinoMedio')}" update="idPGListagens" onclick="ativarAbaSelecionada('abaEnsinoMedio'); ocultaMapa()"> 
+                    <div id="abaEnsinoMedio" class="menu-custom  menu-custom2 col-sm-1 "> <span class="glyphicon glyphicon-copyright-mark"></span> Ensino Médio </div>
+                </p:commandLink>
+                <p:commandLink action="#{egressoBean.setAbaSelecionada('abaHistoricoUFG')}" update="idPGListagens" onclick="ativarAbaSelecionada('abaHistoricoUFG'); ocultaMapa()"> 
+                    <div id="abaHistoricoUFG" class="menu-custom  menu-custom2 col-sm-1 "> <span class="glyphicon glyphicon-copyright-mark"></span> Histórico UFG </div>
+                </p:commandLink>
+                <p:commandLink action="#{egressoBean.setAbaSelecionada('abaAvaliacaoCurso')}" update="idPGListagens" onclick="ativarAbaSelecionada('abaAvaliacaoCurso'); ocultaMapa()"> 
+                    <div id="abaAvaliacaoCurso" class="menu-custom menu-custom2 col-sm-1 "> <span class="glyphicon glyphicon-copyright-mark"></span> Avaliação de Curso </div>
+                </p:commandLink>
+                <p:commandLink action="#{egressoBean.setAbaSelecionada('abaProgramaAcademico')}" update="idPGListagens" onclick="ativarAbaSelecionada('abaProgramaAcademico'); ocultaMapa()"> 
+                    <div id="abaProgramaAcademico" class="menu-custom  menu-custom2 col-sm-1 "> <span class="glyphicon glyphicon-copyright-mark"></span> Programa Acadêmico </div>
+                </p:commandLink>
+                <p:commandLink action="#{egressoBean.setAbaSelecionada('abaHistoricoOutrasIES')}" update="idPGListagens" onclick="ativarAbaSelecionada('abaHistoricoOutrasIES'); ocultaMapa()"> 
+                    <div id="abaHistoricoOutrasIES" class="menu-custom  menu-custom2 col-sm-1 "> <span class="glyphicon glyphicon-copyright-mark"></span> Hist. outras IES </div>
+                </p:commandLink>
+                <p:commandLink action="#{egressoBean.setAbaSelecionada('abaAtuacaoProfissional')}" update="idPGListagens" onclick="ativarAbaSelecionada('abaAtuacaoProfissional'); ocultaMapa()"> 
+                    <div id="abaAtuacaoProfissional" class="menu-custom menu-custom2 col-sm-1 "> <span class="glyphicon glyphicon-copyright-mark"></span> Atuação Profissional </div>
+                </p:commandLink>
+            </h:form>
+        </div>
+
+        <!--Abas do resultado da CONSULTA-->
+        <h:panelGroup id="idPGListagens">
+            <ui:insert name="abaSelecionada">
+                <ui:include src="#{egressoBean.carregarConteudoAbaSelecionada()}"/>
+            </ui:insert>
+        </h:panelGroup>
+
+        <p:spacer/>
+
+        <div id="mapa" style="display: none">
+            <p:panel header="#{mapaBean.tituloMapa}">
+                <div style=" margin:-5px; border-radius: 0 0 5px 5px" class="panel panel-primary">
+                    <div class="panel-body">
+
+                        <p:gmap id="map" center="-16.6065625,-49.2691943" zoom="3" type="terrain" style="width:100%; height:400px" model="#{mapaBean.simpleModel}" 
+                                widgetVar="map" fitBounds="true"/>
+
+                    </div>
+                </div>
+            </p:panel>
+        </div>
+
+        <script src="http://maps.google.com/maps/api/js?key=AIzaSyAYC1fVc_EYgaqu-lt7conWximuuZUHQnw" type="text/javascript"></script>
+
+        <script type="text/javascript" src="./wiklimb/js/markerclusterer_compiled.js" />
+
+        <script>
+                    function clusterMarkers() {
+                        var mcOptions = {gridSize: 50, maxZoom: 15};
+                        var mc = new MarkerClusterer(PF('map').map, PF('map').map.markers, mcOptions);
+                        PF('map').map.fitBounds = google.maps.Map.prototype.fitBounds;
+                    }
+                    $(window).load(function () {
+                        clusterMarkers();
+                    });
+        </script>        
+    </ui:define>
+
+</ui:composition>

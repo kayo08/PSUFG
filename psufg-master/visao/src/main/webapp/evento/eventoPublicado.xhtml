@@ -1,0 +1,31 @@
+<ui:composition template="/template/template_login.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">        
+
+        <p:spacer/>
+        
+        <h:outputText value="#{eventoBean.eventoEdicao.tipoEvento}" style="display: block; float: right; margin-right: 20px; color: white; background-color:#0ab770; padding: 10px 20px; border-radius: 50%;"/>
+        
+        <div style="margin:20px; display:block; background: transparent url(#{request.contextPath}/resources/img/widget-title-line.png) repeat-x 0 50%">
+            <h4 style="color: #0ab770; background: white; display: inline-block; padding: 0 10px;"> <span class="glyphicon glyphicon-bookmark"/> #{eventoBean.eventoEdicao.assunto}  </h4> <br/>
+            <h:outputFormat value="{0, date, dd/MM/yyyy 'às' HH:mm} por #{eventoBean.eventoEdicao.identificacaoSolicitante}" style="color: #b5b5b5; display: inline-block; padding: 0 10px;">
+                <f:param value="#{eventoBean.eventoEdicao.timeStampDaSolicitacao}" />
+            </h:outputFormat>
+        </div>
+        
+        <div style="margin:30px; display:block;">
+
+            <h:outputText escape="false" style=" display: block; text-align:justify !important; padding-top: 10px; font-size: 13px !important;" 
+                          value="#{eventoBean.eventoEdicao.descricaoEvento}" />
+
+        </div>
+
+
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,132 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"      
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <head>      
+        <title> Sempre UFG </title>
+        <h:outputStylesheet name="bootstrap.min.css" library="css"/>
+        <h:outputStylesheet name="custom-bootstrap.css" library="css"/>
+        <h:outputStylesheet name="style.css" library="css"/>        
+        <h:outputStylesheet name="grid.css" library="css"/>        
+    </head>
+
+
+    <h:body>                            
+        <div class="panel panel-primary" style="margin: 0px"> 
+            <div class="panel-heading"> <h7/></div>
+            <div class="panel-body">                   
+                <h:form id="frm_ProgAcad">
+                    <fieldset>
+                        <div class="row" style="color: #337ab7; font-weight: normal !important; border-bottom: 1px solid #e5e5e5 !important; margin: 0px 0px 20px 0 !important; font-size:16px !important; font-family: Lucida Grande, Lucida Sans, Arial, sans-serif !important;" >
+                            <span class="icon-search" style="margin-right: 5px;"/> 
+                            <h:outputLabel  style="color: #337ab7; font-weight: normal !important;" value=" Resultado da consulta" />
+                            <h:commandLink class="btn btn-primary btn-sm" 
+                                           style="margin-right: 10px; float: right; color: #ffffff !important; border: 1 solid #337ab7 !important; border-radius: 5px 5px 0 0; width: 140px;height: 27px;" 
+                                           action="#{mapaBean.mapaEgressosNascimento()}" > 
+                                Mostrar no <p:graphicImage  style = "margin-top: -5px; width: 24px;" value="/resources/img/maps.png" /> 
+                            </h:commandLink>                                
+
+                        </div>                                        
+                        <p:dataTable id="tabela_ProgAcad" var="progAcad" value="#{consultaLazyBean.model}" lazy="true"
+                                     sortBy="#{progAcad.historico.egresso.nomeOficial}" rowKey="#{progAcad}"
+                                     rows="10" paginator="true" rowsPerPageTemplate="10,50,100" selectionMode="single"
+                                     currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink}  {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     multiViewState="true" resizableColumns="true" resizeMode="expand"                                     
+                                     emptyMessage="Nenhum histórico encontrado" >            
+
+                            <p:ajax event="page" oncomplete="updateToggles('myColumnToggler8')" />
+                            <p:ajax event="sort" oncomplete="updateToggles('myColumnToggler8')" />
+
+                            <f:facet name="header">                                
+                                <h:outputLabel style="padding: 5px;" value="Listagem dos dados de programas acadêmicos"/>
+                                <p:commandButton id="toggler8" type="button" value="Seleção de colunas" style="float:right; margin-top: 5px;" icon="ui-icon-calculator" />
+
+                                <p:columnToggler datasource="tabela_ProgAcad" trigger="toggler8"  widgetVar="myColumnToggler8" transient="true"/>
+                            </f:facet>
+
+
+
+                            <p:column headerText="Id" sortBy="#{progAcad.historico.egresso.cpf}">
+                                <h:outputText value="#{progAcad.historico.egresso.cpf.substring(0,3)}#{progAcad.historico.egresso.cpf.substring(8,11)}"/> 
+                            </p:column>
+
+                            <p:column headerText="Egresso" sortBy="#{progAcad.historico.egresso.nomeOficial}">
+                                <h:outputText value="#{progAcad.historico.egresso.nomeSocial.trim().length() > 1 ? progAcad.historico.egresso.nomeSocial : progAcad.historico.egresso.nomeOficial}" />
+                            </p:column>
+                            <p:column visible="false" headerText="Email Principal"  sortBy="#{progAcad.historico.egresso.emailPrincipal}"> <h:outputText value="#{progAcad.historico.egresso.emailPrincipal}" /></p:column>
+                            <p:column visible="false" headerText="Email alternativo" sortBy="#{progAcad.historico.egresso.emailAlternativo}"> <h:outputText value="#{progAcad.historico.egresso.emailAlternativo}"/> </p:column>
+                            <p:column visible="false" headerText="Nasc:Data" sortBy="#{progAcad.historico.egresso.dataDeNascimento}"> <h:outputText value="#{progAcad.historico.egresso.dataDeNascimento}" > <f:convertDateTime pattern="dd/MM/yyyy" /> </h:outputText> </p:column>
+                            <p:column visible="false" headerText="Nasc:Cidade" sortBy="#{progAcad.historico.egresso.naturalidade.cidade}"> <h:outputText value="#{progAcad.historico.egresso.naturalidade.cidade}"/>  </p:column>
+                            <p:column visible="false" headerText="Nasc:UF" sortBy="#{progAcad.historico.egresso.naturalidade.siglaUF}"> <h:outputText value="#{progAcad.historico.egresso.naturalidade.siglaUF}"/>  </p:column>
+                            <p:column visible="false" headerText="Nasc:País" sortBy="#{progAcad.historico.egresso.naturalidade.pais}"> <h:outputText value="#{progAcad.historico.egresso.naturalidade.pais}"/>  </p:column>      
+
+                            <p:column visible="true" headerText="Matrícula" sortBy="#{progAcad.historico.numeroDeMatricula}"> <h:outputText value="#{progAcad.historico.numeroDeMatricula}"/>  </p:column>
+                            <p:column visible="false" headerText="Início" sortBy="#{progAcad.historico.anoDeInicio}"> <h:outputText value="#{progAcad.historico.mesDeInicio.value.substring(0,3)}/#{progAcad.historico.anoDeInicio}"/>  </p:column>
+                            <p:column visible="false" headerText="Fim" sortBy="#{progAcad.historico.anoDeFim}"> <h:outputText value="#{progAcad.historico.mesDeFim.value.substring(0,3)}/#{progAcad.historico.anoDeFim}"/>  </p:column>
+                            <p:column visible="false" headerText="Trabalho final" sortBy="#{progAcad.historico.tituloDoTrabalhoFinal}"> <h:outputText value="#{progAcad.historico.tituloDoTrabalhoFinal}"/>  </p:column>                            
+
+                            <p:column visible="true" headerText="Curso" sortBy="#{progAcad.historico.cursoDaUFG.nome}"> <h:outputText value="#{progAcad.historico.cursoDaUFG.nome}"/>  </p:column>
+                            <p:column visible="false" headerText="Nível" sortBy="#{progAcad.historico.cursoDaUFG.nivel}"> <h:outputText value="#{progAcad.historico.cursoDaUFG.nivel}"/>  </p:column>
+                            <p:column visible="false" headerText="Modalidade" sortBy="#{progAcad.historico.cursoDaUFG.modalidadeCurso}"> <h:outputText value="#{progAcad.historico.cursoDaUFG.modalidadeCurso}"/>  </p:column>
+                            <p:column visible="false" headerText="Turno" sortBy="#{progAcad.historico.cursoDaUFG.turno}"> <h:outputText value="#{progAcad.historico.cursoDaUFG.turno}"/>  </p:column>
+                            <p:column visible="false" headerText="Tipo Resolução" sortBy="#{progAcad.historico.cursoDaUFG.tipoDeResolucao}"> <h:outputText value="#{progAcad.historico.cursoDaUFG.tipoDeResolucao}"/>  </p:column>
+                            <p:column visible="false" headerText="Num Resolução" sortBy="#{progAcad.historico.cursoDaUFG.numeroDaResolucao}"> <h:outputText value="#{progAcad.historico.cursoDaUFG.numeroDaResolucao}"/>  </p:column>
+                            <p:column visible="false" headerText="Área" sortBy="#{progAcad.historico.cursoDaUFG.area.nomeArea}"> <h:outputText value="#{progAcad.historico.cursoDaUFG.area.nomeArea}"/>  </p:column>                            
+
+                            <p:column visible="false" headerText="Unidade Academica" sortBy="#{progAcad.historico.cursoDaUFG.unidadeAcademica.nome}"> <h:outputText value="#{progAcad.historico.cursoDaUFG.unidadeAcademica.nome}"/>  </p:column>
+                            <p:column visible="false" headerText="Regional" sortBy="#{progAcad.historico.cursoDaUFG.unidadeAcademica.regionalUFG.nome}"> <h:outputText value="#{progAcad.historico.cursoDaUFG.unidadeAcademica.regionalUFG.nome}"/>  </p:column>                            
+                            <p:column visible="false" headerText="Cidade" sortBy="#{progAcad.historico.cursoDaUFG.unidadeAcademica.regionalUFG.localizacao.cidade}"> <h:outputText value="#{progAcad.historico.cursoDaUFG.unidadeAcademica.regionalUFG.localizacao.cidade}"/>  </p:column>                            
+                            <p:column visible="false" headerText="UF" sortBy="#{progAcad.historico.cursoDaUFG.unidadeAcademica.regionalUFG.localizacao.siglaUF}"> <h:outputText value="#{progAcad.historico.cursoDaUFG.unidadeAcademica.regionalUFG.localizacao.siglaUF}"/>  </p:column>  
+
+                            <p:column visible="true" headerText="Tipo" sortBy="#{progAcad.tipoProgramaAcademico.value}"> <h:outputText value="#{progAcad.tipoProgramaAcademico.value}"/>  </p:column>
+                            <p:column visible="true" headerText="Início" sortBy="#{progAcad.dataDeInicio}"> <h:outputText value="#{progAcad.dataDeInicio}" converter="jsfLocalDateConverter"/>  </p:column>
+                            <p:column visible="true" headerText="Fim" sortBy="#{progAcad.dataDeFim}" > <h:outputText value="#{progAcad.dataDeFim}" converter="jsfLocalDateConverter"/>  </p:column>                                                        
+                            <p:column visible="true" headerText="Descrição" sortBy="#{progAcad.descricao}"> <h:outputText value="#{progAcad.descricao}"/>  </p:column>
+
+                            <p:column styleClass="centralizar-texto text-center"  headerText="Ações" width="75" exportable="false" priority="0">
+                                <p:tooltip for="btnEditar" value="Atualizar"/>
+                                <p:commandLink id="btnEditar" action="#{egressoBean.prepararAtualizacaoEgresso(progAcad.historico.egresso)}" ajax="false" update="frmEditaAtuacao"> 
+                                    <h:graphicImage value="/resources/img/edit2.png" />                           
+                                </p:commandLink>                               
+                            </p:column>
+                        </p:dataTable>
+
+                        <div class="row">
+                            <div class="col-sm-12" style="margin-top: 10px;">
+                                <div class="form-actions" style="float: right">                            
+                                    <label class="label-selecione-perfil">Exportar atual:</label>
+                                    <h:commandLink styleClass="espacar-item-10px-direita">  
+                                        <p:graphicImage value="/resources/img/excel.png" />  
+                                        <p:dataExporter type="xls" encoding="iso-8859-1" target="tabela_ProgAcad" fileName="ListagemHistoricosUFG" pageOnly="true" />  
+                                    </h:commandLink>  
+
+                                    <h:commandLink styleClass="espacar-item-10px-direita">  
+                                        <p:graphicImage value="/resources/img/csv.png" />  
+                                        <p:dataExporter type="csv" encoding="iso-8859-1" target="tabela_ProgAcad" fileName="ListagemHistoricosUFG" pageOnly="true" />  
+                                    </h:commandLink>  
+
+                                    <h:panelGroup id="pgExportarTodas" rendered="#{consultaLazyBean.model.rowCount  lt 5001}">
+                                        <label style="margin-left: 20px;" class="label-selecione-perfil">Exportar todas:</label>
+                                        <h:commandLink styleClass="espacar-item-10px-direita">  
+                                            <p:graphicImage value="/resources/img/excel.png" />  
+                                            <p:dataExporter type="xls" encoding="iso-8859-1" target="tabela_ProgAcad" fileName="ListagemHistoricosUFG"/> 
+                                        </h:commandLink>  
+
+                                        <h:commandLink styleClass="espacar-item-10px-direita">  
+                                            <p:graphicImage value="/resources/img/csv.png" />  
+                                            <p:dataExporter type="csv" encoding="iso-8859-1" target="tabela_ProgAcad" fileName="ListagemHistoricosUFG"/>
+                                        </h:commandLink>                                  
+                                    </h:panelGroup>
+
+                                </div>                                  
+                            </div>                        
+                        </div>
+                    </fieldset>
+                </h:form>
+            </div>
+        </div>        
+    </h:body>
+</html>

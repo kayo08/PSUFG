@@ -1,0 +1,119 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"      
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <head>      
+        <title> Sempre UFG </title>
+        <h:outputStylesheet name="bootstrap.min.css" library="css"/>
+        <h:outputStylesheet name="custom-bootstrap.css" library="css"/>
+        <h:outputStylesheet name="style.css" library="css"/>        
+        <h:outputStylesheet name="grid.css" library="css"/>        
+    </head>
+
+
+    <h:body>                           
+        <div class="panel panel-primary" style="margin: 0px"> 
+            <div class="panel-heading"> <h7/></div>
+            <div class="panel-body">                   
+                <h:form id="frm_EnsinosMedio">
+                    <fieldset>
+                        <div class="row" style="color: #337ab7; font-weight: normal !important; border-bottom: 1px solid #e5e5e5 !important; margin: 0px 0px 20px 0 !important; font-size:16px !important; font-family: Lucida Grande, Lucida Sans, Arial, sans-serif !important;" >
+                            <span class="icon-search" style="margin-right: 5px;"/> 
+                            <h:outputLabel  style="color: #337ab7; font-weight: normal !important;" value=" Resultado da consulta" />
+                            <h:commandLink class="btn btn-primary btn-sm" 
+                                           style="margin-right: 10px; float: right; color: #ffffff !important; border: 1 solid #337ab7 !important; border-radius: 5px 5px 0 0; width: 140px;height: 27px;" 
+                                           action="#{mapaBean.mapaEgressosNascimento()}" > 
+                                Mostrar no <p:graphicImage  style = "margin-top: -5px; width: 24px;" value="/resources/img/maps.png" /> 
+                            </h:commandLink>                                
+
+                        </div>                                 
+
+                        <p:dataTable id="tabela_ensinosMedio" var="em" value="#{consultaLazyBean.model}" lazy="true"
+                                     sortBy="#{em.egresso.nomeOficial}" rowKey="#{em}"
+                                     rows="10" paginator="true" rowsPerPageTemplate="10,50,100" selectionMode="single"
+                                     currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink}  {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     multiViewState="true" resizableColumns="true" resizeMode="expand"                                     
+                                     emptyMessage="Nenhuma dado de ensino médio encontrado" >                            
+
+                            <p:ajax event="page" oncomplete="updateToggles('myColumnToggler5')" />
+                            <p:ajax event="sort" oncomplete="updateToggles('myColumnToggler5')" />
+
+                            <f:facet name="header">                                
+                                <h:outputLabel style="padding: 5px;" value="Listagem dos dados de ensino médio"/>
+                                <p:commandButton id="toggler5" type="button" value="Seleção de colunas" style="float:right; margin-top: 5px;" icon="ui-icon-calculator" />
+
+                                <p:columnToggler datasource="tabela_ensinosMedio" trigger="toggler5"  widgetVar="myColumnToggler5" transient="true"/>
+                            </f:facet>
+
+                            <p:column headerText="Id" sortBy="#{em.egresso.cpf}">
+                                <h:outputText value="#{em.egresso.cpf.substring(0,3)}#{em.egresso.cpf.substring(8,11)}"/> 
+                            </p:column>
+
+                            <p:column headerText="Egresso" sortBy="#{em.egresso.nomeOficial}">
+                                <h:outputText value="#{em.egresso.nomeSocial.trim().length() > 1 ? em.egresso.nomeSocial : em.egresso.nomeOficial}" />
+                            </p:column>
+                            <p:column visible="false" headerText="Email Principal"  sortBy="#{em.egresso.emailPrincipal}"> <h:outputText value="#{em.egresso.emailPrincipal}" /></p:column>
+                            <p:column visible="false" headerText="Email alternativo" sortBy="#{em.egresso.emailAlternativo}"> <h:outputText value="#{em.egresso.emailAlternativo}"/> </p:column>
+                            <p:column visible="false" headerText="Nasc:Data" sortBy="#{em.egresso.dataDeNascimento}"> <h:outputText value="#{em.egresso.dataDeNascimento}" > <f:convertDateTime pattern="dd/MM/yyyy" /> </h:outputText> </p:column>
+                            <p:column visible="false" headerText="Nasc:Cidade" sortBy="#{em.egresso.naturalidade.cidade}"> <h:outputText value="#{em.egresso.naturalidade.cidade}"/>  </p:column>
+                            <p:column visible="false" headerText="Nasc:UF" sortBy="#{em.egresso.naturalidade.siglaUF}"> <h:outputText value="#{em.egresso.naturalidade.siglaUF}"/>  </p:column>
+                            <p:column visible="false" headerText="Nasc:País" sortBy="#{em.egresso.naturalidade.pais}"> <h:outputText value="#{em.egresso.naturalidade.pais}"/>  </p:column>      
+
+
+                            <p:column visible="true" headerText="Início" sortBy="#{em.anoInicio}"> <h:outputText value="#{em.mesInicio.value.substring(0,3)}/#{em.anoInicio}"/>  </p:column>
+                            <p:column visible="true" headerText="Fim" sortBy="#{em.anoConclusao}"> <h:outputText value="#{em.mesConclusao.value.substring(0,3)}/#{em.anoConclusao}"/>  </p:column>
+                            <p:column visible="true" headerText="Instituição" sortBy="#{em.instituicaoEnsinoMedio.nome}"> <h:outputText value="#{em.instituicaoEnsinoMedio.nome}"/>  </p:column>
+                            <p:column visible="true" headerText="Tipo instituição" sortBy="#{em.instituicaoEnsinoMedio.tipoInstituicao}"> <h:outputText value="#{em.instituicaoEnsinoMedio.tipoInstituicao}"/>  </p:column>
+                            <p:column visible="true" headerText="Cidade" sortBy="#{em.instituicaoEnsinoMedio.localizacao.cidade}"> <h:outputText value="#{em.instituicaoEnsinoMedio.localizacao.cidade}"/>  </p:column>
+                            <p:column visible="true" headerText="UF" sortBy="#{em.instituicaoEnsinoMedio.localizacao.siglaUF}"> <h:outputText value="#{em.instituicaoEnsinoMedio.localizacao.siglaUF}"/>  </p:column>
+                            <p:column visible="true" headerText="Município" sortBy="#{em.instituicaoEnsinoMedio.localizacao.municipio}"> <h:outputText value="#{em.instituicaoEnsinoMedio.localizacao.municipio}"/>  </p:column>
+                            <p:column visible="true" headerText="País" sortBy="#{em.instituicaoEnsinoMedio.localizacao.pais}"> <h:outputText value="#{em.instituicaoEnsinoMedio.localizacao.pais}"/>  </p:column>
+
+                            <p:column styleClass="centralizar-texto text-center"  headerText="Ações" width="75" exportable="false" priority="0">
+                                <p:tooltip for="btnEditar" value="Atualizar"/>
+                                <p:commandLink id="btnEditar" action="#{egressoBean.prepararAtualizacaoEgresso(em.egresso)}" ajax="false" update="frmEditaAtuacao"> 
+                                    <h:graphicImage value="/resources/img/edit2.png" />                           
+                                </p:commandLink>                               
+                            </p:column>
+                        </p:dataTable>
+
+                        <div class="row">
+                            <div class="col-sm-12" style="margin-top: 10px;">
+                                <div class="form-actions" style="float: right">                            
+                                    <label class="label-selecione-perfil">Exportar atual:</label>
+                                    <h:commandLink styleClass="espacar-item-10px-direita">  
+                                        <p:graphicImage value="/resources/img/excel.png" />  
+                                        <p:dataExporter encoding="iso-8859-1"  type="xls" target="tabela_ensinosMedio" fileName="ListagemEnsinosMedio" pageOnly="true" />  
+                                    </h:commandLink>  
+
+                                    <h:commandLink styleClass="espacar-item-10px-direita">  
+                                        <p:graphicImage value="/resources/img/csv.png" />  
+                                        <p:dataExporter encoding="iso-8859-1"  type="csv" target="tabela_ensinosMedio" fileName="ListagemEnsinosMedio" pageOnly="true" />  
+                                    </h:commandLink>  
+
+                                    <h:panelGroup id="pgExportarTodas" rendered="#{consultaLazyBean.model.rowCount  lt 5001}">
+                                        <label style="margin-left: 20px;" class="label-selecione-perfil">Exportar todas:</label>
+                                        <h:commandLink styleClass="espacar-item-10px-direita">  
+                                            <p:graphicImage value="/resources/img/excel.png" />  
+                                            <p:dataExporter encoding="iso-8859-1"  type="xls" target="tabela_ensinosMedio" fileName="ListagemEnsinosMedio"/> 
+                                        </h:commandLink>  
+
+                                        <h:commandLink styleClass="espacar-item-10px-direita">  
+                                            <p:graphicImage value="/resources/img/csv.png" />  
+                                            <p:dataExporter encoding="iso-8859-1"  type="csv" target="tabela_ensinosMedio" fileName="ListagemEnsinosMedio"/>
+                                        </h:commandLink>                                  
+                                    </h:panelGroup>
+
+                                </div>                                  
+                            </div>                        
+
+                        </div>
+                    </fieldset>
+                </h:form>
+            </div>
+        </div>        
+    </h:body>
+</html>

@@ -1,0 +1,95 @@
+<ui:composition template="/template/template_login.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <f:metadata>
+        <f:event type="preRenderView" 
+                 listener="#{usuarioBean.tratarAlteracaoDeSenha(request.getParameter('t'))}"/>
+    </f:metadata>
+
+    <ui:define name="content">                
+        <div id="loginModal" class="show" tabindex="-1" >
+            <div class="modal-dialog" >
+                <p:messages closable="true" escape="false" />
+                <div class="modal-content">
+                    <div class="modal-body col-sm-12" style="padding-top: 50px;">                        
+                        <h:form id="solicitarToken" 
+                                class="form col-sm-10 center-block" 
+                                rendered="#{usuarioBean.token==null}">
+
+                            <div class="row">
+                                <div class="col-sm-12">
+
+                                    <div class="form-group ">
+                                        <div class="input-group col-sm-offset-3">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                            <p:inputText class="form-control" 
+                                                         id="username" 
+                                                         value="#{usuarioBean.cpf}" 
+                                                         maxlength="11" 
+                                                         placeholder="Número do CPF sem pontuações"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group form col-sm-offset-3" >
+                                <p:commandButton styleClass="btn btn-block btn-primary" 
+                                                 value="Redefinir senha" 
+                                                 ajax="false"
+                                                 action="#{usuarioBean.prepararSubstituicaoDeSenha()}"/>
+                            </div>
+                        </h:form>
+                        <h:form id="mudarSenha" 
+                                class="form col-sm-10 center-block" 
+                                rendered="#{usuarioBean.token!=null}">
+
+                            <div class="row">
+                                <div class="col-sm-12">
+
+                                    <div class="form-group ">
+                                        <div class="input-group col-sm-offset-3">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                            <p:password class="form-control" 
+                                                         id="novasenha" 
+                                                         value="#{usuarioBean.novaSenha}" 
+                                                         maxlength="11" 
+                                                         placeholder="Nova senha"
+                                                         />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+
+                                    <div class="form-group ">
+                                        <div class="input-group col-sm-offset-3">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                            <p:password  class="form-control" 
+                                                         id="novaSenhaConfirmacao" 
+                                                         value="#{usuarioBean.novaSenhaConfirma}" 
+                                                         maxlength="11" 
+                                                         placeholder="Confirme a nova senha"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group form col-sm-offset-3" >
+                                <p:commandButton styleClass="btn btn-block btn-primary" 
+                                                 value="Confirmar senha" 
+                                                 ajax="false"
+                                                 action="#{usuarioBean.confirmarMudancaDeSenha()}"/>
+                            </div>
+                        </h:form>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <h:outputLabel class="btn-xs" style="color:#ccc" value=" &#174; Fábrica de Software " />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

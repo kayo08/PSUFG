@@ -1,0 +1,276 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html" 
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:param name="idMenu" value="#{usuarioBean.usuarioEgresso ? 'Mp2' : 'Mp4'}"/>
+    <ui:param name="idAbaDados" value="M2"/>
+
+    <ui:define name="content">
+        <h:form id="formEdicaoEgresso" class="form-horizontal" >
+            <ui:include src="egressoMenu.xhtml"/>
+
+            <div class="panel panel-primary" style="margin: 0px 1px 0px 0px;"> 
+                <div class="panel-heading"><h7/></div>
+
+                <div class="panel-body ">                    
+                        <fieldset>
+                            <legend> Curso Externo</legend>
+                            <div class="row">
+                                <div class="col-sm-12"> 
+                                    <div class="form-group">
+                                        <label for="instituicaoCursoExterno" class="col-sm-2 control-label">Instituição</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="icon-library"></i></span>
+                                                <p:autoComplete autocomplete="true"  styleClass="form-control required input-custom"   tabindex="1"                                                                                                           
+                                                                id="instituicaoCursoExterno" 
+                                                                required="true" requiredMessage="Instituição é obrigatória"
+                                                                value="#{egressoBean.historicoOutraIES.cursoDeOutraIES.id.iesDoCurso}"
+                                                                completeMethod="#{egressoBean.completeIES}" minQueryLength="4"
+                                                                placeholder="Informe o nome da instituiçao">
+                                                    <p:ajax event="blur" update="nomeCursoExterno" listener="#{egressoBean.onIesChange}"/>
+                                                </p:autoComplete>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+
+                            <div class="row">
+                                <div class="col-sm-6"> 
+                                    <div class="form-group">
+                                        <label for="nomeCursoExterno" class="col-sm-4 control-label">Curso</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group" >
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-book"></i></span>
+
+                                                <p:selectOneMenu styleClass="form-control  input-custom required" tabindex="2"
+                                                                 style="background: inherit; color: inherit; font: inherit;  border: 1px solid #ccc"
+                                                                 disabled="#{egressoBean.historicoOutraIES.cursoDeOutraIES.id.iesDoCurso == null}"                                                  
+                                                                 required="true" requiredMessage="Curso é obrigatório"
+                                                                 placeholder="Informe o curso"
+                                                                 id="nomeCursoExterno" editable="true"
+                                                                 value="#{egressoBean.historicoOutraIES.cursoDeOutraIES.id.nomeDoCurso}">                                    
+                                                    <f:selectItems value="#{egressoBean.listaDeCursosDeIE}" var="ie"
+                                                                   itemLabel="#{ie}"
+                                                                   itemValue="#{ie}"/>                                    
+                                                    <p:ajax event="blur" update="nivelCursoExterno tipoInstituicaoCursoExterno unidadeCursoExterno areaConhecimentoCursoExterno"
+                                                            listener="#{egressoBean.onIesChange}"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="nivelCursoExterno" class="col-sm-4 control-label"> Nível </label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"> <i class="glyphicon glyphicon-signal"/></span>
+                                                <h:selectOneMenu class="form-control required" tabindex="3"
+                                                                 hideNoSelectionOption="true" id="nivelCursoExterno" 
+                                                                 required="true" requiredMessage="Nível é obrigatório"
+                                                                 value="#{egressoBean.historicoOutraIES.cursoDeOutraIES.nivel}" > 
+                                                    <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true" />
+                                                    <f:selectItems value="#{egressoBean.niveis}"  var="n"
+                                                                   itemLabel="#{n.value}"
+                                                                   itemValue="#{n}"/>                                    
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>       
+                            <div class="row">    
+                                <div class="col-sm-6"> 
+                                    <div class="form-group">
+                                        <label for="unidadeCursoExterno" class="col-sm-4 control-label">Unidade Acadêmica</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-book"></i></span>
+                                                <h:inputText autocomplete="true"  styleClass="form-control input-custom" tabindex="4"
+                                                             id="unidadeCursoExterno" 
+                                                             value="#{egressoBean.historicoOutraIES.cursoDeOutraIES.nomeDaUnidadeAcademica}">
+                                                    <f:passThroughAttribute name="placeholder" value="Informe a unidade acadêmica (opcional)"/>
+                                                </h:inputText>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6"> 
+                                    <div class="form-group">
+                                        <label for="tipoInstituicaoCursoExterno" class="col-sm-4 control-label ">Tipo Instituição</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="icon-library"></i></span>
+                                                <h:selectOneMenu class="form-control required"
+                                                                 hideNoSelectionOption="true" tabindex="5" id="tipoInstituicaoCursoExterno" 
+                                                                 required="true" requiredMessage="Tipo instituição é obrigatório"
+                                                                 value="#{egressoBean.historicoOutraIES.cursoDeOutraIES.tipoInstituicao}" > 
+                                                    <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true" />
+                                                    <f:selectItems value="#{egressoBean.tiposInstituicao}"   var="ti"
+                                                                   itemLabel="#{ti.value}"
+                                                                   itemValue="#{ti}"/>                                    
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="areaConhecimentoCursoExterno" class="col-sm-4 control-label">Área de Conhecimento </label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-eye-open"></i></span>
+                                                <p:autoComplete styleClass="form-control required input-custom "
+                                                                id="areaConhecimentoCursoExterno" tabindex="6"
+                                                                value="#{egressoBean.historicoOutraIES.cursoDeOutraIES.area}"
+                                                                converter="jsfAreaConhecimentoConverter"
+                                                                completeMethod="#{egressoBean.pesquisarAreaConhecimentoPorNome}"
+                                                                minQueryLength="2" scrollHeight="100" queryDelay="50" effect="fade"
+                                                                var="ac" itemLabel="#{ac ne null ? ac.nomeArea : ''}" itemValue="#{ac}"
+                                                                required="true" requiredMessage="Área de conhecimento é obrigatória"
+                                                                placeholder="Insira a área de conhecimento"/>                                            
+                                            </div>                                                        
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="urlCursoExterno" class="col-sm-4 control-label">URL</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-share-alt"></i></span>
+                                                <h:inputText  styleClass="form-control" id = "urlCursoExterno" tabindex="7"
+                                                              value="#{egressoBean.historicoOutraIES.cursoDeOutraIES.urlInstitucional}">
+                                                    <f:passThroughAttribute name="placeholder" value="Informe o sítio da instituição (opcional)"/> 
+                                                </h:inputText>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>   
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="mesInicioCursoExterno" class="col-sm-4 control-label">Mês Ingresso</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"> <i class="glyphicon glyphicon-calendar"/></span>
+                                                <h:selectOneMenu class="form-control required"
+                                                                 hideNoSelectionOption="true" 
+                                                                 required="true" requiredMessage="Més ingresso é obrigatório"
+                                                                 id="mesInicioCursoExterno" tabindex="8"
+                                                                 value="#{egressoBean.historicoOutraIES.mesInicio}" > 
+                                                    <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true" />
+                                                    <f:selectItems value="#{egressoBean.mesesAno}"                                                    
+                                                                   var="ma"
+                                                                   itemLabel="#{ma.value}"
+                                                                   itemValue="#{ma}"/>                                    
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="anoInicioCursoExterno" class="col-sm-4 control-label">Ano Ingresso</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                <p:spinner id="anoInicioCursoExterno" tabindex="9"
+                                                           required="true" requiredMessage="Ano ingresso é obrigatório"
+                                                           styleClass="form-control required input-custom" style="padding: 6px 30px !important;" 
+                                                           min="1900" value="#{egressoBean.historicoOutraIES.anoInicio}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="mesFimCursoExterno" class="col-sm-4 control-label">Mês Conclusão</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"> <i class="glyphicon glyphicon-calendar"/></span>
+                                                <h:selectOneMenu class="form-control required"   tabindex="10"                                               
+                                                                 required="true" requiredMessage="Més conclusão é obrigatório"
+                                                                 hideNoSelectionOption="true" id="mesFimCursoExterno" 
+                                                                 value="#{egressoBean.historicoOutraIES.mesFim}" > 
+                                                    <f:selectItem itemValue="#{null}" itemLabel="--select--" noSelectionOption="true" />
+                                                    <f:selectItems value="#{egressoBean.mesesAno}"                                                    
+                                                                   var="ma"
+                                                                   itemLabel="#{ma.value}"
+                                                                   itemValue="#{ma}"/>                                    
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="anoFimCursoExterno" class="col-sm-4 control-label">Ano Conclusão</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                <p:spinner id="anoFimCursoExterno" tabindex="11"
+                                                           required="true" requiredMessage="Ano conclusão é obrigatório"
+                                                           styleClass="form-control required input-custom" style="padding: 6px 30px !important;" 
+                                                           value="#{egressoBean.historicoOutraIES.anoFim}" min="1900"/>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="localizacao" class="col-sm-2 control-label">Localização Geográfica </label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                                <p:autoComplete styleClass="form-control required input-custom "
+                                                                id="localizacao" tabindex="12"
+                                                                value="#{egressoBean.historicoOutraIES.cursoDeOutraIES.localizacaoGeografica}"
+                                                                converter="jsfLocalizacaoGeograficaConverter"
+                                                                completeMethod="#{egressoBean.pesquisarPorMunicipio}"
+                                                                minQueryLength="3"
+                                                                required="true" requiredMessage="Localização geográfica é obrigatória"
+                                                                var="lgeo" placeholder="Insira nome cidade"                                                 
+                                                                itemLabel="#{lgeo.municipio ne null ? lgeo.municipio :''}#{lgeo.municipio ne null ? ', ' : ''}#{lgeo.municipio ne null ? lgeo.cidade :''}#{lgeo.municipio ne null ? ', ' : ''}#{lgeo.municipio ne null ? lgeo.uf :''}#{lgeo.municipio ne null ? ', ' : ''}#{lgeo.municipio ne null ? lgeo.pais :''}"
+                                                                itemValue="#{lgeo}" scrollHeight="100" queryDelay="50" effect="fade"/>                                            
+                                            </div>                                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>         
+
+                            <div class="row">
+                                <div class="col-sm-offset-7 col-sm-5 text-right">
+                                    <h:commandButton styleClass="btn btn-success" style="margin: 10px;"                                         
+                                                     value="Confirmar" id="btnConfirmar"
+                                                     action="#{egressoBean.adicionarHistoricoOutrosCursos}"/> 
+                                    <h:commandButton styleClass="btn btn-danger" style="margin: 10px;"
+                                                     value="Cancelar" id="btnCancelar"
+                                                     immediate="true"
+                                                     action="#{egressoBean.cancelarEdicaoHistorico()}"/> 
+                                </div>
+                            </div>
+                        </fieldset>                 
+                </div>
+            </div>   
+        </h:form>
+    </ui:define>
+</ui:composition>

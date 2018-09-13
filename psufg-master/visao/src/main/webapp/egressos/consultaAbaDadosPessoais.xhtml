@@ -1,0 +1,117 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"      
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <head>      
+        <title> Sempre UFG </title>
+        <h:outputStylesheet name="bootstrap.min.css" library="css"/>
+        <h:outputStylesheet name="custom-bootstrap.css" library="css"/>
+        <h:outputStylesheet name="style.css" library="css"/>        
+        <h:outputStylesheet name="grid.css" library="css"/>        
+    </head>
+
+
+    <h:body>                    
+        <div class="panel panel-primary" style="margin: 0px"> 
+            <div class="panel-heading"> <h7/></div>
+            <div class="panel-body" id="div-resultado-consulta">   
+                <h:form id="frm_DadosPessoais">
+                    <fieldset>         
+                        <div class="row" style="color: #337ab7; font-weight: normal !important; border-bottom: 1px solid #e5e5e5 !important; margin: 0px 0px 20px 0 !important; font-size:16px !important; font-family: Lucida Grande, Lucida Sans, Arial, sans-serif !important;" >
+                            <span class="icon-search" style="margin-right: 5px;"/> 
+                            <h:outputLabel  style="color: #337ab7; font-weight: normal !important;" value=" Resultado da consulta" />
+                            <h:commandLink class="btn btn-primary btn-sm" 
+                                           style="margin-right: 10px; float: right; color: #ffffff !important; border: 1 solid #337ab7 !important; border-radius: 5px 5px 0 0; width: 140px;height: 27px;" 
+                                           action="#{mapaBean.mapaEgressosNascimento()}" > 
+                                Mostrar no <p:graphicImage  style = "margin-top: -5px; width: 24px;" value="/resources/img/maps.png" /> 
+                            </h:commandLink>                                
+
+                        </div>
+
+                        <p:dataTable id="tabela_DadosPessoais" var="e" value="#{consultaLazyBean.model}" lazy="true"
+                                     sortBy="#{e.nomeOficial}" rowKey="#{e}" 
+                                     rows="10" paginator="true" rowsPerPageTemplate="10,50,100" selectionMode="single"
+                                     currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink}  {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     multiViewState="true" resizableColumns="true" resizeMode="expand"                                     
+                                     emptyMessage="Nenhum egresso encontrado" >                            
+
+                            <p:ajax event="page" oncomplete="updateToggles('myColumnToggler3')" />
+                            <p:ajax event="sort" oncomplete="updateToggles('myColumnToggler3')" />                           
+
+                            <f:facet name="header">                                
+                                <h:outputLabel style="padding: 5px;" value="Listagem dados pessoais dos egressos"/>
+                                <p:commandButton id="toggler3" type="button" value="Seleção de colunas" style="float:right; margin-top: 5px;" icon="ui-icon-calculator" />
+
+                                <p:columnToggler datasource="tabela_DadosPessoais" trigger="toggler3"  widgetVar="myColumnToggler3" transient="true"/>
+                            </f:facet>
+
+                            <p:column headerText="Id" sortBy="#{e.cpf}">
+                                <h:outputText value="#{e.cpf.substring(0,3)}#{e.cpf.substring(8,11)}"/> 
+                            </p:column>
+
+                            <p:column headerText="Egresso" sortBy="#{e.nomeOficial}">
+                                <h:outputText value="#{e.nomeSocial.trim().length() > 1 ? e.nomeSocial : e.nomeOficial}" />
+                            </p:column>
+
+                            <p:column headerText="Sexo"  sortBy="#{e.sexo}"> <h:outputText value="#{e.sexo}" /></p:column>
+                            <p:column headerText="Email Principal"  sortBy="#{e.emailPrincipal}"> <h:outputText value="#{e.emailPrincipal}" /></p:column>
+                            <p:column headerText="Email alternativo" sortBy="#{e.emailAlternativo}"> <h:outputText value="#{e.emailAlternativo}"/> </p:column>
+                            <p:column headerText="Nasc:Data" sortBy="#{e.dataDeNascimento}"> <h:outputText value="#{e.dataDeNascimento}" > <f:convertDateTime pattern="dd/MM/yyyy" /> </h:outputText> </p:column>
+                            <p:column headerText="Nasc:Cidade" sortBy="#{e.naturalidade.cidade}"> <h:outputText value="#{e.naturalidade.cidade}"/>  </p:column>
+                            <p:column headerText="Nasc:UF" sortBy="#{e.naturalidade.siglaUF}"> <h:outputText value="#{e.naturalidade.siglaUF}"/>  </p:column>
+                            <p:column headerText="Nasc:País" sortBy="#{e.naturalidade.pais}"> <h:outputText value="#{e.naturalidade.pais}"/>  </p:column>      
+
+                            <p:column styleClass="centralizar-texto text-center"  headerText="Ações" width="75" exportable="false" priority="0">
+                                <p:tooltip for="btnEditar" value="Atualizar"/>
+                                <p:commandLink id="btnEditar" action="#{egressoBean.prepararAtualizacaoEgresso(e)}" ajax="false" immediate="true" > 
+                                    <h:graphicImage value="/resources/img/edit2.png" />                           
+                                </p:commandLink>                               
+                            </p:column>
+                        </p:dataTable>
+
+                        <div class="row">
+                            <div class="col-sm-12" style="margin-top: 10px;">
+                                <div class="form-actions" style="float: right">  
+                                    <label class="label-selecione-perfil">Exportar atual:</label>
+                                    <h:commandLink styleClass="espacar-item-10px-direita">  
+                                        <p:graphicImage value="/resources/img/excel.png" />  
+                                        <p:dataExporter type="xls" encoding="iso-8859-1" target="tabela_DadosPessoais" fileName="ListagemDeEgressos" pageOnly="true" />  
+                                    </h:commandLink>  
+
+                                    <h:commandLink styleClass="espacar-item-10px-direita">  
+                                        <p:graphicImage value="/resources/img/csv.png" />  
+                                        <p:dataExporter type="csv" encoding="iso-8859-1" target="tabela_DadosPessoais" fileName="ListagemDeEgressos" pageOnly="true" />  
+                                    </h:commandLink>  
+                                    
+                                    <h:panelGroup id="pgExportarTodas" rendered="#{consultaLazyBean.model.rowCount  lt 5001}">
+                                        <label style="margin-left: 20px;" class="label-selecione-perfil">Exportar todas:</label>
+                                        <h:commandLink styleClass="espacar-item-10px-direita">
+                                            <p:graphicImage value="/resources/img/excel.png" />  
+                                            <p:dataExporter type="xls" encoding="iso-8859-1" target="tabela_DadosPessoais" fileName="ListagemDeEgressos"/> 
+                                        </h:commandLink>  
+
+                                        <h:commandLink styleClass="espacar-item-10px-direita">  
+                                            <p:graphicImage value="/resources/img/csv.png" />  
+                                            <p:dataExporter type="csv" encoding="iso-8859-1" target="tabela_DadosPessoais" fileName="ListagemDeEgressos"/>
+                                        </h:commandLink>                                  
+                                    </h:panelGroup>
+
+                                </div>                                  
+                            </div>                        
+
+                        </div>
+                    </fieldset>
+                </h:form>
+            </div>
+        </div>
+        <h:outputScript library="js" name="util.js" />
+        <h:outputScript library="js" name="bootbox.js" />
+        <h:outputScript library="js" name="bootstrap.min.js" />
+        <h:outputScript library="js" name="primefaces.js" />
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+        <h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+    </h:body> 
+</html>

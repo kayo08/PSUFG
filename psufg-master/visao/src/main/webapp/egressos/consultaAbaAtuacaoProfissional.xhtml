@@ -1,0 +1,131 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"      
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <head>      
+        <title> Sempre UFG </title>
+        <h:outputStylesheet name="bootstrap.min.css" library="css"/>
+        <h:outputStylesheet name="custom-bootstrap.css" library="css"/>
+        <h:outputStylesheet name="style.css" library="css"/>  
+        <h:outputStylesheet name="grid.css" library="css"/>        
+    </head>
+
+
+    <h:body>                            
+        <div class="panel panel-primary" style="margin: 0px"> 
+            <div class="panel-heading"> <h7/></div>
+            <div class="panel-body">                   
+                <h:form id="frm_Atua">
+                    <fieldset>
+                        <div class="row" style="color: #337ab7; font-weight: normal !important; border-bottom: 1px solid #e5e5e5 !important; margin: 0px 0px 20px 0 !important; font-size:16px !important; font-family: Lucida Grande, Lucida Sans, Arial, sans-serif !important;" >
+                            <span class="icon-search" style="margin-right: 5px;"/> 
+                            <h:outputLabel  style="color: #337ab7; font-weight: normal !important;" value=" Resultado da consulta" />
+                            <h:commandLink class="btn btn-primary btn-sm" 
+                                           style="margin-right: 10px; float: right; color: #ffffff !important; border: 1 solid #337ab7 !important; border-radius: 5px 5px 0 0; width: 140px;height: 27px;" 
+                                           action="#{mapaBean.mapaEgressosNascimento()}" > 
+                                Mostrar no <p:graphicImage  style = "margin-top: -5px; width: 24px;" value="/resources/img/maps.png" /> 
+                            </h:commandLink>                                
+
+                        </div>                              
+                        <p:dataTable id="tabela_Atua" var="atua" value="#{consultaLazyBean.model}" lazy="true"
+                                     sortBy="#{atua.egresso.nomeOficial}" rowKey="#{atua}"
+                                     rows="10" paginator="true" rowsPerPageTemplate="10,50,100" selectionMode="single" 
+                                     currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink}  {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     multiViewState="true" resizableColumns="true" resizeMode="expand"                                     
+                                     emptyMessage="Nenhuma atuação profissional encontrada" >                            
+
+                            <p:ajax event="page" oncomplete="updateToggles('myColumnToggler1')" />
+                            <p:ajax event="sort" oncomplete="updateToggles('myColumnToggler1')" />
+
+                            <f:facet name="header">                                
+                                <h:outputLabel style="padding: 5px;" value="Listagem dos dados de atuação profissional"/>
+                                <p:commandButton id="toggler1" type="button" value="Seleção de colunas" style="float:right; margin-top: 5px;" icon="ui-icon-calculator" />
+
+                                <p:columnToggler datasource="tabela_Atua" trigger="toggler1"  widgetVar="myColumnToggler1" transient="true"/>
+                            </f:facet>
+
+                            <p:column headerText="Id" sortBy="#{atua.egresso.cpf}">
+                                <h:outputText value="#{atua.egresso.cpf.substring(0,3)}#{atua.egresso.cpf.substring(8,11)}"/> 
+                            </p:column>
+
+                            <p:column headerText="Egresso" sortBy="#{atua.egresso.nomeOficial}">
+                                <h:outputText value="#{atua.egresso.nomeSocial.trim().length() > 1 ? atua.egresso.nomeSocial : atua.egresso.nomeOficial}" />
+                            </p:column>
+
+                            <p:column visible="false" headerText="Email Principal"  sortBy="#{atua.egresso.emailPrincipal}"> <h:outputText value="#{atua.egresso.emailPrincipal}" /></p:column>
+                            <p:column visible="false" headerText="Email alternativo" sortBy="#{atua.egresso.emailAlternativo}"> <h:outputText value="#{atua.egresso.emailAlternativo}"/> </p:column>
+                            <p:column visible="false" headerText="Nasc:Data" sortBy="#{atua.egresso.dataDeNascimento}"> <h:outputText value="#{atua.egresso.dataDeNascimento}" > <f:convertDateTime pattern="dd/MM/yyyy" /> </h:outputText> </p:column>
+                            <p:column visible="false" headerText="Nasc:Cidade" sortBy="#{atua.egresso.naturalidade.cidade}"> <h:outputText value="#{atua.egresso.naturalidade.cidade}"/>  </p:column>
+                            <p:column visible="false" headerText="Nasc:UF" sortBy="#{atua.egresso.naturalidade.siglaUF}"> <h:outputText value="#{atua.egresso.naturalidade.siglaUF}"/>  </p:column>
+                            <p:column visible="false" headerText="Nasc:País" sortBy="#{atua.egresso.naturalidade.pais}"> <h:outputText value="#{atua.egresso.naturalidade.pais}"/>  </p:column>      
+
+
+                            <p:column visible="true" headerText="Início" sortBy="#{atua.dataInicio}"> <h:outputText value="#{atua.dataInicio}" converter="jsfLocalDateConverter"/>  </p:column>
+                            <p:column visible="true" headerText="Fim" sortBy="#{atua.dataFim}"> <h:outputText value="#{atua.dataFim}" converter="jsfLocalDateConverter"/>  </p:column>
+                            <p:column visible="true" headerText="Ingresso" sortBy="#{atua.formaIngresso.value}"> <h:outputText value="#{atua.formaIngresso.value}"/>  </p:column>
+                            <p:column style="text-align: right !important;" visible="true" headerText="Renda mensal média" sortBy="#{atua.rendaMensalMedia}"> 
+                                <h:outputText value="#{atua.rendaMensalMedia}" > 
+                                    <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="R$ #,##0.00"/> 
+                                </h:outputText>  
+                            </p:column>
+                            <p:column visible="true" headerText="Satisfação renda" sortBy="#{atua.satisfacaoRenda}"> <h:outputText value="#{atua.satisfacaoRenda}"/>  </p:column>
+                            <p:column visible="true" headerText="Perpectiva futuro" sortBy="#{atua.perspectivaFuturoArea}"> <h:outputText value="#{atua.perspectivaFuturoArea}"/>  </p:column>
+                            <p:column visible="true" headerText="Comentário" sortBy="#{atua.comentario}"> <h:outputText value="#{atua.comentario}"/>  </p:column>
+                            <p:column visible="true" headerText="Organização" sortBy="#{atua.organizacao.razaoSocial}"> <h:outputText value="#{atua.organizacao.razaoSocial}"/>  </p:column>
+                            <p:column visible="true" headerText="Natureza" sortBy="#{atua.organizacao.natureza}"> <h:outputText value="#{atua.organizacao.natureza}"/>  </p:column>
+                            <p:column visible="true" headerText="Página WEB" sortBy="#{atua.organizacao.paginaWeb}"> <h:outputText value="#{atua.organizacao.paginaWeb}"/>  </p:column>
+                            <p:column visible="true" headerText="End.Comercial" sortBy="#{atua.organizacao.enderecoComercial}"> <h:outputText value="#{atua.organizacao.enderecoComercial}"/>  </p:column>
+                            <p:column visible="true" headerText="Cidade" sortBy="#{atua.organizacao.localizacao.cidade}"> <h:outputText value="#{atua.organizacao.localizacao.cidade}"/>  </p:column>
+                            <p:column visible="true" headerText="UF" sortBy="#{atua.organizacao.localizacao.siglaUF}"> <h:outputText value="#{atua.organizacao.localizacao.siglaUF}"/>  </p:column>
+                            <p:column visible="true" headerText="País" sortBy="#{atua.organizacao.localizacao.pais}"> <h:outputText value="#{atua.organizacao.localizacao.pais}"/>  </p:column>
+                            <p:column visible="true" headerText="Área" sortBy="#{atua.areaConhecimento.nomeArea}"> <h:outputText value="#{atua.areaConhecimento.nomeArea}"/>  </p:column>
+
+
+                            <p:column styleClass="centralizar-texto text-center"  headerText="Ações" width="75" exportable="false" priority="0">
+                                <p:tooltip for="btnEditar" value="Atualizar"/>
+                                <p:commandLink id="btnEditar" action="#{egressoBean.prepararAtualizacaoEgresso(atua.egresso)}" ajax="false" > 
+                                    <h:graphicImage value="/resources/img/edit2.png" />                           
+                                </p:commandLink>                               
+                            </p:column>
+                        </p:dataTable>
+
+                        <div class="row">
+                            <div class="col-sm-12" style="margin-top: 10px;">
+                                <div class="form-actions" style="float: right">                            
+                                    <label class="label-selecione-perfil">Exportar atual:</label>
+                                    <h:commandLink styleClass="espacar-item-10px-direita">  
+                                        <p:graphicImage value="/resources/img/excel.png" />  
+                                        <p:dataExporter type="xls" encoding="iso-8859-1" target="tabela_Atua" fileName="ListagemAtuacaoProfissional" pageOnly="true" />  
+                                    </h:commandLink>  
+
+                                    <h:commandLink styleClass="espacar-item-10px-direita">  
+                                        <p:graphicImage value="/resources/img/csv.png" />  
+                                        <p:dataExporter type="csv" encoding="iso-8859-1" target="tabela_Atua" fileName="ListagemAtuacaoProfissional" pageOnly="true" />  
+                                    </h:commandLink>  
+
+                                    <h:panelGroup id="pgExportarTodas" rendered="#{consultaLazyBean.model.rowCount  lt 5001}">
+                                        <label style="margin-left: 20px;" class="label-selecione-perfil">Exportar todas:</label>
+                                        <h:commandLink styleClass="espacar-item-10px-direita" disabled="">  
+                                            <p:graphicImage value="/resources/img/excel.png" />  
+                                            <p:dataExporter type="xls" encoding="iso-8859-1" target="tabela_Atua" fileName="ListagemAtuacaoProfissional"/> 
+                                        </h:commandLink>  
+
+                                        <h:commandLink styleClass="espacar-item-10px-direita">  
+                                            <p:graphicImage value="/resources/img/csv.png" />  
+                                            <p:dataExporter type="csv" encoding="iso-8859-1" target="tabela_Atua" fileName="ListagemAtuacaoProfissional"/>
+                                        </h:commandLink>                                  
+                                    </h:panelGroup>
+
+                                </div>                                  
+                            </div>                        
+
+                        </div>
+                    </fieldset>
+                </h:form>
+            </div>
+        </div>        
+    </h:body>
+</html>

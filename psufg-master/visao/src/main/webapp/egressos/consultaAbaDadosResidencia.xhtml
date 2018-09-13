@@ -1,0 +1,118 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"      
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <head>      
+        <title> Sempre UFG </title>
+        <h:outputStylesheet name="bootstrap.min.css" library="css"/>
+        <h:outputStylesheet name="custom-bootstrap.css" library="css"/>
+        <h:outputStylesheet name="style.css" library="css"/>        
+        <h:outputStylesheet name="grid.css" library="css"/>        
+    </head>
+
+
+    <h:body>                            
+        <div class="panel panel-primary" style="margin: 0px"> 
+            <div class="panel-heading"> <h7/></div>
+            <div class="panel-body">  
+                <h:form id="frm_DadosResidencia">
+                    <fieldset>
+                        <div class="row" style="color: #337ab7; font-weight: normal !important; border-bottom: 1px solid #e5e5e5 !important; margin: 0px 0px 20px 0 !important; font-size:16px !important; font-family: Lucida Grande, Lucida Sans, Arial, sans-serif !important;" >
+                            <span class="icon-search" style="margin-right: 5px;"/> 
+                            <h:outputLabel  style="color: #337ab7; font-weight: normal !important;" value=" Resultado da consulta" />
+                            <h:commandLink class="btn btn-primary btn-sm" 
+                                           style="margin-right: 10px; float: right; color: #ffffff !important; border: 1 solid #337ab7 !important; border-radius: 5px 5px 0 0; width: 140px;height: 27px;" 
+                                           action="#{mapaBean.mapaEgressosNascimento()}" > 
+                                Mostrar no <p:graphicImage  style = "margin-top: -5px; width: 24px;" value="/resources/img/maps.png" /> 
+                            </h:commandLink>                                
+
+                        </div>                          
+
+                        <p:dataTable id="tabela_residencias" var="r" value="#{consultaLazyBean.model}" lazy="true"
+                                     sortBy="#{r.egresso.nomeOficial}" rowKey="#{r}"
+                                     rows="10" paginator="true" rowsPerPageTemplate="10,50,100" selectionMode="single"
+                                     currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink}  {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     multiViewState="true" resizableColumns="true" resizeMode="expand"                                     
+                                     emptyMessage="Nenhuma residência encontrada" >      
+
+                            <p:ajax event="page" oncomplete="updateToggles('myColumnToggler4')" />
+                            <p:ajax event="sort" oncomplete="updateToggles('myColumnToggler4')" />
+
+                            <f:facet name="header">                                
+                                <h:outputLabel style="padding: 5px;" value="Listagem dos dados de residência"/>
+                                <p:commandButton id="toggler4" type="button" value="Seleção de colunas" style="float:right; margin-top: 5px;" icon="ui-icon-calculator" />
+
+                                <p:columnToggler datasource="tabela_residencias" trigger="toggler4"  widgetVar="myColumnToggler4" transient="true"/>
+                            </f:facet>
+
+
+                            <p:column headerText="Id" sortBy="#{r.egresso.cpf}">
+                                <h:outputText value="#{r.egresso.cpf.substring(0,3)}#{r.egresso.cpf.substring(8,11)}"/> 
+                            </p:column>
+
+                            <p:column headerText="Egresso" sortBy="#{r.egresso.nomeOficial}">
+                                <h:outputText value="#{r.egresso.nomeSocial.trim().length() > 1 ? r.egresso.nomeSocial : r.egresso.nomeOficial}" />
+                            </p:column>
+                            <p:column visible="false" headerText="Email Principal"  sortBy="#{r.egresso.emailPrincipal}"> <h:outputText value="#{r.egresso.emailPrincipal}" /></p:column>
+                            <p:column visible="false" headerText="Email alternativo" sortBy="#{r.egresso.emailAlternativo}"> <h:outputText value="#{r.egresso.emailAlternativo}"/> </p:column>
+                            <p:column visible="false" headerText="Nasc:Data" sortBy="#{r.egresso.dataDeNascimento}"> <h:outputText value="#{r.egresso.dataDeNascimento}" > <f:convertDateTime pattern="dd/MM/yyyy" /> </h:outputText> </p:column>
+                            <p:column visible="false" headerText="Nasc:Cidade" sortBy="#{r.egresso.naturalidade.cidade}"> <h:outputText value="#{r.egresso.naturalidade.cidade}"/>  </p:column>
+                            <p:column visible="false" headerText="Nasc:UF" sortBy="#{r.egresso.naturalidade.siglaUF}"> <h:outputText value="#{r.egresso.naturalidade.siglaUF}"/>  </p:column>
+                            <p:column visible="false" headerText="Nasc:País" sortBy="#{r.egresso.naturalidade.pais}"> <h:outputText value="#{r.egresso.naturalidade.pais}"/>  </p:column>      
+
+                            <p:column visible="true" headerText="Logradouro" sortBy="#{r.logradouro}"> <h:outputText value="#{r.logradouro}"/>  </p:column>
+                            <p:column visible="true" headerText="Bairro" sortBy="#{r.bairro}"> <h:outputText value="#{r.bairro}"/>  </p:column>
+                            <p:column visible="true" headerText="Número" sortBy="#{r.numero}"> <h:outputText value="#{r.numero}"/>  </p:column>
+                            <p:column visible="true" headerText="CEP" sortBy="#{r.CEP}"> <h:outputText value="#{r.CEP}"/>  </p:column>
+                            <p:column visible="true" headerText="Cidade" sortBy="#{r.localizacaoGeografica.cidade}"> <h:outputText value="#{r.localizacaoGeografica.cidade}"/>  </p:column>
+                            <p:column visible="true" headerText="UF" sortBy="#{r.localizacaoGeografica.siglaUF}"> <h:outputText value="#{r.localizacaoGeografica.siglaUF}"/>  </p:column>
+                            <p:column visible="true" headerText="Município" sortBy="#{r.localizacaoGeografica.municipio}"> <h:outputText value="#{r.localizacaoGeografica.municipio}"/>  </p:column>
+                            <p:column visible="true" headerText="País" sortBy="#{r.localizacaoGeografica.pais}"> <h:outputText value="#{r.localizacaoGeografica.pais}"/>  </p:column>
+
+                            <p:column styleClass="centralizar-texto text-center"  headerText="Ações" width="75" exportable="false" priority="0">
+                                <p:tooltip for="btnEditar" value="Atualizar"/>
+                                <p:commandLink id="btnEditar" action="#{egressoBean.prepararAtualizacaoEgresso(r.egresso)}" ajax="false" update="frmEditaAtuacao"> 
+                                    <h:graphicImage value="/resources/img/edit2.png" />                           
+                                </p:commandLink>                               
+                            </p:column>
+                        </p:dataTable>
+
+                        <div class="row">
+                            <div class="col-sm-12" style="margin-top: 10px;">
+                                <div class="form-actions" style="float: right">
+                                    <label class="label-selecione-perfil">Exportar atual:</label>
+                                    <h:commandLink styleClass="espacar-item-10px-direita">  
+                                        <p:graphicImage value="/resources/img/excel.png" />  
+                                        <p:dataExporter type="xls" encoding="iso-8859-1" target="tabela_residencias" fileName="ListagemDeResidencias" pageOnly="true" />  
+                                    </h:commandLink>  
+
+                                    <h:commandLink styleClass="espacar-item-10px-direita">  
+                                        <p:graphicImage value="/resources/img/csv.png" />  
+                                        <p:dataExporter type="csv" encoding="iso-8859-1"  target="tabela_residencias" fileName="ListagemDeResidencias" pageOnly="true" />  
+                                    </h:commandLink>  
+
+                                    <h:panelGroup id="pgExportarTodas" rendered="#{consultaLazyBean.model.rowCount  lt 5001}">
+                                        <label style="margin-left: 20px;" class="label-selecione-perfil">Exportar todas:</label>
+                                        <h:commandLink styleClass="espacar-item-10px-direita">  
+                                            <p:graphicImage value="/resources/img/excel.png" />  
+                                            <p:dataExporter type="xls" encoding="iso-8859-1"  target="tabela_residencias" fileName="ListagemDeResidencias"/> 
+                                        </h:commandLink>  
+
+                                        <h:commandLink styleClass="espacar-item-10px-direita">  
+                                            <p:graphicImage value="/resources/img/csv.png" />  
+                                            <p:dataExporter type="csv" encoding="iso-8859-1"  target="tabela_residencias" fileName="ListagemDeResidencias"/>
+                                        </h:commandLink>                                  
+                                    </h:panelGroup>
+                                </div>                                  
+                            </div>                        
+
+                        </div>
+                    </fieldset>
+                </h:form>
+            </div>
+        </div>        
+    </h:body>
+</html>

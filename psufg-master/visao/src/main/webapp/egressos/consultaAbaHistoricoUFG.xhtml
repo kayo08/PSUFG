@@ -1,0 +1,128 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"      
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <head>      
+        <title> Sempre UFG </title>
+        <h:outputStylesheet name="bootstrap.min.css" library="css"/>
+        <h:outputStylesheet name="custom-bootstrap.css" library="css"/>
+        <h:outputStylesheet name="style.css" library="css"/>        
+        <h:outputStylesheet name="grid.css" library="css"/>        
+    </head>
+
+
+    <h:body>                            
+        <div class="panel panel-primary" style="margin: 0px"> 
+            <div class="panel-heading"> <h7/></div>
+            <div class="panel-body">                   
+                <h:form id="frm_HistUFG">
+                    <fieldset>
+                        <div class="row" style="color: #337ab7; font-weight: normal !important; border-bottom: 1px solid #e5e5e5 !important; margin: 0px 0px 20px 0 !important; font-size:16px !important; font-family: Lucida Grande, Lucida Sans, Arial, sans-serif !important;" >
+                            <span class="icon-search" style="margin-right: 5px;"/> 
+                            <h:outputLabel  style="color: #337ab7; font-weight: normal !important;" value=" Resultado da consulta" />
+                            <h:commandLink class="btn btn-primary btn-sm" 
+                                           style="margin-right: 10px; float: right; color: #ffffff !important; border: 1 solid #337ab7 !important; border-radius: 5px 5px 0 0; width: 140px;height: 27px;" 
+                                           action="#{mapaBean.mapaEgressosNascimento()}" > 
+                                Mostrar no <p:graphicImage  style = "margin-top: -5px; width: 24px;" value="/resources/img/maps.png" /> 
+                            </h:commandLink>                                
+
+                        </div>                                 
+
+
+                        <p:dataTable id="tabela_histUFG" var="hufg" value="#{consultaLazyBean.model}" lazy="true"
+                                     sortBy="#{hufg.egresso.nomeOficial}" rowKey="#{hufg}"
+                                     rows="10" paginator="true" rowsPerPageTemplate="10,50,100" selectionMode="single"
+                                     currentPageReportTemplate="Mostrando {startRecord}-{endRecord} de {totalRecords}"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink}  {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     multiViewState="true" resizableColumns="true" resizeMode="expand"                                     
+                                     emptyMessage="Nenhum histórico encontrado" >  
+
+                            <p:ajax event="page" oncomplete="updateToggles('myColumnToggler7')" />
+                            <p:ajax event="sort" oncomplete="updateToggles('myColumnToggler7')" />
+
+                            <f:facet name="header">                                
+                                <h:outputLabel style="padding: 5px;" value="Listagem dos dados de histórico na UFG"/>
+                                <p:commandButton id="toggler7" type="button" value="Seleção de colunas" style="float:right; margin-top: 5px;" icon="ui-icon-calculator" />
+
+                                <p:columnToggler datasource="tabela_histUFG" trigger="toggler7"  widgetVar="myColumnToggler7" transient="true"/>
+                            </f:facet>
+
+                            <p:column headerText="Id" sortBy="#{hufg.egresso.cpf}">
+                                <h:outputText value="#{hufg.egresso.cpf.substring(0,3)}#{hufg.egresso.cpf.substring(8,11)}"/> 
+                            </p:column>
+
+                            <p:column headerText="Egresso" sortBy="#{hufg.egresso.nomeOficial}">
+                                <h:outputText value="#{hufg.egresso.nomeSocial.trim().length() > 1 ? hufg.egresso.nomeSocial : hufg.egresso.nomeOficial}" />
+                            </p:column>
+                            <p:column visible="false" headerText="Email Principal"  sortBy="#{hufg.egresso.emailPrincipal}"> <h:outputText value="#{hufg.egresso.emailPrincipal}" /></p:column>
+                            <p:column visible="false" headerText="Email alternativo" sortBy="#{hufg.egresso.emailAlternativo}"> <h:outputText value="#{hufg.egresso.emailAlternativo}"/> </p:column>
+                            <p:column visible="false" headerText="Nasc:Data" sortBy="#{hufg.egresso.dataDeNascimento}"> <h:outputText value="#{hufg.egresso.dataDeNascimento}" > <f:convertDateTime pattern="dd/MM/yyyy" /> </h:outputText> </p:column>
+                            <p:column visible="false" headerText="Nasc:Cidade" sortBy="#{hufg.egresso.naturalidade.cidade}"> <h:outputText value="#{hufg.egresso.naturalidade.cidade}"/>  </p:column>
+                            <p:column visible="false" headerText="Nasc:UF" sortBy="#{hufg.egresso.naturalidade.siglaUF}"> <h:outputText value="#{hufg.egresso.naturalidade.siglaUF}"/>  </p:column>
+                            <p:column visible="false" headerText="Nasc:País" sortBy="#{hufg.egresso.naturalidade.pais}"> <h:outputText value="#{hufg.egresso.naturalidade.pais}"/>  </p:column>      
+
+                            <p:column visible="true" headerText="Matrícula" sortBy="#{hufg.numeroDeMatricula}"> <h:outputText value="#{hufg.numeroDeMatricula}"/>  </p:column>
+                            <p:column visible="true" headerText="Início" sortBy="#{hufg.anoDeInicio}"> <h:outputText value="#{hufg.mesDeInicio.value.substring(0,3)}/#{hufg.anoDeInicio}"/>  </p:column>
+                            <p:column visible="true" headerText="Fim" sortBy="#{hufg.anoDeFim}"> <h:outputText value="#{hufg.mesDeFim.value.substring(0,3)}/#{hufg.anoDeFim}"/>  </p:column>
+                            <p:column visible="true" headerText="Trabalho final" sortBy="#{hufg.tituloDoTrabalhoFinal}"> <h:outputText value="#{hufg.tituloDoTrabalhoFinal}"/>  </p:column>                            
+
+                            <p:column visible="true" headerText="Curso" sortBy="#{hufg.cursoDaUFG.nome}"> <h:outputText value="#{hufg.cursoDaUFG.nome}"/>  </p:column>
+                            <p:column visible="true" headerText="Nível" sortBy="#{hufg.cursoDaUFG.nivel}"> <h:outputText value="#{hufg.cursoDaUFG.nivel}"/>  </p:column>
+                            <p:column visible="true" headerText="Modalidade" sortBy="#{hufg.cursoDaUFG.modalidadeCurso}"> <h:outputText value="#{hufg.cursoDaUFG.modalidadeCurso}"/>  </p:column>
+                            <p:column visible="true" headerText="Turno" sortBy="#{hufg.cursoDaUFG.turno}"> <h:outputText value="#{hufg.cursoDaUFG.turno}"/>  </p:column>
+                            <p:column visible="true" headerText="Tipo Resolução" sortBy="#{hufg.cursoDaUFG.tipoDeResolucao}"> <h:outputText value="#{hufg.cursoDaUFG.tipoDeResolucao}"/>  </p:column>
+                            <p:column visible="true" headerText="Num Resolução" sortBy="#{hufg.cursoDaUFG.numeroDaResolucao}"> <h:outputText value="#{hufg.cursoDaUFG.numeroDaResolucao}"/>  </p:column>
+                            <p:column visible="true" headerText="Área" sortBy="#{hufg.cursoDaUFG.area.nomeArea}"> <h:outputText value="#{hufg.cursoDaUFG.area.nomeArea}"/>  </p:column>                            
+
+                            <p:column visible="true" headerText="Unidade Academica" sortBy="#{hufg.cursoDaUFG.unidadeAcademica.nome}"> <h:outputText value="#{hufg.cursoDaUFG.unidadeAcademica.nome}"/>  </p:column>
+                            <p:column visible="true" headerText="Regional" sortBy="#{hufg.cursoDaUFG.unidadeAcademica.regionalUFG.nome}"> <h:outputText value="#{hufg.cursoDaUFG.unidadeAcademica.regionalUFG.nome}"/>  </p:column>                            
+                            <p:column visible="true" headerText="Cidade" sortBy="#{hufg.cursoDaUFG.unidadeAcademica.localizacaoGeografica.cidade}"> <h:outputText value="#{hufg.cursoDaUFG.unidadeAcademica.localizacaoGeografica.cidade}"/>  </p:column>
+                            <p:column visible="true" headerText="UF" sortBy="#{hufg.cursoDaUFG.unidadeAcademica.localizacaoGeografica.siglaUF}"> <h:outputText value="#{hufg.cursoDaUFG.unidadeAcademica.localizacaoGeografica.siglaUF}"/>  </p:column>                                                                                   
+
+
+                            <p:column styleClass="centralizar-texto text-center"  headerText="Ações" width="75" exportable="false" priority="0">
+                                <p:tooltip for="btnEditar" value="Atualizar"/>
+                                <p:commandLink id="btnEditar" action="#{egressoBean.prepararAtualizacaoEgresso(hufg.egresso)}" ajax="false" update="frmEditaAtuacao"> 
+                                    <h:graphicImage value="/resources/img/edit2.png" />                           
+                                </p:commandLink>                               
+                            </p:column>
+                        </p:dataTable>
+
+                        <div class="row">
+                            <div class="col-sm-12" style="margin-top: 10px;">
+                                <div class="form-actions" style="float: right">                            
+                                    <label class="label-selecione-perfil">Exportar atual:</label>
+                                    <h:commandLink styleClass="espacar-item-10px-direita">  
+                                        <p:graphicImage value="/resources/img/excel.png" />  
+                                        <p:dataExporter type="xls" encoding="iso-8859-1" target="tabela_histUFG" fileName="ListagemHistoricosUFG" pageOnly="true" />  
+                                    </h:commandLink>  
+
+                                    <h:commandLink styleClass="espacar-item-10px-direita">  
+                                        <p:graphicImage value="/resources/img/csv.png" />  
+                                        <p:dataExporter type="csv" encoding="iso-8859-1" target="tabela_histUFG" fileName="ListagemHistoricosUFG" pageOnly="true" />  
+                                    </h:commandLink>  
+
+                                    <h:panelGroup id="pgExportarTodas" rendered="#{consultaLazyBean.model.rowCount  lt 5001}">
+                                        <label style="margin-left: 20px;" class="label-selecione-perfil">Exportar todas:</label>
+                                        <h:commandLink styleClass="espacar-item-10px-direita">  
+                                            <p:graphicImage value="/resources/img/excel.png" />  
+                                            <p:dataExporter type="xls" encoding="iso-8859-1" target="tabela_histUFG" fileName="ListagemHistoricosUFG"/> 
+                                        </h:commandLink>  
+
+                                        <h:commandLink styleClass="espacar-item-10px-direita">  
+                                            <p:graphicImage value="/resources/img/csv.png" />  
+                                            <p:dataExporter type="csv" encoding="iso-8859-1" target="tabela_histUFG" fileName="ListagemHistoricosUFG"/>
+                                        </h:commandLink>                                  
+                                    </h:panelGroup>
+                                </div>                                  
+                            </div>                        
+
+                        </div>
+                    </fieldset>
+                </h:form>
+            </div>
+        </div>        
+    </h:body>
+</html>

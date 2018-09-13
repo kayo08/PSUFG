@@ -1,0 +1,185 @@
+<ui:composition template="/template/template_login.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:param name="idMenuPrincipal" value="menuNHome"/>
+    <ui:define name="content">        
+        <h:form>
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <!-- Wrapper for slides -->
+
+                <div class="carousel-inner">
+                    <h:panelGroup rendered="#{bannerBean.banners.size()>0}">
+                        <div class="item active">
+                            <a href="#{bannerBean.banners.get(0).linkNoticia}" target="_blank">                          
+                                <p:graphicImage value="/banners/#{bannerBean.banners.get(0).nomeImagem}" style="width: 100%"/>
+                            </a>
+                        </div>
+                    </h:panelGroup>
+
+                    <ui:repeat value="#{bannerBean.banners}" var="bann">
+                        <div class="item">                        
+                            <a href="#{bann.linkNoticia}" target="_blank">       
+                                <p:graphicImage value="/banners/#{bann.nomeImagem}" style="width: 100%"/>
+                            </a>
+                        </div>
+                    </ui:repeat>
+
+
+
+
+
+                    <!--                <div class="item active">
+                                        <img src="resources/img/sempreufg1.jpg" alt="Formatura1" style="width:100%"/>
+                                        <div class="carousel-caption">
+                                            <h3>Graduation 2016</h3>
+                                            <p>UFG is always so much fun!</p>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="item">
+                                        <img src="resources/img/sempreufg2.jpg" alt="Formatura2" style="width:100%"/>
+                                        <div class="carousel-caption">
+                                            <h3>Saiba mais</h3>
+                                            <p>Clicando aqui!</p>
+                                        </div>
+                                    </div>-->
+
+                </div>
+
+                <!-- Left and right controls -->
+                <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>            
+                <a class="left carousel-control" style="width: 33% !important; text-align: right !important; margin-left: 15% !important;" href="#myCarousel" data-slide="start">
+                    <span id ="btnPlay" class="glyphicon glyphicon-play"  style="position: relative; top:80%" title="Iniciar transição de slides"></span>
+                </a>
+                <a class="right carousel-control" style="width: 33% !important; text-align: left !important; margin-right: 15% !important;" href="#myCarousel" data-slide="start">
+                    <span id ="btnPause" class="glyphicon glyphicon-pause"  style="position: relative; top:80%" title="Pausar transição de slides" ></span>
+                </a>
+
+            </div>
+            <p:spacer/>
+            <div style="text-align: center">
+                <div class="row">
+                    <h2>You're welcome!</h2>
+                    <p>...</p>
+                    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+                </div>
+            </div>
+
+            <p:spacer/>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-9">
+                        <h:commandLink action="/evento/listagemEventosPublicados" title="Mais notícias">                     
+                            <div style="margin:10px; display:block; background: transparent url(#{request.contextPath}/resources/img/widget-title-line.png) repeat-x 0 50%">
+                                <h4 style="color: #0ab770; background: white; display: inline; padding: 0 10px;"> NOTÍCIAS </h4>    
+                                <img style="height: 20px; margin: 0; float:right; background: white; display: inline; padding: 0 5px;" src="#{request.contextPath}/resources/img/view-more.png" alt="[+]"/>
+                            </div>
+                        </h:commandLink>
+                        <!--Alterar para eventosPublicos-->
+                        <ui:repeat var="ev" value="#{eventoBean.eventos.subList(0, 3)}" >
+                            <div class="col-sm-4">
+                                <div class="thumbnail" style="min-height: 300px;" >
+                                    <img src="#{request.contextPath}/resources/img/noticias.png" alt="Imagem notícia"/>
+                                    <div class="caption" style="min-height: 70px;" >
+                                        <h5 style="color: #09395d; font-weight: bold;"> #{ev.assunto}</h5>
+                                        <h:form>
+                                            <h:outputLabel escape="false" value="#{ev.descricaoEvento.length() > 60 ? ev.descricaoEvento.subSequence(0, 60).toString().concat('...') : ev.descricaoEvento}"> 
+                                                <h:commandLink id="btnEditar" action="#{eventoBean.visualizarNoticia()}" value="Leia mais">
+                                                    <f:param name="numero" value="#{ev.id}" />
+                                                </h:commandLink>      
+                                            </h:outputLabel>
+                                        </h:form>    
+
+                                        <!--                                    <p><a href="#" class="btn btn-success" role="button">Read more</a> </p>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </ui:repeat>
+                    </div>
+
+                    <div class="col-sm-3" >
+                        <h:commandLink action="/index" title="Mais eventos">
+                            <div style="margin:10px 0px ; display:block; background: transparent url(#{request.contextPath}/resources/img/widget-title-line.png) repeat-x 0 50%">                    
+                                <h4 style="color: #0f9dd6; background: white; display: inline; padding: 0 5px;"> EVENTOS </h4>    
+                                <img style="height: 20px; margin: 0; float:right; background: white; display: inline; padding: 0 5px;" src="#{request.contextPath}/resources/img/view-more.png" alt="[+]" />                        
+                            </div>
+                        </h:commandLink>
+
+                        <ul class="list-group widget-event-body" >
+                            <li class="list-group-item event-item">                            
+                                <a href="https://illinoisalumni.org/events/stories-of-service-exhibit/">
+                                    <div class="event-day-month fleft">
+                                        <div class="event-month">Nov</div>
+                                        <div class="event-day">09</div>
+                                    </div>
+                                </a>
+                                <a href="https://illinoisalumni.org/events/stories-of-service-exhibit/">Stories of Service Exhibit </a>
+                            </li>
+                            <li class="list-group-item event-item">
+                                <a href="https://illinoisalumni.org/events/stories-of-service-exhibit/">
+                                    <div class="event-day-month fleft">
+                                        <div class="event-month">Nov</div>
+                                        <div class="event-day">30</div>
+                                    </div>
+                                </a>
+                                <a href="https://illinoisalumni.org/events/stories-of-service-exhibit/">Stories of Service Exhibit </a>
+                            </li>
+                            <li class="list-group-item event-item">
+                                <a href="https://illinoisalumni.org/events/stories-of-service-exhibit/">
+                                    <div class="event-day-month fleft">
+                                        <div class="event-month">Dez</div>
+                                        <div class="event-day">02</div>
+                                    </div>
+                                </a>
+                                <a href="https://illinoisalumni.org/events/stories-of-service-exhibit/">Stories of Service Exhibit </a>
+                            </li>                                        
+                        </ul>
+                    </div>                
+                </div>
+            </div>       
+            <hr style="margin-left: 20px; margin-right: 20px;"/> 
+            <div>
+                <div class="row ">
+                    <div class="col-sm-12 col-sm-offset-1 text-center">
+                        <div class="col-sm-2">
+                            <img src="#{request.contextPath}/resources/img/mentoria.png" style="max-width: 100%; height: 100px;"/>
+                            <p> Mentoria </p>
+                        </div>
+                        <div class="col-sm-2">
+                            <img src="#{request.contextPath}/resources/img/network.png" style="max-width: 100%; height: 100px;"/>
+                            <p> Amplie sua Network </p>
+
+                        </div>
+
+                        <div class="col-sm-2">
+                            <img src="#{request.contextPath}/resources/img/friends.png" style="max-width: 100%; height: 100px;"/>
+                            <p> Reencontre amigos </p>
+                        </div>
+                        <div class="col-sm-2">
+                            <img src="#{request.contextPath}/resources/img/offers.png" style="max-width: 100%; height: 100px;"/>
+                            <p> Ofertas especiais </p>
+
+                        </div>
+                        <div class="col-sm-2">
+                            <img src="#{request.contextPath}/resources/img/library.png" style="max-width: 100%; height: 100px;"/>
+                            <p> Acesse o acervo da UFG  </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
